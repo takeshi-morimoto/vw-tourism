@@ -1,0 +1,1606 @@
+/*
+Theme Name: VW Tourism Pro
+Theme URI:
+Author: VW Themes
+Author URI: https://www.vwthemes.com/
+Description:
+Version: 0.0.1
+Requires at least: 5.8.0
+Tested up to: 6.0.3
+Requires PHP: 7.3
+License: GNU General Public License
+License URI:license.txt
+Text Domain: vw-tourism-pro
+Tags: one-column, right-sidebar, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
+VW Tourism Pro WordPress Theme has been created by VW Themes(vwthemes.com), 2018.
+VW Tourism Pro WordPress Theme is released under the terms of GNU GPL
+*/
+
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Protest+Riot&display=swap');
+
+ :root {
+     --white: #ffffff;
+     --navyblue: #112542;
+    --blue:#00A3EB;
+}
+ :root {
+     --common-font-w:  "Figtree", sans-serif;
+}
+/* Basic Style */
+
+body {
+    background-image: url(assets/images/body-bg.png);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    opacity: 1;
+}
+ html body {
+     margin: 0;
+     padding: 0;
+     -ms-word-wrap: break-word;
+     word-wrap: break-word;
+     background-color: white;
+     position: relative;
+     font-size: 14px;
+     color: #000000;
+    font-family: var(--common-font-w);
+    overflow-x: hidden;
+}
+ label {
+     margin-bottom: 0 !important;
+}
+ img {
+     margin: 0;
+     padding: 0;
+     border: none;
+     max-width: 100%;
+     height: auto;
+     width: auto;
+}
+ section img {
+     max-width: 100%;
+}
+ h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    color: #000;
+    font-family: var(--common-font-w);
+    font-weight: bold;
+}
+ p {
+     font-weight: normal;
+}
+ p, ul li a {
+   font: 400 14px / 24px Figtree;
+     letter-spacing: 0px;
+}
+ body a {
+     text-decoration: none;
+}
+ a:hover {
+     text-decoration: none;
+     color: var(--black1);
+}
+ a:focus, a:hover {
+     text-decoration: none !important;
+}
+ ul, ol {
+     margin: 0 0 0 0;
+     padding: 0;
+}
+ .sub-menu li a:before{
+     display: none;
+}
+ ul li, ol li {
+     font-size: 14px;
+}
+
+ input[type="text"], input[type="tel"], input[type="email"], input[type="phno"], input[type="password"], textarea,input[type="number"],  input[type="date"]{
+     border:1px solid #1212124D;
+     font-size: 14px;
+     padding: 6px 10px;
+     margin: 0 0 0px 0;
+     height: auto;
+     width: 100%;
+     background: transparent;
+     border-radius: 6px;
+}
+
+ section{
+     background-size: cover !important;
+     background-repeat: no-repeat !important;
+    padding: 70px 0;
+     background-attachment: scroll;
+}
+ select {
+     width: 100%;
+     padding: 6px;
+}
+ input[type="submit"]:hover {
+     cursor: pointer;
+}
+
+ /* .screen-reader-text {
+     position: absolute;
+     top: -9999em;
+     left: -9999em;
+} */
+
+
+ .comment-list .comment-content ul {
+     list-style: none;
+}
+ .comment-list .comment-content ul li {
+     margin: 5px;
+}
+ .toggleMenu {
+     display: none;
+}
+ table, td, th {
+     border: 1px solid var(--lightgrey2);
+}
+ table {
+     border-collapse: collapse;
+     border-spacing: 0;
+     border-width: 1px 0 0 1px;
+     margin: 0 0 1.75em;
+     table-layout: fixed;
+     width: 100%;
+}
+
+/* ---------Buttons--------- */
+
+/*------------------------- Headings --------------------------*/
+ .innerbox {
+     background-size: 100% 100%;
+}
+
+ .vw-fixed{
+     background-attachment: fixed !important;
+     background-size: cover;
+     background-repeat: no-repeat;
+}
+ .vw-scroll{
+     background-attachment: scroll;
+     background-size: cover;
+     background-repeat: no-repeat;
+}
+/* ---------- Return to Top ------------ */
+ #return-to-top {
+     position: fixed;
+     bottom: 10px;
+     right: 20px;
+     background:#112542;
+     width: 50px;
+     height: 50px;
+     display: block;
+     text-decoration: none;
+     -webkit-border-radius: 35px;
+     -moz-border-radius: 35px;
+     border-radius: 35px;
+     -webkit-transition: all 0.3s linear;
+     -moz-transition: all 0.3s ease;
+     -ms-transition: all 0.3s ease;
+     -o-transition: all 0.3s ease;
+     transition: all 0.3s ease;
+     z-index: 9999;
+}
+ #return-to-top i {
+     position: relative;
+     top: 13px;
+     font-size: 19px;
+     -webkit-transition: all 0.3s ease;
+     -moz-transition: all 0.3s ease;
+     -ms-transition: all 0.3s ease;
+     -o-transition: all 0.3s ease;
+     transition: all 0.3s ease;
+     padding: 3px 5px;
+     color: #fff !important;
+}
+ a#return-to-top{
+     color: #fff !important;
+     text-align: center;
+}
+ #return-to-top:hover {
+     background: rgba(0, 0, 0, 0.9);
+}
+ #return-to-top:hover i {
+     top: 5px;
+}
+/* ----------- Spinner ------------- */
+ .eco-box{
+     position: fixed;
+     height: 100%;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     z-index: 2;
+     cursor: pointer;
+     z-index: 999999;
+     background-color:#17191D;
+     width: 100%;
+     display: flex;
+      align-items: center;
+      justify-content: center;
+}
+.loader-6 {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  -webkit-animation: rotation 1s linear infinite;
+          animation: rotation 1s linear infinite;
+}
+.loader-6:after, .loader-6:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #2264C6;
+  width: 6px;
+  height: 6px;
+  transform: translate(150%, 150%);
+  border-radius: 50%;
+}
+.loader-6:before {
+  left: auto;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  transform: translate(-150%, -150%);
+}
+@keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+}
+}
+
+ .not_sticky {
+     position: unset !important;
+}
+ .woocommerce div.product form.cart .variations tr{
+     display: block !important;
+}
+ .woocommerce div.product form.cart table td{
+     padding-left: 18px !important;
+}
+ /* .btn:hover{
+     background-color: #252A31;
+     color: #fff;
+} */
+.btn:focus{
+  box-shadow:none;
+}
+
+/* --------Common Css--------------- */
+.sec-sub-heading{
+  font: 500 14px / 25px Protest Riot;
+  letter-spacing: 0px;
+  color:  var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+.sec-heading {
+  font: 700 32px /40px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.sec-para{
+  font: 400 14px/24px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+/* button css */
+.theme-btn-main{
+  position: relative;
+  padding: 8px 15px;
+  border-radius: 6px;
+  display: inline-block;
+  background: var(--navyblue);
+  font: 500 14px / 25px Figtree;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  width: max-content;
+}
+.theme-btn-block{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.theme-btn-line-left {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background:  #fff;
+  width: 0;
+  display: inline-block;
+  height: 1px;
+  vertical-align: middle;
+  opacity: 0;
+}
+.theme-btn-block span {
+  transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+}
+.theme-btn-line-right {
+background: #fff;
+width: calc(50px - 1px);
+display: inline-block;
+height: 2px;
+vertical-align: middle;
+opacity: 1;
+margin-left: 20px;
+}
+.theme-btn-main i{
+color: #fff;
+    transform: rotate(-90deg);
+    position: relative;
+    left: -2px;
+}
+.theme-btn-main:hover{
+background:  var(--blue) !important;
+}
+.theme-btn-main:hover .theme-btn-line-left{
+  width: 30px;
+  opacity: 1;
+  -moz-transform: translate(30px, 0px);
+  -webkit-transform: translate(30px, 0px);
+  -o-transform: translate(30px, 0px);
+  -ms-transform: translate(30px, 0px);
+  transform: translate(30px, 0px);
+      height: 2px;
+}
+.theme-btn-main:hover .theme-btn-text {
+  -moz-transform: translate(60px, 0px);
+  -webkit-transform: translate(60px, 0px);
+  -o-transform: translate(60px, 0px);
+  -ms-transform: translate(60px, 0px);
+  transform: translate(60px, 0px);
+  color: #fff;
+}
+.theme-btn-main:hover .theme-btn-line-right {
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+  -o-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  opacity: 0;
+}
+#popular-destination{
+      background-image: url(assets/images/destination/Map.png);
+          background-size: 100% 100% !important;
+}
+/* blog effect */
+.testi-vertical .collectionbox-text{
+      width: calc(100% - 175px);
+}
+.blog-img, .exp-content-img-main{
+	position: relative;
+  overflow: hidden;
+}
+.blog-img::before ,.exp-content-img-main::before {
+	position: absolute;
+	top: 0;
+	left: -75%;
+	z-index: 2;
+	display: block;
+	content: '';
+	width: 50%;
+	height: 100%;
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,.3) 100%);
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,.3) 100%);
+	-webkit-transform: skewX(-25deg);
+	transform: skewX(-25deg);
+}
+.blog-img:hover::before,.exp-content-img-main:hover::before  {
+	-webkit-animation: shine .75s;
+	animation: shine .75s;
+}
+@-webkit-keyframes shine {
+	100% {
+		/* left: 125%; */
+    right: 0;
+	}
+}
+@keyframes shine {
+	100% {
+		left: 125%;
+	}
+}
+
+/* .blog-img{
+  position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+.blog-img img{
+  transition: all 0.5s ease 0s;
+}
+.blog-img:hover img {
+    transform: scale(1.08);
+} */
+/* -----------------Packages -------------------- */
+#popular-package-tabs .nav-link {
+  font:bold 18px / 25px Figtree;
+  color: #000000;
+}
+#popular-package-tabs  .nav-link.active{
+  color: #00A3EB !important;
+  background: transparent !important;
+  border: none !important;
+}
+.packages-from, .packages-date{
+  font: 500 16px / 25px Figtree;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+.packages-from{
+    border-bottom: 2px solid #FFFFFF;
+}
+.packages-btm-content h5{
+font: 800 22px / 25px Figtree;
+letter-spacing: 0px;
+color: #FFFFFF;
+text-transform: uppercase;
+}
+.packages-btm-content h5:hover{
+color: #112542;
+}
+.nav-tabs .nav-link{
+  border:none !important
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+  border:none !important;
+  isolation: unset !important
+}
+.packages-content-box{
+  max-width: 240px;
+width: 100%;
+}
+.packges-bottom-box-inner{
+  margin: 0 auto;
+      padding: 0 10px;
+}
+.packages-img-main img{
+  height: 230px;
+object-fit: cover;
+border-radius: 15px 15px 0px 0px;
+width: 100%;
+}
+.pac-per-year{
+  font: 400 12px / 12px Figtree;
+letter-spacing: 0px;
+color: #FFFFFF;
+}
+.package-price{
+  font: 600 20px / 22px Figtree;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+}
+.packges-bottom-box{
+  background: #FFFFFF;
+border-radius: 0px 0px 15px 15px;
+}
+.packages-title a {
+  font: 600 18px / 22px Figtree;
+  letter-spacing: 0px;
+  color: #112542;
+  /* height: 44px; */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1; /* 標準プロパティ */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.packages-title a:hover{
+  color: #00A3EB;
+}
+.packages-name p{
+  font: 500 14px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #112542;
+}
+.packages-box .theme-btn-main{
+  padding: 6px 12px;
+  background: #E6E8EB;
+  font: 500 14px / 22px Figtree;
+  color: #112542;
+}
+.theme-btn-line-right{
+      width: calc(45px - 1px);
+}
+ .packages-box .theme-btn-main i {
+    color: #112542;
+}
+.packages-box .theme-btn-line-right{
+  background:#112542;
+}
+.packages-box .theme-btn-main:hover  i{
+  color: #fff;
+}
+.packages-img-main::after {
+  content: '';
+position: absolute;
+left: 0px;
+top: 0;
+width: 100%;
+height: 100%;
+border-radius: 15px 15px 0px 0px;
+z-index: 0;
+background: transparent linear-gradient(180deg, #00000000 0%, #112542 100%);
+}
+.packages-box:hover .packages-img-main::after{
+background: transparent linear-gradient(180deg, #00000000 0%, #00A3EB 100%);
+}
+.wpcf7 form.invalid .wpcf7-response-output, .wpcf7 form.unaccepted .wpcf7-response-output, .wpcf7 form.payment-required .wpcf7-response-output{
+  color: #fff;
+      border-color: #112542;
+      font-weight: 500;
+}
+#contact-page .wpcf7 form.invalid .wpcf7-response-output, #contact-page .wpcf7 form.unaccepted .wpcf7-response-output, #contact-page .wpcf7 form.payment-required .wpcf7-response-output,
+#registation-form .wpcf7 form.invalid .wpcf7-response-output, #registation-form .wpcf7 form.unaccepted .wpcf7-response-output, #registation-form .wpcf7 form.payment-required .wpcf7-response-output{
+    color: #000;
+}
+/* Single Packages Page */
+#single-packages .pack-desc   .average-rating{
+  display: none;
+}
+#single-packages .days-img img{
+  width: 274px;
+height: 247px;
+object-fit: cover;
+}
+#single-packages img{
+      border-radius: 15px;
+}
+.single-room-title{
+  font: 700 30px / 30px Figtree;
+  color: #000000;
+  margin: 15px 0 12px 0;
+}
+.pack-meta-content .pack-meta-text{
+  font: 500 18px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.pack-meta-content .pack-meta-text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -25px;
+  border-right: 2px solid #000;
+  height: 20px;
+  margin: 0 auto;
+
+}
+.pack-meta-text:last-child::after{
+  content: unset;
+}
+.pack-sale-pr{
+    font: 700 25px / 27px Figtree;
+  color: #000000;
+}
+.pack-regular-pr{
+  font: 500 18px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+  text-decoration: line-through;
+}
+.pack-per-person{
+  font: 500 16px / 19px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+  margin-left: 2%;
+}
+.pack-desc p, .pack-add-info li{
+  font: 500 16px / 30px Figtree;
+  color: #000000;
+}
+.pack-add-info ul{
+  margin-left: 1rem;
+}
+.pack-map{
+  box-shadow: 0px 0px 12px #00000029;
+border-radius: 20px;
+background: #fff;
+padding: 20px;
+    margin-top: 20px;
+}
+.pack-map-title{
+  margin-bottom: 10px;
+  font:  600 20px / 22px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+
+#single-packages .pack-content-video video{
+      border-radius: 15px;
+          object-fit: cover;
+}
+#single-packages .modal-new {
+display: none; /* Hidden by default */
+position: absolute;; /* Stay in place */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+
+}
+#single-packages .modal-contents embed{
+ border-radius: 12px;
+}
+#single-packages .modal-contents embed, .modal-contents{
+height: 100%;
+}
+/* The Close Button */
+#single-packages .close-one {
+color: #fff;
+float: right;
+font-size: 28px;
+font-weight: bold;
+padding-right: 20px;
+cursor: pointer;
+background: #fff;
+border: none;
+position: absolute;
+right: 18%;
+top: 2%;
+background: none;
+padding: 0;
+}
+#single-packages .video-bg-img{
+position: relative;
+}
+#single-packages .video-bg-img a{
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+#single-packages .video-bg-img a i{
+  width: 70px;
+  height: 70px;
+  text-align: center;
+  background: #00A3EB;
+  border-radius: 50%;
+  color: #ffff;
+  font-size: 30px;
+  line-height: 70px;
+  cursor: pointer;
+}
+#daysTab{
+      padding-left: 20px;
+      border:none;
+}
+#daysTab button{
+  background: #FFFFFF;
+  border-radius: 5px 5px 0px 0px;
+  font: normal normal 600 16px / 21px Figtree;
+  letter-spacing: 0px;
+  color: #000;
+  padding: 6px 12px;
+}
+#daysTab .nav-link.active{
+  background: #00A3EB;
+  color: #fff;
+}
+#daysTabContent{
+  box-shadow: 0px 1px 6px #00000029;
+  border-radius: 15px;
+  background: #fff;
+  padding: 20px;
+}
+.pack-days-night{
+  font: 500 20px / 28px Figtree;
+letter-spacing: 0px;
+color: #000000;
+}
+.pack-day-no{
+  background: #00A3EB;
+font: 600 14px / 18px Figtree;
+letter-spacing: 0px;
+color: #FFFFFF;
+border-radius: 5px;
+padding: 5px 12px;
+}
+
+
+
+@media screen and (max-width:575px) {
+  /* #banner{
+      background-image: url(assets/images/banner/banner-mbl.png) !important;
+  } */
+
+}
+
+/* ---------------------About Section------------------------ */
+#about .abt-points{
+font: normal normal 600 14px / 21px Figtree;
+letter-spacing: 0px;
+color: #000000;
+}
+#about .abt-icon{
+  background: var(--blue);
+  color: #fff;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  font-size: 10px;
+  line-height: 21px;
+  text-align: center;
+}
+#about .about-right-content{
+  box-shadow: 0px 0px 6px #00000029;
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 140px;
+  background: #fff;
+}
+#about .about-right-content h4{
+  font: 800 28px / 28px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+#about .about-right-content p{
+  font:700 14px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+  margin-bottom: 0;
+}
+#about .about-img{
+  height: 100%;
+  width: 100%;
+  max-width: 95%;
+}
+#about .about-right-content img{
+  height: 100%;
+  width: 100%;
+  max-width: 55%;
+}
+#about hr:not([size]) {
+    height: 2px;
+}
+#about .ceo-img-wrapper img{
+  height: 48px;
+  width: 48px;
+}
+#about .ceo-title{
+  font: 600 18px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #112542;
+}
+#about  .ceo-para{
+  font: 500 14px / 20px Figtree;
+  letter-spacing: 0px;
+  color: #112542;
+}
+
+.about-right-content-one:nth-child(2) hr{
+  display: none;
+}
+
+  /* --------------------------Testimonial --------------------------------- */
+  #testimonial .slick-track{
+        padding-bottom: 10%;
+  }
+
+  #testimonial  .test-content-main{
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    max-width: 80%;
+    margin: 10% auto 0;
+    padding:  33px 20px 7% 12%;
+    position: relative;
+  }
+  #testimonial .test-content-main:hover{
+        animation: tilt-shaking 0.25s infinite;
+  }
+  @keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+  .test-content-main::after {
+    content: '';
+    position: absolute;
+    top: 53%;
+    right: -49px;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;
+    border-left: 50px solid #FFf;
+    border-bottom: 25px solid transparent;
+}
+  #testimonial  .slider-for  img{
+    box-shadow: 0px 3px 16px #00000033;
+    border: 8px solid #FFFFFF;
+    border-radius: 15px;
+    position: absolute;
+    max-width: 115px;
+    width: 100%;
+    max-height: 125px;
+    height: 100%;
+    object-fit: cover;
+    margin: 8px;
+    left: -55px;
+    top: -60px;
+  }
+  .testi-image{
+    height: 100px;
+    width: 110px;
+  }
+  #testimonial .testi-image img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+  }
+  #testimonial .slider-nav .slick-current.slick-active img{
+      border: 5px solid #00A3EB;
+  }
+  #testimonial .slider-nav i{
+    position: absolute;
+    bottom: 12px;
+    font-size: 16px;
+    background: #112542;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1;
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+    text-align: center;
+  }
+  #testimonial .slider-nav .fa-solid.fa-chevron-right{
+        left: 45px;
+  }
+  #testimonial .slider-nav i:hover{
+    background: #00A3EB;
+  }
+  #testimonial .testi-title a{
+    font: 700 22px / 27px Figtree;
+    letter-spacing: 0px;
+    color: #000000;
+  }
+  #testimonial  .testi-desi{
+    font: 300 16px / 24px Figtree;
+  }
+  .testi-star i{
+      color: #FFC400;
+      font-size: 14px;
+  }
+  #testimonial .slider-for .slick-list.draggable{
+        padding-left: 5px;
+  }
+  .test-quote-svg{
+    position: absolute;
+      right: 7%;
+      top: 5%;
+      z-index: -1;
+  }
+  .test-comment-svg{
+    position: absolute;
+  left: 0;
+  }
+  .test-svg{
+    position: absolute;
+top: 40px;
+right: 28px;
+  }
+  /* #testimonial .slider-nav .slick-current.slick-active{
+      border: 5px solid #00A3EB;
+  } */
+/* --------Privacy Policy------------------- */
+
+ .middle-content h2{
+  font: 600 26px / 35px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.middle-content h3{
+  font: 600 22px / 35px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+.middle-content h4{
+  font: 600 18px / 25px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+ .middle-content ul{
+      margin-left: 15px;
+          margin-bottom: 20px;
+}
+.middle-content ul li{
+      margin-bottom: 6px;
+}
+
+.about-right-content-one:hover .about-right-img,   .experience-pills-tab .nav-link:hover .exp-post-img svg, .why-choose-right-box:hover .why-choose-img-wrapper img, .footer-contact-inner:hover  img{
+  transition: 1s;
+  -webkit-transition: 0.70s;
+  -moz-transition: 0.70s;
+  -ms-transition: 0.70s;
+  -o-transition: 0.70s;
+  -webkit-transform: rotateY(360deg);
+  -moz-transform: rotateY(360deg);
+  -o-transform: rotateY(360deg);
+  -ms-transform: rotateY(360deg);
+  transform: rotateY(360deg);
+}
+/* Json */
+.sub-heaidng p{
+  font-family: "Protest Riot", sans-serif;
+  margin-bottom: 0;
+}
+#ive-vw-tourism-pro-banner-main h1.ive-heading-parent, .ive-tourism-pro-banner-text h4{
+      font-family: 'Protest Riot';
+}
+#ive-vw-tourism-pro-main .wp-block-cover{
+      padding-top: 10%;
+      padding-bottom: 10%;
+}
+.ive-vw-toutsim-pro-banner-box img{
+  box-shadow: 0px 3px 6px #00000029;
+border-radius: 8px;
+}
+.ive-vw-tourism-pro-baner-img-box{
+  width: max-content;
+margin: 0 auto;
+position: relative;
+}
+.ive-tourism-pro-banner-text{
+  position: absolute;
+top: 45%;
+left: 0;
+right: 0;
+bottom: 0;
+opacity: 0;
+}
+.ive-vw-tourism-pro-baner-img-box:hover .ive-tourism-pro-banner-text{
+  opacity: 1;
+}
+.ive-vw-tourism-pro-banner-img-main{
+  display: flex;
+  flex-direction: column;
+  gap:60px;
+}
+.ive-vw-tourism-pro-baner-img-box:nth-child(2){
+      left: 6%;
+}
+.ive-vw-tourism-pro-baner-img-box:nth-child(3){
+    left: 20%;
+}
+.ive-vw-tourism-pro-banner-img-right .ive-vw-tourism-pro-baner-img-box:nth-child(2), .ive-vw-tourism-pro-banner-img-right .ive-vw-tourism-pro-baner-img-box:nth-child(3){
+  left: unset;
+}
+.ive-vw-tourism-pro-baner-img-box:hover img {
+    filter: brightness(0.6);
+}
+#ive-vw-tourism-pro-banner-main .wp-block-ive-shapedivider{
+  position: absolute;
+top: 0;
+bottom: unset;
+top: 100px;
+left: 0;
+right: 0;
+z-index: -1;
+}
+#ive-vw-tourism-pro-main p{
+  margin-bottom: 0;
+}
+#ive-vw-tourism-pro-activity-main .wp-block-media-text .wp-block-media-text__content{
+    padding: 0 5%;
+}
+#ive-vw-tourism-pro-activity-main .wp-block-media-text__content{
+  position: relative;
+}
+#ive-vw-tourism-pro-activity-main .ive-vw-tourism-pro-activity-no h5{
+  opacity: 0.08;
+  position: absolute;
+  left: 0%;
+  top: 0;
+}
+#ive-vw-tourism-pro-activity-main .wp-container-core-columns-is-layout-1.wp-container-core-columns-is-layout-1{
+  flex-wrap: wrap !important;
+}
+#ive-vw-tourism-pro-about-us .ive-vw-tourism-pro-about-points-main>.wp-block-group__inner-container {
+    display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.ive-vw-tourism-pro-about-points-main-box>div{
+  grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 30px);
+      grid-gap: 5px;
+      display: grid;
+}
+.ive-vw-tourism-pro-about-user-main>.wp-block-group__inner-container {
+  display: flex;
+gap: 10px;
+align-items: center;
+}
+.ive-vw-toursim-pro-about-col-one{
+  display: flex;
+  flex-direction: column;
+  grid-gap: 10px;
+}
+.ive-vw-tourism-pro-about-right{
+  box-shadow: 0px 0px 6px #00000029;
+border-radius: 15px;
+padding: 20px;
+width: 100%;
+max-width: 140px;
+background: #fff;
+}
+#popular-cuisines .slider-nav
+ .slick-list.draggable {
+    overflow: hidden !important;
+ /* height: 470px !important; */
+
+}
+#popular-cuisines i.fa-solid.fa-chevron-up.slick-arrow,#popular-cuisines i.fa-solid.fa-chevron-down.slick-arrow{
+  position: absolute;
+  font-size: 16px;
+  background: #112542;
+  padding: 9px 10px;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 1;
+  right: -13%;
+}
+#popular-cuisines i.fa-solid.fa-chevron-up.slick-arrow{
+  top: 43%;
+}
+#popular-cuisines i.fa-solid.fa-chevron-down.slick-arrow{
+  top: 50%;
+}
+/* #popular-cuisines .cuisines-image-box.slick-slide.slick-current.slick-center .cuisines-image img{
+  box-shadow: 0px 3px 6px #00000029;
+  border: 3px solid #112542;
+  border-radius: 10px;
+  width: max-content;
+  margin: 10px auto;
+
+} */
+
+#popular-cuisines .cuisines-image-box .cuisines-image img{
+  height: 120px;
+  width: 120px;
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  padding: 10px;
+      object-fit: contain;
+}
+#popular-cuisines .slick-slide.slick-current.slick-active .cuisines-image::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 3px solid #112542;
+  border-radius: 10px;
+  height: 125px;
+  /* padding: 20px; */
+  width: 150px;
+  margin: 0 auto; /* 'ma'を'margin'に修正 */
+}
+
+#popular-cuisines .cuisines-img{
+    height: 443px !important;;
+    margin: 0 auto;
+}
+#popular-cuisines .cuisines-img img{
+  /* margin: 0 auto;
+  max-width: 450px; */
+  height: 100%;
+  width: 100%;
+      object-fit: contain;
+}
+#popular-cuisines p{
+  color: #000;
+}
+#popular-cuisines .cusines-desc p{
+  margin-bottom: 0;
+}
+#popular-cuisines .cusines-content{
+  opacity: 1;
+}
+/* #popular-cuisines .cusines-content i {
+      color: #112542;
+} */
+#popular-cuisines .cusines-title-content  h4{
+  font:700 26px / 22px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+}
+#popular-cuisines .cuisines-price .c-price{
+  text-decoration: line-through;
+  font: 600 16px / 22px Figtree;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 0.8;
+}
+ #popular-cuisines .cuisines-price .c-sale-price{
+  font: normal normal bold 22px / 22px Figtree;
+letter-spacing: 0px;
+color: #000000;
+opacity: 1;
+}
+.slider-custom-main {
+  top: 35%;
+}
+#popular-cuisines .slick-arrow{
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+#popular-cuisines .slider-custom-main i, .slider-custom-active-dot{
+  width: 30px;
+  height: 30px;
+  background: #112542;
+  border: none;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+#popular-cuisines .slider-custom-main i:hover{
+  background:#00A3EB;
+}
+
+.slick-vertical .slick-slide{
+margin: 10px 0;
+}
+.recipe-title{
+  left: 50px;
+  position: absolute;
+  background: #FFBB00;
+  border-radius: 8px 8px 0px 8px;
+  font: normal normal bold 16px / 18px Figtree;
+  letter-spacing: 0px;
+  color: #112542;
+  padding: 10px 20px;
+  top: 10%;
+}
+.recipe-title::after{
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -14px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-left: 27px solid #FFBB00;
+  border-bottom: 11px solid transparent;
+  transform: rotate(29deg);
+}
+#ive-vw-tourism-pro-blog-main  .ive-vw-tourism-pro-blog-right-content  .post-image{
+  max-width: 175px;
+height: 135px;
+object-fit: cover;
+}
+#ive-vw-tourism-pro-blog-main   .post-image img{
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+}
+#ive-vw-tourism-pro-blog-main .ive-vw-tourism-pro-blog-right-content  .ive-overlay-effect{
+  display: none;
+}
+#ive-vw-tourism-pro-blog-main .ive-vw-tourism-pro-blog-right-content .ive-inner-post-content {
+          flex: 0 0 70% !important;
+}
+#ive-vw-toursim-pro-experience-main .ive-vw-toursim-pro-tab-inner li a{
+    display: flex !important;
+    flex-direction: column !important;
+    margin-bottom: 10px;
+    padding: 22px !important;
+}
+#ive-vw-toursim-pro-experience-main .ive-tabs-layout-vtabs>.ive-tabs-title-list{
+      width: 20%;
+}
+#ive-vw-toursim-pro-experience-main .ive-tabs-layout-vtabs>.ive-tabs-content-wrap{
+  width: 80%;
+}
+#ive-vw-toursim-pro-experience-main .ive-tabs-wrap {
+  display: flex;
+  gap: 20px;
+}
+#ive-vw-toursim-pro-experience-main .ive-tab-inner-content-inner img{
+  width: 100%;
+  height: 100%;
+      border-radius: 12px;
+}
+#ive-vw-toursim-pro-experience-main .ive-tab-inner-content-inner .wp-block-image{
+      height: 190px;
+}
+.ive-vw-tourism-pro-exp-tab-content-main{
+  background: #112542;
+box-shadow: 0px 0px 10px #00000026;
+border-radius: 15px;
+padding: 18px;
+display: flex;
+flex-direction: column;
+text-align: center;
+height: 100%;
+justify-content: center;
+gap: 12px;
+}
+.ive-vw-tourism-pro-exp-tab-content-heading h5{
+  font-family:  Protest Riot;
+}
+#ive-vw-tourism-pro-exp-main .dash-img{
+  position: absolute;
+left: 0;
+right: 0;
+bottom: 25px;
+max-width: 90%;
+margin: 0 auto;
+z-index: -1;
+}
+.ive-vw-torusim-pro-ex-box-main .wp-block-group__inner-container .ive-vw-to-how-img-wrapper>div{
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 4;
+
+}
+.ive-vw-torusim-pro-ex-box-main img{
+      background: #E1EAF0;
+          border-radius: 14px;
+}
+.ive-vw-tourism-pro-choose-bar-main>div{
+  display: flex;
+  gap:15px;
+}
+.ive-vw-tourism-pro-chose-points-right>.wp-block-group__inner-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ive-vw-toursim-pro-exp-box-main>div{
+  display: flex;
+gap: 10px;
+}
+.ive-vw-toursim-pro-exp-box-iner{
+  background: #FFFFFF;
+border-radius: 6px;
+padding: 10px;
+text-align: center;
+width: 100%;
+}
+.ive-vw-tourism-pro-exp-main img{
+      border-radius: 10px;
+}
+
+#ive-vw-toursim-pro-experience-main .ive-tab-title-active  svg path {
+    fill: #fff;
+}
+#ive-vw-tourism-pro-explore-main .wp-block-ive-carousel .owl-carousel .owl-item img {
+    width: 100% !important
+}
+
+#ive-vw-tourism-pro-explore-main .owl-carousel .owl-nav.disabled{
+  display: block !important;
+
+}
+#ive-vw-tourism-pro-explore-main  .wp-block-ive-carousel .owl-theme .owl-nav .disabled{
+  opacity: 1 !important;
+}
+
+/* --------------------------Popular Destination --------------------------------- */
+
+.destination-contents{
+  position: absolute;
+  top: 35px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: max-content;
+  margin: 0 auto;
+}
+.destination-contents a{
+  font: 500 34px / 32px Protest Riot;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+}
+.destination-contents .desti-type{
+  font: 500 16px / 28px Figtree;
+  color: #FFFFFF;
+  margin-bottom: 0;
+}
+/* .desti-img{
+  width: 343px;
+  height: 405px;
+
+margin: 0 auto;
+} */
+ .desti-img img{
+      border-radius: 20px;
+ }
+ .desti-img::after {
+   content: '';
+   position: absolute;
+   left: 0px;
+   top: 0;
+   width: 100%;
+   border-radius: 20px;
+   height: 100%;
+   background: transparent linear-gradient(180deg, #000000 0%, #00000000 30%) 0% 0%;
+}
+.swiper-button-next:after, .swiper-button-prev:after{
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+.swiper-button-next, .swiper-button-prev{
+  background: #112542;
+  color: #fff !important;
+  font-size: 15px !important;
+  height: 15px !important;
+  width: 15px !important;
+  padding: 16px !important;
+  border-radius: 5px !important;
+  top: 53% !important;
+    right: 15px !important;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover{
+  background: #00A3EB !important;
+  color: #fff !important
+}
+.line-before, .line-after{
+  border-radius: 2px;
+  width: 97px;
+  height: 5px;
+}
+.line-before{
+  background: transparent linear-gradient(270deg, #FFFFFF 0%, #FFFFFF00 100%);
+}
+.line-after{
+  background: transparent linear-gradient(90deg, #FFFFFF 0%, #FFFFFF00 100%);
+}
+.ive-vw-tourism-pro-team-icons-main{
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 5;
+}
+.ive-vw-tourism-pro-team-even .ive-vw-tourism-pro-team-icons-main {
+    top: 10px;
+    bottom: unset;
+}
+.ive-vw-tourism-pro-team-share {
+  background: #112542;
+height: 30px;
+width: 30px;
+text-align: center;
+line-height: 30px;
+border-radius: 6px;
+cursor: pointer;
+}
+.ive-vw-tourism-pro-team-share i{
+      line-height: 20px;
+}
+.ive-vw-tourism-pro-team-icons{
+  text-align: center;
+background: #00A3EB;
+/* border-radius: 0 0 6px 6px; */
+opacity: 0;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+.ive-vw-tourism-pro-team-icons-main>div:hover  .ive-vw-tourism-pro-team-icons{
+  opacity: 1 !important;
+}
+.ive-vw-tourism-pro-team-even .ive-vw-tourism-pro-team-share:hover {
+     border-radius: 6px 6px 0 0;
+}
+.ive-vw-tourism-pro-team-share:hover{
+    border-radius:0 0 6px 6px;
+}
+#ive-vw-tourism-pro-team-main .wp-block-image img{
+      border-radius: 12px 12px 0 0;
+}
+.ive-vw-tourism-pro-bottom-main{
+      border-radius: 0 0 12px 12px;
+}
+#ive-vw-tourism-pro-team-main .owl-stage-outer{
+      padding-top: 5%;
+          padding-bottom: 5%;
+}
+.ive-vw-toursim-pro-team-svg-two{
+  position: absolute;
+top: -35px;
+right: -21px;
+}
+#ive-vw-tourism-pro-team-main .ive-slide-inner-content-inner{
+      padding-right: 50px;
+}
+.ive-vw-toursim-pro-team-svg-one{
+  position: absolute;
+bottom: -40px;
+}
+ @media screen and (max-width: 1600px) and (min-width:1200px){
+   .ive-vw-toutsim-pro-banner-box img {
+       width: 200px !important;
+       height: 130px !important;
+   }
+   #ive-vw-tourism-pro-banner-main .banner-svg{
+     top: 83px;
+     height: auto;
+   }
+ }
+ @media screen and (max-width: 1199px) and (min-width:992px){
+
+   #ive-vw-tourism-pro-blog-main .ive-vw-tourism-pro-blog-right-content .post-image {
+       max-width: 135px;
+       height: 116px;
+     }
+     #ive-vw-tourism-pro-banner-main .banner-svg {
+       top: 75px;
+       height: auto;
+     }
+ }
+  @media screen and (max-width: 1199px) and (min-width:1025px){
+    .ive-vw-toutsim-pro-banner-box img{
+      width: 175px !important;
+   height: 110px !important;
+    }
+    .ive-vw-tourism-pro-chose-points-right .wp-block-ive-shapedivider svg{
+      width: 100%;
+    }
+  }
+ @media screen and (max-width: 1024px) and (min-width:768px){
+   #ive-vw-tourism-pro-blog-main  .ive-vw-tourism-pro-blog-right-content .post-content-area{
+     flex-direction: row !important;
+   }
+     #ive-vw-toursim-pro-experience-main .ive-tab-inner-content-inner>div{
+         flex-wrap: nowrap !important;
+   }
+   .ive-vw-toutsim-pro-banner-box img{
+     width: 175px !important;
+height: 110px !important;
+   }
+   #ive-vw-tourism-pro-banner-main .banner-svg {
+     top: 70px;
+   }
+    #ive-vw-tourism-pro-blog-main .ive-inner-post-content{
+      padding: 6px;
+    }
+  #ive-vw-tourism-pro-blog-main  .ive_latest_post_comments {
+      padding: 0
+    }
+    .ive-vw-toursim-pro-team-svg-one{
+          right: -20px;
+    }
+ }
+@media only screen and (max-width: 1024px) {
+  .ive-vw-tourism-pro-about-points-main-box>div{
+        grid-template-columns: repeat(1, 1fr);
+  }
+  .ive-vw-tourism-pro-chose-points-right .wp-block-ive-shapedivider svg{
+    width: 100%;
+  }
+
+}
+@media only screen and (max-width: 991px) {
+  .ive-vw-torusim-baner-iner{
+    flex-wrap: nowrap !important;
+  }
+  .ive-vw-tourism-pro-blog-main-col{
+    display: block !important;
+  }
+  #ive-vw-toursim-pro-experience-main .ive-tabs-wrap{
+    display: unset;
+  }
+  #ive-vw-toursim-pro-experience-main .ive-tabs-layout-vtabs>.ive-tabs-title-list{
+    width: 100%;
+    gap: 6px;
+  }
+  #ive-vw-toursim-pro-experience-main .ive-tabs-layout-vtabs>.ive-tabs-content-wrap{
+    width:100%;
+  }
+}
+ @media screen and (max-width: 991px) and (min-width:768px){
+.ive-vw-toursim-abt-pro-btn-content{
+  flex-wrap: nowrap !important;
+}
+  #ive-vw-tourism-pro-banner-main .banner-svg{
+    height: auto;
+  }
+}
+
+ @media screen and (max-width: 781px) and (min-width:768px){
+   .ive-vw-tourism-pro-chose-points-right .wp-block-ive-shapedivider svg {
+        width: auto;
+    }
+ }
+@media (max-width: 767px) {
+  #ive-vw-tourism-pro-team-main .ive-slide-inner-content-inner{
+    padding-right:unset;
+  }
+  #ive-vw-tourism-pro-banner-main .banner-svg{
+    display: none;
+  }
+  .ive-vw-torusim-pro-ex-box-main .wp-block-group__inner-container .ive-vw-to-how-img-wrapper>div{
+    grid-template-rows: repeat(2, 175px);
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    justify-content: center;
+            gap: 20px;
+  }
+    .ive-vw-torusim-pro-ex-box-main .wp-block-group__inner-container .ive-vw-to-how-img-wrapper .wp-block-image{
+      text-align: center;
+    }
+  #ive-vw-tourism-pro-exp-main .dash-img{
+    display: none;
+  }
+  #ive-vw-tourism-pro-activity-main .wp-block-media-text{
+display: flex;
+  }
+  #ive-vw-tourism-pro-activity-main .ive-vw-tourism-pro-activity-no h5{
+        top: 30px;
+  }
+
+
+#ive-vw-tourism-pro-about-us .ive-vw-tourism-pro-about-points-main>.wp-block-group__inner-container, .ive-vw-tourism-pro-about-user-main>.wp-block-group__inner-container{
+      justify-content: center;
+}
+.ive-vw-tourism-pro-about-right{
+  margin:0 auto;
+}
+#ive-vw-tourism-pro-main .wp-block-cover{
+  padding-top: 25%;
+}
+}
+ @media screen and (max-width:767px) and (min-width:576px){
+   .ive-vw-toutsim-pro-banner-box img {
+       width: 135px !important;
+       height: 100px !important;
+   }
+ }
+ @media screen and (max-width: 575px) and (min-width:375px){
+   .ive-vw-toutsim-pro-banner-box img {
+    width: 95px !important;
+    height: 63px !important;
+}
+
+ }
+@media screen and (max-width:374px) {
+.ive-vw-tourism-pro-banner-img-left, .ive-vw-tourism-pro-banner-img-right, .ive-vw-tourism-pro-baner-img-box{
+display: none
+}
+
+}
+
+/* new css */
