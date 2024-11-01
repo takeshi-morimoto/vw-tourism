@@ -145,12 +145,12 @@ $img_bg =get_theme_mod('vw_tourism_pro_our_blog_image_bg');
                 </div>
                  <?php } wp_reset_query(); ?>
               </div>
-              <!-- <div class="blog-prev" >
+              <div class="blog-prev" >
                 <i class="fa-solid fa-chevron-up"></i></button>
               </div>
               <div class="blog-next" >
               <i class="fa-solid fa-chevron-down"></i></button>
-              </div> -->
+              </div>
           </div>
       </div>
   </div>
