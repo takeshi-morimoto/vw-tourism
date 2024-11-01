@@ -821,7 +821,7 @@ function get_packages_explore_content() {
 }
 
 function custom_excerpt_length($length) {
-    return 100; // 表示する語数をここで設定（100語に設定）
+    return 500; // 表示する語数をここで設定（100語に設定）
 }
 add_filter('excerpt_length', 'custom_excerpt_length');
 
