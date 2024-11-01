@@ -4754,7 +4754,7 @@ $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vw_t
 		'section' => 'vw_tourism_pro_testimonial_sec',
 		'settings' => 'vw_tourism_pro_testimonial_content_img_bg_color',
 	)));
-	/*-------------------Latest Post----------------------------------------*/
+/*-------------------Latest Post----------------------------------------*/
 	$wp_customize->add_section('vw_tourism_pro_latest_news_sec',array(
 		'title'	=> __('Latest News & Blogs Section','vw-tourism-pro'),
 		'description'	=> __('Add Latest News & Blogs Setting here.','vw-tourism-pro'),
@@ -5389,6 +5389,7 @@ $wp_customize->add_control('vw_tourism_pro_blog_button_text', array(
         'section' => 'vw_tourism_pro_post_general_settings'
      )
   ));
+  
 
 // -----------------------General Setting------------
   $wp_customize->add_section('vw_tourism_pro_post_product_general_settings',array(
