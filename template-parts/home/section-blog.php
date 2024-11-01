@@ -81,7 +81,7 @@ $img_bg =get_theme_mod('vw_tourism_pro_our_blog_image_bg');
                           <h3 style="line-height:0 " class="text-md-start text-sm-center text-center"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
                       </div>
                       <div class="blog-content">
-                        <?php the_excerpt(); ?>
+                        <?php the_content(); ?>
                       </div>
                         <a class="theme-btn-main" href="<?php the_permalink(); ?>">
                           <div class="theme-btn-block">
