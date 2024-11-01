@@ -5256,6 +5256,18 @@ $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vw_t
 'settings' => 'vw_tourism_pro_our_blog_arrow_bg_color',
 )));
 
+// ボタンテキスト設定を追加
+$wp_customize->add_setting('vw_tourism_pro_blog_button_text', array(
+    'default' => __('Continue Reading', 'vw-tourism-pro'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('vw_tourism_pro_blog_button_text', array(
+    'label' => __('Blog Button Text', 'vw-tourism-pro'),
+    'section' => 'vw_tourism_pro_latest_news_sec',
+    'type' => 'text',
+));
+
   // --------------- Post General Settings ---------------
   $wp_customize->add_section('vw_tourism_pro_post_general_settings',array(
     'title' => __('Blog Page Settings','vw-tourism-pro'),
@@ -5377,7 +5389,6 @@ $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vw_t
         'section' => 'vw_tourism_pro_post_general_settings'
      )
   ));
-
 
 // -----------------------General Setting------------
   $wp_customize->add_section('vw_tourism_pro_post_product_general_settings',array(
