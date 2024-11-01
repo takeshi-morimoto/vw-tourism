@@ -23,8 +23,8 @@ $img_bg =get_theme_mod('vw_tourism_pro_our_blog_image_bg');
           <p class="sec-sub-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_blog_sub_heading')); ?></p>
         <?php } ?>
         <?php if(get_theme_mod('vw_tourism_pro_blog_heading')!=''){ ?>
-          <h2 class="sec-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_blog_heading')); ?><h2>
-        <?php } ?>
+          <h2 class="sec-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_blog_heading')); ?></h2>
+          <?php } ?>
       </div>
         <div class="row mt-lg-5 mt-md-4 mt-4">
           <div class="col-lg-6">
@@ -86,8 +86,8 @@ $img_bg =get_theme_mod('vw_tourism_pro_our_blog_image_bg');
                         <a class="theme-btn-main" href="<?php the_permalink(); ?>">
                           <div class="theme-btn-block">
                               <span class="theme-btn-line-left"></span>
-                    			          <span class="theme-btn-text"><?php echo esc_html(get_theme_mod('vw_tourism_pro_blog_viewmore_text'));?></span>
-                               <span class="theme-btn-line-right"></span>
+                              <span class="theme-btn-text"><?php echo esc_html(get_theme_mod('vw_tourism_pro_blog_viewmore_text', 'View More')); ?></span>
+                              <span class="theme-btn-line-right"></span>
                               <i class="fa-solid fa-caret-down"></i>
                             </div>
                         </a>
