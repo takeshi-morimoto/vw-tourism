@@ -820,5 +820,20 @@ function get_packages_explore_content() {
 	exit;
 }
 
+function vw_tourism_pro_customize_register( $wp_customize ) {
+    // ボタンテキスト設定の追加
+    $wp_customize->add_setting( 'vw_tourism_pro_blog_button_text', array(
+        'default' => 'View More',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'vw_tourism_pro_blog_button_text', array(
+        'label' => __( 'Blog Button Text', 'vw-tourism-pro' ),
+        'section' => 'vw_tourism_pro_blog_section',
+        'type' => 'text',
+    ) );
+}
+add_action( 'customize_register', 'vw_tourism_pro_customize_register' );
+
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
