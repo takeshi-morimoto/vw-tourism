@@ -813,6 +813,63 @@ function custom_excerpt_length($length) {
 }
 add_filter('excerpt_length', 'custom_excerpt_length');
 
+$wp_customize->add_section('vw_tourism_pro_footer_menu_section', array(
+    'title'       => __('Footer Menu Settings', 'vw-tourism-pro'),
+    'description' => __('Customize the footer menu settings', 'vw-tourism-pro'),
+    'panel'       => 'vw_tourism_pro_panel_id', // フッター関連設定を特定のパネル内に配置したい場合
+    'priority'    => 160, // カスタマイザー内での位置調整
+));
+
+// 例：フッターにサポートリンクを追加する設定
+$wp_customize->add_setting('vw_tourism_pro_footer_support_text', array(
+    'default'           => __('Support', 'vw-tourism-pro'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('vw_tourism_pro_footer_support_text', array(
+    'label'    => __('Support Text', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_footer_menu_section',
+    'settings' => 'vw_tourism_pro_footer_support_text',
+    'type'     => 'text',
+));
+
+// フッターリンクURLの設定
+$wp_customize->add_setting('vw_tourism_pro_footer_support_url', array(
+    'default'           => '',
+    'sanitize_callback' => 'esc_url',
+));
+
+$wp_customize->add_control('vw_tourism_pro_footer_support_url', array(
+    'label'    => __('Support URL', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_footer_menu_section',
+    'settings' => 'vw_tourism_pro_footer_support_url',
+    'type'     => 'url',
+));
+
+// プライバシーポリシーのテキストとURL設定も同様に追加可能
+$wp_customize->add_setting('vw_tourism_pro_footer_privacy_text', array(
+    'default'           => __('Privacy', 'vw-tourism-pro'),
+    'sanitize_callback' => 'sanitize_text_field',
+));
+
+$wp_customize->add_control('vw_tourism_pro_footer_privacy_text', array(
+    'label'    => __('Privacy Text', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_footer_menu_section',
+    'settings' => 'vw_tourism_pro_footer_privacy_text',
+    'type'     => 'text',
+));
+
+$wp_customize->add_setting('vw_tourism_pro_footer_privacy_url', array(
+    'default'           => '',
+    'sanitize_callback' => 'esc_url',
+));
+
+$wp_customize->add_control('vw_tourism_pro_footer_privacy_url', array(
+    'label'    => __('Privacy URL', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_footer_menu_section',
+    'settings' => 'vw_tourism_pro_footer_privacy_url',
+    'type'     => 'url',
+));
 
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
