@@ -352,7 +352,7 @@ require get_parent_theme_file_path('/theme-wizard/plugin-activation.php' );
 define('vw_tourism_pro_SITE_URL','https://www.vwthemes.com/');
 /* Theme Credit link */
 function vw_tourism_pro_credit_link() {
-	echo esc_html_e(' Design & Developed by','vw-tourism-pro'). "<a href=".esc_url(vw_tourism_pro_SITE_URL)." target='_blank'> VW Themes</a>";
+	// echo esc_html_e(' Design & Developed by','vw-tourism-pro'). "<a href=".esc_url(vw_tourism_pro_SITE_URL)." target='_blank'> VW Themes</a>";
 }
 /*Radio Button sanitization*/
 function vw_tourism_pro_sanitize_choices( $input, $setting ) {
