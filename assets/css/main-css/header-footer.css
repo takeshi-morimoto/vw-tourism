@@ -370,6 +370,7 @@ background-color: transparent !important;
 #footer-inner .theme-btn-text input,
 #contact-page .theme-btn-text input {
   position: relative; /* スピナーを基準に配置 */
+  margin-top: 20px; /* ボタンの上に余白を追加 */
   z-index: 1; /* スピナーより前に配置 */
   text-align: center; /* ボタン内テキストを中央に揃える */
 }
