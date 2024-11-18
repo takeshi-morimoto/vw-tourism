@@ -371,18 +371,19 @@ background-color: transparent !important;
 #contact-page .theme-btn-text input {
   position: relative; /* スピナーを基準に配置 */
   margin-top: 20px; /* ボタンの上に余白を追加 */
-  z-index: 1; /* スピナーより前に配置 */
+  z-index: 1; /* スピナーより下に配置 */
   text-align: center; /* ボタン内テキストを中央に揃える */
+  padding: 10px 20px; /* ボタン内の余白調整 */
 }
 
 /* スピナーのスタイル */
 #footer-inner .wpcf7-spinner,
 #contact-page .wpcf7-spinner {
   position: absolute; /* ボタンの中央に固定 */
-  top: 50%; /* ボタン内の縦中央 */
-  left: 50%; /* ボタン内の横中央 */
-  transform: translate(-50%, -50%); /* 完全に中央揃え */
-  z-index: 2; /* ボタン上に表示 */
+  top: -20px; /* スピナーをボタンの上に配置 */
+  left: 50%; /* ボタンの中央揃え */
+  transform: translateX(-50%); /* 中央揃え */
+  z-index: 2; /* ボタンより前面に表示 */
   width: 20px; /* スピナーの幅 */
   height: 20px; /* スピナーの高さ */
   display: none; /* 初期状態は非表示 */
