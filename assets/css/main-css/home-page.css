@@ -524,6 +524,8 @@ object-fit: contain;
 }
 
 .custom-select {
+  width: 100%; /* 親要素に合わせる */
+  max-width: 100%; /* 画面幅を超えないように */
   position: relative;
   display: block;
   cursor: pointer;
@@ -544,7 +546,8 @@ object-fit: contain;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       margin-top: 5px;
-      width: 100%;
+      width: auto; /* コンテンツに基づいて幅を調整 */
+      max-width: 100%; /* 親要素内に収まるように制限 */
       z-index: 1000;
       max-height: 200px;
       list-style: none;
