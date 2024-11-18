@@ -652,12 +652,12 @@ color: #00A3EB;
 .vertical-blog-img-main .blog-title a:hover{
   color: #00A3EB;
 }
-.testi-vertical .blog-content p{
-  overflow: hidden;
-display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 2;
-
+.testi-vertical .blog-content p {
+  overflow: hidden; /* 溢れたコンテンツを非表示に */
+  display: -webkit-box; /* WebKitベースのフレックスボックスを指定 */
+  -webkit-box-orient: vertical; /* WebKit用のボックス方向を垂直に設定 */
+  -webkit-line-clamp: 2; /* WebKitでの行制限 */
+  line-clamp: 2; /* 標準プロパティを追加 */
 }
 .collectionbox-text.left-blog-content{
   /* height:100% */
