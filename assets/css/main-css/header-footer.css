@@ -372,21 +372,23 @@ background-color: transparent !important;
   position: relative; /* スピナーを基準に配置 */
   margin-top: 20px; /* ボタンの上に余白を追加 */
   z-index: 1; /* スピナーより下に配置 */
-  text-align: center; /* ボタン内テキストを中央に揃える */
+  text-align: center; /* ボタン内のテキストを中央に揃える */
   padding: 10px 20px; /* ボタン内の余白調整 */
 }
 
 /* スピナーのスタイル */
 #footer-inner .wpcf7-spinner,
 #contact-page .wpcf7-spinner {
-  position: absolute; /* ボタンの中央に固定 */
-  top: -20px; /* スピナーをボタンの上に配置 */
+  position: absolute; /* ボタンの上に配置 */
+  top: -40px; /* スピナーをボタンの上に移動 */
   left: 50%; /* ボタンの中央揃え */
   transform: translateX(-50%); /* 中央揃え */
   z-index: 2; /* ボタンより前面に表示 */
   width: 20px; /* スピナーの幅 */
   height: 20px; /* スピナーの高さ */
-  display: none; /* 初期状態は非表示 */
+  display: block; /* スピナーを常に表示（動作確認用） */
+  background: url("https://loading.io/spinners/azure/lg.azure-round-loader.gif") no-repeat center center; /* サンプルGIF画像 */
+  background-size: contain;
 }
 
 /* スピナーを表示する場合 */
