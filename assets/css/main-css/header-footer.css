@@ -366,34 +366,31 @@ background-color: transparent !important;
   color: #FFFFFF;
   margin: 0;
 }
-#footer-inner .wpcf7-spinner, #contact-page .wpcf7-spinner {
-  /* position: absolute; */
+/* ボタンのスタイル */
+#footer-inner .theme-btn-text input,
+#contact-page .theme-btn-text input {
+  position: relative; /* スピナーを基準に配置 */
+  z-index: 1; /* スピナーより前に配置 */
+  text-align: center; /* ボタン内テキストを中央に揃える */
 }
 
-#contact-page .wpcf7-submit {
-  position: relative; /* ボタンをデフォルトフロー内に戻す */
-  margin: 0 auto; /* 中央寄せにする場合 */
-  display: block; /* 必要に応じてボタンをブロック要素に */
-}
-#footer-inner .theme-btn-text input,  #contact-page .theme-btn-text input{
-  background: transparent;
-  border: none !important;
-  font: 600 16px / 25px Figtree  !important;;
-  color: var(--navyblue) ;
-  transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  -webkit-transition: all 0.5s ease-in-out;
-}
-#footer-inner .wpcf7-spinner{
-      right: -40%;
+/* スピナーのスタイル */
+#footer-inner .wpcf7-spinner,
+#contact-page .wpcf7-spinner {
+  position: absolute; /* ボタンの中央に固定 */
+  top: 50%; /* ボタン内の縦中央 */
+  left: 50%; /* ボタン内の横中央 */
+  transform: translate(-50%, -50%); /* 完全に中央揃え */
+  z-index: 2; /* ボタン上に表示 */
+  width: 20px; /* スピナーの幅 */
+  height: 20px; /* スピナーの高さ */
+  display: none; /* 初期状態は非表示 */
 }
 
-#contact-page .wpcf7-spinner::before {
-  content: none; /* 擬似要素を無効化 */
-  display: none; /* 表示を削除 */
+/* スピナーを表示する場合 */
+#footer-inner .wpcf7-submit.has-spinner .wpcf7-spinner,
+#contact-page .wpcf7-submit.has-spinner .wpcf7-spinner {
+  display: block; /* ボタン送信中にスピナーを表示 */
 }
 
 #footer-inner .theme-btn-line-right, #contact-page .theme-btn-line-right{
