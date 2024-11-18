@@ -369,6 +369,12 @@ background-color: transparent !important;
 #footer-inner .wpcf7-spinner, #contact-page .wpcf7-spinner {
   /* position: absolute; */
 }
+
+#contact-page .wpcf7-submit {
+  position: relative; /* ボタンをデフォルトフロー内に戻す */
+  margin: 0 auto; /* 中央寄せにする場合 */
+  display: block; /* 必要に応じてボタンをブロック要素に */
+}
 #footer-inner .theme-btn-text input,  #contact-page .theme-btn-text input{
   background: transparent;
   border: none !important;
