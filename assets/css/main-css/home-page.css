@@ -525,7 +525,7 @@ object-fit: contain;
 
 .custom-select {
   width: 100%; /* 親要素に合わせる */
-  max-width: 100%; /* 画面幅を超えないように */
+  max-width: 85%; /* 画面幅を超えないように */
   position: relative;
   display: block;
   cursor: pointer;
