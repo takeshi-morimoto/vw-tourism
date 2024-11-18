@@ -367,7 +367,7 @@ background-color: transparent !important;
   margin: 0;
 }
 #footer-inner .wpcf7-spinner, #contact-page .wpcf7-spinner {
-  position: absolute;
+  /* position: absolute; */
 }
 #footer-inner .theme-btn-text input,  #contact-page .theme-btn-text input{
   background: transparent;
