@@ -384,6 +384,12 @@ background-color: transparent !important;
 #footer-inner .wpcf7-spinner{
       right: -40%;
 }
+
+#contact-page .wpcf7-spinner::before {
+  content: none; /* 擬似要素を無効化 */
+  display: none; /* 表示を削除 */
+}
+
 #footer-inner .theme-btn-line-right, #contact-page .theme-btn-line-right{
   margin-left: 0px;
 }
