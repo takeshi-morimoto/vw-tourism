@@ -368,33 +368,31 @@ background-color: transparent !important;
 }
 
 /* ボタンのスタイル */
-#footer-inner .theme-btn-text input,
-#contact-page .theme-btn-text input {
-  position: relative; /* スピナーをボタン内に配置する基準を設定 */
-  z-index: 1; /* スピナーより低いレイヤーに配置 */
-  text-align: center; /* ボタン内テキストを中央に揃える */
-  padding: 10px 20px; /* ボタンの余白を調整 */
-  margin-top: 20px; /* ボタンの上に余白を追加 */
+.wpcf7-submit {
+  position: relative; /* スピナーを基準に配置するために相対位置を設定 */
+  padding: 10px 20px; /* ボタン内の余白調整 */
+  text-align: center; /* ボタン内のテキストを中央揃え */
+  margin-top: 20px; /* 必要に応じて上部に余白を追加 */
+  font-size: 16px; /* ボタンの文字サイズ */
+  cursor: pointer; /* ボタンをクリック可能に */
 }
 
 /* スピナーのスタイル */
-#footer-inner .wpcf7-spinner,
-#contact-page .wpcf7-spinner {
-  position: absolute; /* ボタン内に配置 */
-  top: 50%; /* ボタンの縦中央 */
-  left: 50%; /* ボタンの横中央 */
+.wpcf7-spinner {
+  position: absolute; /* ボタン内にスピナーを配置 */
+  top: 50%; /* ボタン内で縦方向の中央に配置 */
+  left: 50%; /* ボタン内で横方向の中央に配置 */
   transform: translate(-50%, -50%); /* 完全に中央揃え */
-  z-index: 2; /* ボタンの前面に表示 */
+  z-index: 2; /* ボタンより前面に表示 */
   width: 20px; /* スピナーの幅 */
   height: 20px; /* スピナーの高さ */
-  display: block; /* 常時表示（確認用） */
-  background: url("https://loading.io/spinners/azure/lg.azure-round-loader.gif") no-repeat center center; /* サンプルスピナー画像 */
-  background-size: contain; /* 背景サイズを調整 */
+  display: none; /* 初期状態では非表示 */
+  background: url("https://loading.io/spinners/azure/lg.azure-round-loader.gif") no-repeat center center; /* スピナー画像の例 */
+  background-size: contain; /* 背景画像のサイズ調整 */
 }
 
 /* スピナーを表示する場合 */
-#footer-inner .wpcf7-submit.has-spinner .wpcf7-spinner,
-#contact-page .wpcf7-submit.has-spinner .wpcf7-spinner {
+.wpcf7-submit.has-spinner + .wpcf7-spinner {
   display: block; /* ボタン送信中にスピナーを表示 */
 }
 
