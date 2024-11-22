@@ -31,7 +31,7 @@
           $packages_array = array( 'Trending', 'Duration', 'Types' );
           for ($i=0; $i < 3; $i++) {
             $tab_heading = get_theme_mod( 'vw_tourism_pro_popular_packages_tab_heading'.$i, $packages_array[$i] );
-             ?>
+            ?>
             <li class="nav-item" role="presentation">
               <button class="nav-link <?php echo $i == 0 ? 'active' : '' ?>" id="package-tab-<?php echo $i; ?>" data-bs-toggle="tab" data-bs-target="#package-<?php echo $i; ?>" type="button" role="tab" aria-controls="package-<?php echo $i; ?>" aria-selected="true"><?php echo esc_html($tab_heading); ?></button>
             </li>
@@ -109,7 +109,7 @@
 
 
                   $pkg_sale_price = $pkg_sale_price ? $pkg_sale_price : 0;
-                     $member_text = get_post_meta( $post_id, 'pkg_person_text', true) ? get_post_meta( $post_id, 'pkg_person_text', true) : 'Per Person';
+                    $member_text = get_post_meta( $post_id, 'pkg_person_text', true) ? get_post_meta( $post_id, 'pkg_person_text', true) : 'Per Person';
                   ?>
                   <div class="packages-box">
                     <div class="packages-img-main position-relative">
