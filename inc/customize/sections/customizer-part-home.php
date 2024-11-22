@@ -5764,46 +5764,60 @@ $wp_customize->add_control('vw_tourism_pro_blog_button_text', array(
  //      )
  //    );
 
-// ------------- Registration Form ----------
+//------------------------------- Registration Form -----------------------------
 
-// Registration Form セクションの追加
 $wp_customize->add_section('vw_tourism_pro_registration_section', array(
-	'title'    => __('Registration Form Settings', 'vw-tourism-pro'),
-	'priority' => 35, // 順番を他のセクションと調整
-	'panel'    => 'vw_tourism_pro_panel', // 他のセクションと同じパネルに追加
+    'title'       => __('Registration Form Section', 'vw-tourism-pro'),
+    'description' => __('Add Registration Form settings here.', 'vw-tourism-pro'),
+    'panel'       => 'vw_tourism_pro_panel_id',
 ));
 
-// フォームの見出し設定
+// セクションの有効/無効設定
+$wp_customize->add_setting('vw_tourism_pro_registration_enabledisable', array(
+    'default'           => 'Enable',
+    'sanitize_callback' => 'vw_tourism_pro_sanitize_choices',
+));
+$wp_customize->add_control('vw_tourism_pro_registration_enabledisable', array(
+    'type'    => 'radio',
+    'label'   => __('Do you want this section', 'vw-tourism-pro'),
+    'section' => 'vw_tourism_pro_registration_section',
+    'choices' => array(
+        'Enable'  => __('Enable', 'vw-tourism-pro'),
+        'Disable' => __('Disable', 'vw-tourism-pro'),
+    ),
+));
+
+// 見出し設定
 $wp_customize->add_setting('vw_tourism_pro_registration_heading', array(
-	'default'           => 'Tour Reservation Form',
-	'sanitize_callback' => 'sanitize_text_field',
+    'default'           => 'Tour Reservation Form',
+    'sanitize_callback' => 'sanitize_text_field',
 ));
 $wp_customize->add_control('vw_tourism_pro_registration_heading', array(
-	'label'    => __('Form Heading', 'vw-tourism-pro'),
-	'section'  => 'vw_tourism_pro_registration_section',
-	'type'     => 'text',
+    'label'    => __('Form Heading', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_registration_section',
+    'type'     => 'text',
 ));
 
-// フォームの説明文設定
+// 説明文設定
 $wp_customize->add_setting('vw_tourism_pro_registration_para', array(
-	'default'           => "Let's know what you are interested to see!",
-	'sanitize_callback' => 'sanitize_textarea_field',
+    'default'           => "Let's know what you are interested to see!",
+    'sanitize_callback' => 'sanitize_textarea_field',
 ));
 $wp_customize->add_control('vw_tourism_pro_registration_para', array(
-	'label'    => __('Form Description', 'vw-tourism-pro'),
-	'section'  => 'vw_tourism_pro_registration_section',
-	'type'     => 'textarea',
+    'label'    => __('Form Description', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_registration_section',
+    'type'     => 'textarea',
 ));
 
-// フォームショートコード設定
+// ショートコード設定
 $wp_customize->add_setting('vw_tourism_pro_registration_form_shortcode', array(
-	'default'           => '[contact-form-7 id="123" title="Registration Form"]',
-	'sanitize_callback' => 'sanitize_text_field',
+    'default'           => '[contact-form-7 id="123" title="Registration Form"]',
+    'sanitize_callback' => 'sanitize_text_field',
 ));
 $wp_customize->add_control('vw_tourism_pro_registration_form_shortcode', array(
-	'label'    => __('Form Shortcode', 'vw-tourism-pro'),
-	'section'  => 'vw_tourism_pro_registration_section',
-	'type'     => 'text',
+    'label'    => __('Form Shortcode', 'vw-tourism-pro'),
+    'section'  => 'vw_tourism_pro_registration_section',
+    'type'     => 'text',
 ));
 
 ?>
