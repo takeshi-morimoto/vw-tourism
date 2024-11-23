@@ -3075,6 +3075,19 @@ $wp_customize->add_control(	new WP_Customize_Image_Control($wp_customize,'vw_tou
 		'settings' => 'vw_tourism_pro_experience_bgsvg_image'
 )));
 
+// "Book Now" ボタンのテキストをカスタマイザーで変更可能にする
+$wp_customize->add_setting('vw_tourism_pro_popular_packages_booknow_text', array(
+    'default' => 'Book Now', // 初期値を "Book Now" に設定
+    'sanitize_callback' => 'sanitize_text_field', // サニタイズコールバック
+));
+
+$wp_customize->add_control('vw_tourism_pro_popular_packages_booknow_text', array(
+    'label' => __('Book Now Button Text', 'vw-tourism-pro'), // ラベル
+    'section' => 'vw_tourism_pro_popular_packages_sec', // 該当セクションに配置
+    'type' => 'text', // テキスト入力フィールド
+    'description' => __('Change the text of the Book Now button.', 'vw-tourism-pro'), // 説明文
+));
+
 // -------------------How To Process Section-------------------
 
 
