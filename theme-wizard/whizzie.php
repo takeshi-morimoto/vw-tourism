@@ -1650,9 +1650,11 @@ set_theme_mod( 'vw_tourism_pro_team_facebook_icon', 'fab fa-facebook-f' );
 			set_theme_mod( 'vw_tourism_pro_popular_packages_tab_heading'.$i, $packages_array[$i] );
 		}
 
-		set_theme_mod( 'vw_tourism_pro_popular_packages_booknow_text', 'Book Now' );
-		set_theme_mod( 'vw_tourism_pro_packages_currency', '$' );
+		if (get_theme_mod('vw_tourism_pro_popular_packages_booknow_text') === false) {
+			set_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
+		}
 
+		set_theme_mod( 'vw_tourism_pro_packages_currency', '$' );
 		set_theme_mod( 'vw_tourism_pro_single_packages_video_img', get_template_directory_uri() . '/assets/images/packages/video.png');
 		set_theme_mod( 'vw_tourism_pro_activity_sub_heading', 'Activity' );
 		set_theme_mod( 'vw_tourism_pro_activity_heading', 'Unique Offering' );
