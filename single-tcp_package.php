@@ -91,14 +91,6 @@ get_header();
                             <span class="theme-btn-line-right"></span>
                             <i class="fa-solid fa-caret-down"></i>
                           </div>
-
-                          <?php
-                            // カスタマイザーの値を取得
-                            $pkg_registation_btn_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
-
-                            // 値をデバッグ表示
-                            var_dump($pkg_registation_btn_text);
-                            ?>
                       </a>
 
                     </div>
