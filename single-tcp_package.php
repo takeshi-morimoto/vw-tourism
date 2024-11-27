@@ -81,20 +81,22 @@ get_header();
                     <div class="pack-regular-pr"> <?php echo  esc_html($round_regular); ?></div>
                     <div class="pack-per-person"><?php echo $pkg_sale_price != 0 || $pkg_regular_price != 0 ? $member_text : '';?></div>
                   </div>
-                    <div class="book-btn col-md-4">
-                      <a class="theme-btn-main" href="<?php echo $pkg_registation_btn_url; ?>" style="padding: 6px 15px;">
-                        <div class="theme-btn-block">
-                            <span class="theme-btn-line-left"></span>
-                            <a class="theme-btn-main" href="<?php echo esc_url($pkg_registation_btn_url); ?>" style="padding: 6px 15px;">
-                              <?php echo esc_html($pkg_registation_btn_text); ?>
-                          </a>
-                            <span class="theme-btn-line-right"></span>
-                            <i class="fa-solid fa-caret-down"></i>
-                          </div>
-                      </a>
-
-                    </div>
-
+                  <div class="book-btn col-md-4">
+                    <a class="theme-btn-main" href="<?php echo esc_url($pkg_registation_btn_url); ?>" style="padding: 6px 15px;">
+                      <div class="theme-btn-block">
+                        <span class="theme-btn-line-left"></span>
+                        <span class="theme-btn-text">
+                          <?php
+                            // カスタマイザーまたはデフォルトのテキストを取得
+                            $button_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
+                            echo esc_html($button_text);
+                          ?>
+                        </span>
+                        <span class="theme-btn-line-right"></span>
+                        <i class="fa-solid fa-caret-down"></i>
+                      </div>
+                    </a>
+                  </div>
 
                 </div>
                 <div class="pack-desc mt-4">
