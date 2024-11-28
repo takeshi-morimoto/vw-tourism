@@ -75,21 +75,30 @@ get_header();
                   <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to != '' ? 'To' : ''; ?> <span><?php echo  esc_html($pkg_to); ?></span> </div>
                   <div class="pack-meta-text position-relative"><span class="pe-1"><?php echo $pkg_tour_days ; echo $pkg_tour_days ? ' Days' : '';?></span><span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Night' : '';?></span></div>
                 </div>
+
+                <!-- パッケージ価格セクション -->
                 <div class="pack-price-content my-3 row">
                   <div class="d-flex align-items-center gap-2 justify-content-md-start justify-content-sm-center justify-content-center col-md-4">
-                    <div class="pack-sale-pr"><?php echo  esc_html($round_sale); ?></div>
-                    <div class="pack-regular-pr"> <?php echo  esc_html($round_regular); ?></div>
-                    <div class="pack-per-person"><?php echo $pkg_sale_price != 0 || $pkg_regular_price != 0 ? $member_text : '';?></div>
+                    <div class="pack-sale-pr">
+                      <?php echo esc_html($round_sale); ?>
+                    </div>
+                    <div class="pack-regular-pr">
+                      <?php echo esc_html($round_regular); ?>
+                    </div>
+                    <div class="pack-per-person">
+                      <?php echo $pkg_sale_price != 0 || $pkg_regular_price != 0 ? $member_text : ''; ?>
+                    </div>
                   </div>
+
+                  <!-- "Book Now" ボタンセクション -->
                   <div class="book-btn col-md-4">
-                    <a class="theme-btn-main" href="<?php echo esc_url($pkg_registation_btn_url); ?>" style="padding: 6px 15px;">
+                    <a class="theme-btn-main" href="<?php echo esc_url(get_permalink(get_option('mp_booking_page_id'))); ?>" style="padding: 6px 15px;">
                       <div class="theme-btn-block">
                         <span class="theme-btn-line-left"></span>
                         <span class="theme-btn-text">
                           <?php
-                            // カスタマイザーまたはデフォルトのテキストを取得
-                            $button_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
-                            echo esc_html($button_text);
+                          $button_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
+                          echo esc_html($button_text);
                           ?>
                         </span>
                         <span class="theme-btn-line-right"></span>
@@ -97,8 +106,8 @@ get_header();
                       </div>
                     </a>
                   </div>
-
                 </div>
+                
                 <div class="pack-desc mt-4">
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
                   <?php the_content();?>
