@@ -814,7 +814,11 @@ function get_packages_explore_content() {
 function custom_excerpt_length($length) {
     return 500; // 表示する語数をここで設定（100語に設定）
 }
-add_filter('excerpt_length', 'custom_excerpt_length');
 
+function vw_tourism_pro_excerpt_more($more) {
+    return '...'; // 省略記号として「...」を表示
+}
+
+add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
