@@ -740,74 +740,76 @@ function add_cpt_in_search_result( $query ) {
 }
 
 function get_packages_explore_content() {
-    // CSRF対策
-	$post_id = isset($_POST['post_id']) ? $_POST['post_id'] : '';
+    // Nonceの検証
+    if ( ! isset( $_POST['get_packages_explore_content_nonce'] ) || 
+         ! wp_verify_nonce( $_POST['get_packages_explore_content_nonce'], 'get_packages_explore_content_action' ) ) {
+        wp_send_json_error( array( 'message' => 'セキュリティチェックに失敗しました。' ) );
+        exit;
+    }
 
-	$args = array(
-		'post_type' => 'tcp_explore',
-		'p' => $post_id
-	);
+    // POSTデータの取得
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
 
-	$query = new WP_Query( $args );
+    if ( ! $post_id ) {
+        wp_send_json_error( array( 'message' => '無効な投稿IDです。' ) );
+        exit;
+    }
 
-	$response = array();
+    // 残りの処理
+    $args = array(
+        'post_type' => 'tcp_explore',
+        'p' => $post_id
+    );
 
-	if ( $query->have_posts() ) {
-		while ( $query->have_posts() ) {
-			$query->the_post();
+    $query = new WP_Query( $args );
+    $response = array();
 
-			$package_explore_meta_fields = get_post_meta( get_the_ID(), 'package_explore_meta_fields', true);
-			$content = get_the_content();
+    if ( $query->have_posts() ) {
+        while ( $query->have_posts() ) {
+            $query->the_post();
 
-			ob_start();
-			?>
+            // 必要なデータを取得
+            $package_explore_meta_fields = get_post_meta( get_the_ID(), 'package_explore_meta_fields', true);
+            $content = get_the_content();
 
-			<p class="text-md-start text-center"><?php echo esc_html($content); ?></p>
-			<div class="owl-carousel">
-				<?php
-				if (is_array($package_explore_meta_fields) && !empty($package_explore_meta_fields)) {
-					foreach ($package_explore_meta_fields as $key => $package_explore) {
+            ob_start();
+            ?>
+            <p class="text-md-start text-center"><?php echo esc_html($content); ?></p>
+            <div class="owl-carousel">
+                <?php if (is_array($package_explore_meta_fields) && !empty($package_explore_meta_fields)) {
+                    foreach ($package_explore_meta_fields as $package_explore) {
+                        $image_url = esc_url($package_explore['image'] ?? '');
+                        $text1 = esc_html($package_explore['text1'] ?? '');
+                        $text2 = esc_html($package_explore['text2'] ?? '');
+                        ?>
+                        <div class="explore-inners">
+                            <div class="explore-img">
+                                <img style="border-radius: 10px;" src="<?php echo $image_url; ?>">
+                            </div>
+                            <div class="d-flex gap-2 mt-2">
+                                <div class="explore-inner-box">
+                                    <h6 class="explore-inner-title"><?php echo $text1; ?></h6>
+                                    <h6 class="explore-inner-title"><?php echo $text2; ?></h6>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }
+                } ?>
+            </div>
+            <?php
+            $html_content = ob_get_clean();
 
-						$image_url = isset($package_explore['image']) ? esc_url($package_explore['image']) : '';
-						$text1 = isset($package_explore['text1']) ? esc_html($package_explore['text1']) : '';
-						$text2 = isset($package_explore['text2']) ? esc_html($package_explore['text2']) : '';
-						$text3 = isset($package_explore['text3']) ? esc_html($package_explore['text3']) : '';
-						$text4 = isset($package_explore['text4']) ? esc_html($package_explore['text4']) : '';
-						?>
-						<div class="explore-inners">
-							<div class="explore-img">
-			<img style="border-radius: 10px;" src="<?php echo $image_url; ?>">
-							</div>
-							<div class="d-flex gap-2 mt-2">
-								<div class="explore-inner-box">
-									<h6 class="explore-inner-title"><?php echo $text1;?></h6>
-									<h6 class="explore-inner-title"><?php echo $text2;?></h6>
-								</div>
-								<div class="explore-inner-box">
-									<h6 class="explore-inner-title"><?php echo $text3;?></h6>
-									<h6 class="explore-inner-title"><?php echo $text4;?></h6>
-								</div>
-							</div>
-						</div>
-					<?php }
-				} ?>
-			</div><?php
+            $response = array(
+                'post_id' => get_the_ID(),
+                'html_content' => $html_content,
+            );
+        }
+        wp_reset_postdata();
+    }
 
-			$html_content = ob_get_clean();
-
-			$response = array(
-				'post_id' => get_the_ID(),
-				'html_content' => $html_content,
-			);
-
-		}
-		wp_reset_postdata();
-	}
-
-	wp_send_json($response);
-	exit;
+    wp_send_json_success( $response );
+    exit;
 }
-
 
 function custom_excerpt_length($length) {
     return 500; // 表示する語数をここで設定（100語に設定）
