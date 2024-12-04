@@ -808,58 +808,6 @@ function get_packages_explore_content() {
 	exit;
 }
 
-// パッケージ保存時にサービスを同期
-function sync_package_to_service($post_id) {
-    // 自動保存やリビジョンを除外
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-    if (wp_is_post_revision($post_id)) return;
-
-    // 対象の投稿タイプ以外は処理しない
-    if (get_post_type($post_id) !== 'tcp_package') return;
-
-    // サービス投稿タイプの存在確認
-    if (!post_type_exists('mp_services')) return;
-
-    // パッケージ情報を取得
-    $package_name = sanitize_text_field(get_post_meta($post_id, 'pkg_travel_name', true));
-    $package_price = floatval(get_post_meta($post_id, 'pkg_regular_price', true));
-    $package_days = intval(get_post_meta($post_id, 'pkg_tour_days', true));
-
-    // 既存のサービス確認
-    $existing_service_id = intval(get_post_meta($post_id, 'linked_service_id', true));
-
-    if ($existing_service_id && get_post_type($existing_service_id) === 'mp_services') {
-        // 既存のサービスを更新
-        $update_result = wp_update_post([
-            'ID'           => $existing_service_id,
-            'post_title'   => $package_name,
-            'post_content' => "Duration: {$package_days} days\nPrice: {$package_price}",
-        ]);
-
-        if (is_wp_error($update_result)) {
-            error_log('Error updating service: ' . $update_result->get_error_message());
-        } else {
-            update_post_meta($existing_service_id, 'service_price', $package_price);
-        }
-    } else {
-        // 新規サービスを作成
-        $new_service_id = wp_insert_post([
-            'post_title'   => $package_name,
-            'post_content' => "Duration: {$package_days} days\nPrice: {$package_price}",
-            'post_status'  => 'publish',
-            'post_type'    => 'mp_services',
-        ]);
-
-        if (is_wp_error($new_service_id)) {
-            error_log('Error creating service: ' . $new_service_id->get_error_message());
-        } else {
-            update_post_meta($new_service_id, 'service_price', $package_price);
-            update_post_meta($post_id, 'linked_service_id', $new_service_id);
-        }
-    }
-}
-add_action('save_post_tcp_package', 'sync_package_to_service');
-
 
 function custom_excerpt_length($length) {
     return 500; // 表示する語数をここで設定（100語に設定）
