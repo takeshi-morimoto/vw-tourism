@@ -741,66 +741,71 @@ function add_cpt_in_search_result( $query ) {
 
 function get_packages_explore_content() {
     // CSRF対策
-    check_ajax_referer('my_nonce_action', 'security');
+	$post_id = isset($_POST['post_id']) ? $_POST['post_id'] : '';
 
-    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+	$args = array(
+		'post_type' => 'tcp_explore',
+		'p' => $post_id
+	);
 
-    if (!$post_id) {
-        wp_send_json_error(['message' => __('Invalid post ID.', 'vw-tourism-pro')]);
-        exit;
-    }
+	$query = new WP_Query( $args );
 
-    $args = array(
-        'post_type' => 'tcp_explore',
-        'p' => $post_id,
-    );
+	$response = array();
 
-    $query = new WP_Query($args);
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
 
-    if (!$query->have_posts()) {
-        wp_send_json_error(['message' => __('No posts found.', 'vw-tourism-pro')]);
-        exit;
-    }
+			$package_explore_meta_fields = get_post_meta( get_the_ID(), 'package_explore_meta_fields', true);
+			$content = get_the_content();
 
-    $response = [];
-    while ($query->have_posts()) {
-        $query->the_post();
+			ob_start();
+			?>
 
-        $package_explore_meta_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
-        $content = get_the_content();
+			<p class="text-md-start text-center"><?php echo esc_html($content); ?></p>
+			<div class="owl-carousel">
+				<?php
+				if (is_array($package_explore_meta_fields) && !empty($package_explore_meta_fields)) {
+					foreach ($package_explore_meta_fields as $key => $package_explore) {
 
-        ob_start();
-        ?>
-        <p class="text-md-start text-center"><?php echo esc_html($content); ?></p>
-        <div class="owl-carousel">
-            <?php if (is_array($package_explore_meta_fields) && !empty($package_explore_meta_fields)) : ?>
-                <?php foreach ($package_explore_meta_fields as $package_explore) : ?>
-                    <div class="explore-inners">
-                        <div class="explore-img">
-                            <img style="border-radius: 10px;" src="<?php echo esc_url($package_explore['image'] ?? ''); ?>">
-                        </div>
-                        <div class="d-flex gap-2 mt-2">
-                            <div class="explore-inner-box">
-                                <h6 class="explore-inner-title"><?php echo esc_html($package_explore['text1'] ?? ''); ?></h6>
-                                <h6 class="explore-inner-title"><?php echo esc_html($package_explore['text2'] ?? ''); ?></h6>
-                            </div>
-                            <div class="explore-inner-box">
-                                <h6 class="explore-inner-title"><?php echo esc_html($package_explore['text3'] ?? ''); ?></h6>
-                                <h6 class="explore-inner-title"><?php echo esc_html($package_explore['text4'] ?? ''); ?></h6>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-        <?php
-        $response['html_content'] = ob_get_clean();
-    }
+						$image_url = isset($package_explore['image']) ? esc_url($package_explore['image']) : '';
+						$text1 = isset($package_explore['text1']) ? esc_html($package_explore['text1']) : '';
+						$text2 = isset($package_explore['text2']) ? esc_html($package_explore['text2']) : '';
+						$text3 = isset($package_explore['text3']) ? esc_html($package_explore['text3']) : '';
+						$text4 = isset($package_explore['text4']) ? esc_html($package_explore['text4']) : '';
+						?>
+						<div class="explore-inners">
+							<div class="explore-img">
+			<img style="border-radius: 10px;" src="<?php echo $image_url; ?>">
+							</div>
+							<div class="d-flex gap-2 mt-2">
+								<div class="explore-inner-box">
+									<h6 class="explore-inner-title"><?php echo $text1;?></h6>
+									<h6 class="explore-inner-title"><?php echo $text2;?></h6>
+								</div>
+								<div class="explore-inner-box">
+									<h6 class="explore-inner-title"><?php echo $text3;?></h6>
+									<h6 class="explore-inner-title"><?php echo $text4;?></h6>
+								</div>
+							</div>
+						</div>
+					<?php }
+				} ?>
+			</div><?php
 
-    wp_reset_postdata();
+			$html_content = ob_get_clean();
 
-    wp_send_json_success($response);
-    exit;
+			$response = array(
+				'post_id' => get_the_ID(),
+				'html_content' => $html_content,
+			);
+
+		}
+		wp_reset_postdata();
+	}
+
+	wp_send_json($response);
+	exit;
 }
 
 // パッケージ保存時にサービスを同期
