@@ -90,22 +90,26 @@ get_header();
                     </div>
                   </div>
 
-                  <!-- "Book Now" ボタンセクション -->
-                  <div class="book-btn col-md-4">
+                <!-- "Book Now" ボタンセクション -->
+                <div class="book-btn col-md-4">
                     <a class="theme-btn-main" href="<?php echo esc_url(get_permalink(get_option('mp_booking_page_id'))); ?>" style="padding: 6px 15px;">
-                      <div class="theme-btn-block">
-                        <span class="theme-btn-line-left"></span>
-                        <span class="theme-btn-text">
-                          <?php
-                          $button_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
-                          echo esc_html($button_text);
-                          ?>
-                        </span>
-                        <span class="theme-btn-line-right"></span>
-                        <i class="fa-solid fa-caret-down"></i>
-                      </div>
+                        <div class="theme-btn-block">
+                            <span class="theme-btn-line-left"></span>
+                            <span class="theme-btn-text">
+                                <?php
+                                $button_text = get_theme_mod('vw_tourism_pro_popular_packages_booknow_text', 'Book Now');
+                                echo esc_html($button_text);
+                                ?>
+                            </span>
+                            <span class="theme-btn-line-right"></span>
+                            <i class="fa-solid fa-caret-down"></i>
+                        </div>
                     </a>
-                  </div>
+                </div>
+
+                <!-- MotoPressの予約ウィザード -->
+                <div class="booking-wizard mt-4">
+                    <?php echo do_shortcode('[mphb_booking_form]'); ?>
                 </div>
                 
                 <div class="pack-desc mt-4">
