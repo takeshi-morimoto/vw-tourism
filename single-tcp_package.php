@@ -109,9 +109,9 @@ get_header();
 
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-wizard mt-4">
-                    <?php echo do_shortcode('[mphb_booking_form]'); ?>
+                    <?php echo do_shortcode('[appointment_form post="%e6%b1%a0%e8%a2%8b%e3%82%a2%e3%83%8b%e3%83%a1%e3%83%84%e3%82%a2%e3%83%bc"]'); ?>
                 </div>
-                
+
                 <div class="pack-desc mt-4">
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
                   <?php the_content();?>
