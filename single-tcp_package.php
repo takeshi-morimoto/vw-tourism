@@ -161,6 +161,7 @@ function format_price($price) {
                     <?php echo $pkg_tour_additional_info;?>
                 </div>
             </div>
+
             <div class="col-lg-4">
               <div class="row">
                 <div class="col-lg-12 col-md-6">
@@ -203,7 +204,9 @@ function format_price($price) {
                 </div>
               </div>
             </div>
+
         </div>
+        
         <div class="row mt-5">
 
           <?php
