@@ -33,7 +33,7 @@ get_header();
             <div class="col-lg-8">
               <?php
                   the_post();
-                  $post_id = $post->ID;
+                  $post_id = get_the_ID();
                   $pkg_travel_name   = get_post_meta( $post_id, 'pkg_travel_name', true);
                   $pkg_from   =  get_post_meta( $post_id, 'pkg_from', true);
                   $pkg_to   =  get_post_meta( $post_id, 'pkg_to', true);
