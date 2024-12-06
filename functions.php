@@ -684,8 +684,6 @@ add_action('comment_post', 'update_post_rating_from_comments');
 add_action('edit_comment', 'update_post_rating_from_comments');
 add_action('delete_comment', 'update_post_rating_from_comments');
 
-
-
 function custom_comment_form_defaults( $defaults ) {
     $defaults['title_reply'] = 'Leave a Comment';
 	$defaults['label_submit'] = 'Leave a comment';
@@ -818,6 +816,37 @@ function custom_excerpt_length($length) {
 function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
+
+function generate_dynamic_tour_shortcode($atts) {
+    $atts = shortcode_atts(
+        array(
+            'post_id' => '', // 投稿ID
+        ),
+        $atts,
+        'dynamic_tour_shortcode'
+    );
+
+    if (empty($atts['post_id'])) {
+        return 'Error: No Tour ID provided.';
+    }
+
+    // 投稿からカスタムフィールド値を取得
+    $service_id = get_post_meta($atts['post_id'], 'service_id', true);
+    $location_id = get_post_meta($atts['post_id'], 'location_id', true);
+    $employee_id = get_post_meta($atts['post_id'], 'employee_id', true);
+
+    // ショートコードを動的に生成
+    $shortcode = sprintf(
+        '[appointment_form post="%d" default_service="%s" default_location="%s" default_employee="%s"]',
+        intval($atts['post_id']),
+        esc_attr($service_id),
+        esc_attr($location_id),
+        esc_attr($employee_id)
+    );
+
+    return $shortcode;
+}
+add_shortcode('dynamic_tour_shortcode', 'generate_dynamic_tour_shortcode');
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
