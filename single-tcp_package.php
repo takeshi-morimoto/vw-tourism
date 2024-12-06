@@ -5,27 +5,32 @@
  * @package vw-tourism-pro
  */
 get_header();
-  $background_img = get_theme_mod('vw_tourism_pro_inner_page_banner_bgimage');
+$background_img = get_theme_mod('vw_tourism_pro_inner_page_banner_bgimage');
 
+// テンプレート内で価格フォーマット用の関数を定義
+function format_price($price) {
+    if ($price > 0) {
+        $currency = get_theme_mod('vw_tourism_pro_packages_currency', '$'); // デフォルト通貨
+        return $currency . number_format((float)$price, 2, '.', '');
+    }
+    return '';
+}
 ?>
-<div class="title-box" style="background-image:url(<?php echo esc_url( $background_img); ?>)">
+<div class="title-box" style="background-image:url(<?php echo esc_url($background_img); ?>)">
   <div class="container">
-      <div class="row justify-content-center text-center">
-        <div class="col-lg-12">
-          <div class="banner-text">
-              <h1><?php the_title();?></h1>
-              <?php if ( get_theme_mod('vw_tourism_pro_site_breadcrumb_enable', true) != '' ) { ?>
-                    <div class=" bradcrumbs">
-                      <?php vw_tourism_pro_the_breadcrumb(); ?>
-                    </div>
-                <?php }
-                ?>
-          </div>
+    <div class="row justify-content-center text-center">
+      <div class="col-lg-12">
+        <div class="banner-text">
+          <h1><?php the_title(); ?></h1>
+          <?php if (get_theme_mod('vw_tourism_pro_site_breadcrumb_enable', true) != '') { ?>
+            <div class="bradcrumbs">
+              <?php vw_tourism_pro_the_breadcrumb(); ?>
+            </div>
+          <?php } ?>
         </div>
-
       </div>
+    </div>
   </div>
-
 </div>
 <section id="single-packages" class="pb-0">
     <div class="container">
@@ -34,45 +39,38 @@ get_header();
               <?php
                   the_post();
                   $post_id = get_the_ID();
-                  $pkg_travel_name   = get_post_meta( $post_id, 'pkg_travel_name', true);
-                  $pkg_from   =  get_post_meta( $post_id, 'pkg_from', true);
-                  $pkg_to   =  get_post_meta( $post_id, 'pkg_to', true);
-                  $pkg_tour_days   = get_post_meta( $post_id, 'pkg_tour_days', true);
-                  $pkg_tour_nights   = get_post_meta( $post_id, 'pkg_tour_nights', true);
-                  $pkg_regular_price   = get_post_meta( $post_id, 'pkg_regular_price', true);
-                  $pkg_sale_price   = get_post_meta( $post_id, 'pkg_sale_price', true);
-                  $pkg_sale_price = $pkg_sale_price ? $pkg_sale_price : 0;
-                  $pkg_regular_price = $pkg_regular_price ? $pkg_regular_price : 0;
+                  $pkg_travel_name   = get_post_meta($post_id, 'pkg_travel_name', true);
+                  $pkg_from          = get_post_meta($post_id, 'pkg_from', true);
+                  $pkg_to            = get_post_meta($post_id, 'pkg_to', true);
+                  $pkg_tour_days     = get_post_meta($post_id, 'pkg_tour_days', true);
+                  $pkg_tour_nights   = get_post_meta($post_id, 'pkg_tour_nights', true);
+                  $pkg_regular_price = get_post_meta($post_id, 'pkg_regular_price', true);
+                  $pkg_sale_price    = get_post_meta($post_id, 'pkg_sale_price', true);
+                  $pkg_tour_details  = get_post_meta($post_id, 'pkg_tour_details', true);
+                  $pkg_tour_loc_latitude = get_post_meta($post_id, 'pkg_tour_loc_latitude', true);
+                  $pkg_tour_loc_longitude = get_post_meta($post_id, 'pkg_tour_loc_longitude', true);
+                  $pkg_registation_btn_text = get_post_meta($post_id, 'pkg_registation_btn_text', true);
+                  $pkg_registation_btn_url = get_post_meta($post_id, 'pkg_registation_btn_url', true);
+                  $pkg_additional_video   = get_post_meta($post_id, 'pkg_additional_video', true);
+                  $pkg_tour_additional_info = get_post_meta($post_id, 'pkg_tour_additional_info', true);
 
-                  $pkg_tour_details = get_post_meta( $post_id, 'pkg_tour_details', true );
+                  $round_regular = format_price($pkg_regular_price);
+                  $round_sale = format_price($pkg_sale_price);
 
-                  $pkg_tour_loc_latitude = get_post_meta($post_id,'pkg_tour_loc_latitude',true);
-                   $pkg_tour_loc_longitude = get_post_meta($post_id,'pkg_tour_loc_longitude',true);
+                  $member_text = get_post_meta($post_id, 'pkg_person_text', true) ? get_post_meta($post_id, 'pkg_person_text', true) : 'Per Person';
 
-                  $pkg_registation_btn_text = get_post_meta($post_id,'pkg_registation_btn_text',true);
-                   $pkg_registation_btn_url = get_post_meta($post_id,'pkg_registation_btn_url',true);
-
-                   $location_address = '';
-                   if ($pkg_tour_loc_latitude != '' && $pkg_tour_loc_longitude != '') {
-                     $location_address = "https://maps.google.com/maps?q=".$pkg_tour_loc_latitude.",".$pkg_tour_loc_longitude."&hl=es;z=14&amp;output=embed";
-                   }
-
-                    $pkg_additional_video   = get_post_meta( $post_id, 'pkg_additional_video', true);
-                    $pkg_tour_additional_info   = get_post_meta( $post_id, 'pkg_tour_additional_info', true);
-
-                    $round_regular = $pkg_regular_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_regular_price, 2, '.', '') : '';
-                    $round_sale = $pkg_sale_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_sale_price, 2, '.', '') : '';
-
-                    $member_text = get_post_meta( $post_id, 'pkg_person_text', true) ? get_post_meta( $post_id, 'pkg_person_text', true) : 'Per Person';
+                  $location_address = ($pkg_tour_loc_latitude && $pkg_tour_loc_longitude)
+                      ? "https://maps.google.com/maps?q={$pkg_tour_loc_latitude},{$pkg_tour_loc_longitude}&hl=es;z=14&amp;output=embed"
+                      : '';
                 ?>
                 <?php if (has_post_thumbnail()){ ?>
                   <?php the_post_thumbnail(); ?>
                 <?php } ?>
             		<h3 class="single-room-title "><?php the_title(); ?></h3>
                 <div class="d-flex pack-meta-content gap-md-5 gap-2 justify-content-md-start justify-conten-sm-center justify-content-center">
-                  <div class="pack-meta-text position-relative"><?php echo esc_html($pkg_travel_name) ; ?></div>
-                  <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to != '' ? 'To' : ''; ?> <span><?php echo  esc_html($pkg_to); ?></span> </div>
-                  <div class="pack-meta-text position-relative"><span class="pe-1"><?php echo $pkg_tour_days ; echo $pkg_tour_days ? ' Days' : '';?></span><span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Night' : '';?></span></div>
+                  <div class="pack-meta-text position-relative"><?php echo esc_html($pkg_travel_name); ?></div>
+                  <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to ? 'To' : ''; ?> <span><?php echo esc_html($pkg_to); ?></span> </div>
+                  <div class="pack-meta-text position-relative"><span class="pe-1"><?php echo $pkg_tour_days; echo $pkg_tour_days ? ' Days' : '';?></span><span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Night' : '';?></span></div>
                 </div>
 
                 <!-- パッケージ価格セクション -->
@@ -85,7 +83,7 @@ get_header();
                       <?php echo esc_html($round_regular); ?>
                     </div>
                     <div class="pack-per-person">
-                      <?php echo $pkg_sale_price != 0 || $pkg_regular_price != 0 ? $member_text : ''; ?>
+                      <?php echo ($pkg_sale_price || $pkg_regular_price) ? $member_text : ''; ?>
                     </div>
                   </div>
 
