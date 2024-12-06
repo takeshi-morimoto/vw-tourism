@@ -81,10 +81,6 @@ get_header();
                           </div>
                       </a>
                     </div>
-
-                <!-- MotoPressの予約ウィザード -->
-                <div class="booking-wizard mt-4">
-                    <?php echo do_shortcode('[appointment_form post="'. $post->post_name .'"]'); ?>
                 </div>
                 <div class="pack-desc mt-4">
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
