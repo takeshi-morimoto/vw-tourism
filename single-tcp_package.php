@@ -32,8 +32,7 @@ get_header();
         <div class="row">
             <div class="col-lg-8">
               <?php
-          				while ( have_posts() ) : the_post();
-                  endwhile;
+                  the_post();
                   $post_id = $post->ID;
                   $pkg_travel_name   = get_post_meta( $post_id, 'pkg_travel_name', true);
                   $pkg_from   =  get_post_meta( $post_id, 'pkg_from', true);
