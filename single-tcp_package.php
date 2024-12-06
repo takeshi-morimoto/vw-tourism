@@ -87,11 +87,11 @@ get_header();
 
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-wizard mt-4">
-                    <h4 class="my-2">Check Availability</h4>
-                    <?php echo do_shortcode('[mphb_availability_calendar post_id="'. $post->ID .'"]'); ?>
-                    <?php echo do_shortcode('[mphb_booking_form post_id="'. $post->ID .'"]'); ?>
+                    <h4>Check Availability</h4>
+                    <?php echo do_shortcode('[mphb_availability_calendar post_id="' . $post->ID . '"]'); ?>
+                    <?php echo do_shortcode('[mphb_booking_form post_id="' . $post->ID . '"]'); ?>
                 </div>
-
+                
                 <div class="pack-desc mt-4">
                     <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : ''; ?></h4>
                     <?php the_content(); ?>
