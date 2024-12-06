@@ -165,8 +165,6 @@ function format_price($price) {
             <div class="col-lg-4">
               <div class="row">
                 <div class="col-lg-12 col-md-6">
-                <h4>サイドバーのテストコンテンツ</h4>
-                <p>ここはサイドバーの一部です。</p>
                   <?php echo get_post_meta($post->ID,'pkg_additional_image_1',true) != '' ? '<img class="pack-content-img mb-3" src="'.esc_html(get_post_meta($post->ID,"pkg_additional_image_1",true)).'" alt="Packages Image" >' : '';?>
                 </div>
                 <div class="col-lg-12 col-md-6">
