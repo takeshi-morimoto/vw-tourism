@@ -21,8 +21,8 @@ function format_price($price) {
     <div class="row justify-content-center text-center">
       <div class="col-lg-12">
         <div class="banner-text">
-          <h1><?php the_title(); ?></h1>
-          <?php if (get_theme_mod('vw_tourism_pro_site_breadcrumb_enable', true) != '') { ?>
+          <h1><?php echo esc_html(get_the_title()); ?></h1>
+        <?php if (get_theme_mod('vw_tourism_pro_site_breadcrumb_enable', true) != '') { ?>
             <div class="bradcrumbs">
               <?php vw_tourism_pro_the_breadcrumb(); ?>
             </div>
@@ -69,7 +69,7 @@ function format_price($price) {
             		<h3 class="single-room-title "><?php the_title(); ?></h3>
                 <div class="d-flex pack-meta-content gap-md-5 gap-2 justify-content-md-start justify-conten-sm-center justify-content-center">
                   <div class="pack-meta-text position-relative"><?php echo esc_html($pkg_travel_name); ?></div>
-                  <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to ? 'To' : ''; ?> <span><?php echo esc_html($pkg_to); ?></span> </div>
+                  <div class="pack-meta-text position-relative"><span><?php echo esc_html($pkg_from); ?></span> <?php echo $pkg_to ? 'To' : ''; ?> <span><?php echo esc_html($pkg_to); ?></span> </div>
                   <div class="pack-meta-text position-relative"><span class="pe-1"><?php echo $pkg_tour_days; echo $pkg_tour_days ? ' Days' : '';?></span><span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Night' : '';?></span></div>
                 </div>
 
@@ -172,7 +172,7 @@ function format_price($price) {
                 <div class="col-lg-12 col-md-6">
                   <div class="pack-content-video position-relative">
                     <video width="100%" height="400" controls>
-                       <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
+                      <source src="<?php echo esc_url($pkg_additional_video); ?>" type="video/mp4">
                     </video>
                     <!-- <video id="tourVideo" width="100%" height="400"  audio="muted" autoplay="false" src="<?php echo $pkg_additional_video; ?>" type="video/mp4"></video> -->
                     <!-- <div class="video-bg-img">
@@ -257,8 +257,6 @@ function format_price($price) {
             <div class="row mt-3">
               <?php while ( $related->have_posts() ){ $related->the_post();
 
-                global $post;
-
                 $location_link = ''; $term_id = '';
                 $destination = get_the_terms($post, 'tcp_destination');
                 $destination_title = '';
@@ -320,7 +318,7 @@ function format_price($price) {
 
                   </div>
                 </div>
-              <?php } wp_reset_query(); ?>
+              <?php } wp_reset_postdata(); ?>
             </div>
         </div>
     </div>
