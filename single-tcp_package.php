@@ -66,7 +66,6 @@ get_header();
                   <div class="pack-meta-text position-relative"><span class="pe-1"><?php echo $pkg_tour_days ; echo $pkg_tour_days ? ' Days' : '';?></span><span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Night' : '';?></span></div>
                 </div>
 
-
                 <div class="pack-price-content my-3 row">
                   <div class="d-flex align-items-center gap-2 justify-content-md-start justify-content-sm-center justify-content-center col-md-4">
                     <div class="pack-sale-pr"><?php echo esc_html($round_sale); ?></div>
@@ -94,7 +93,7 @@ get_header();
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
                   <?php the_content();?>
                 </div>
-                
+
                 <div class="pack-days-tab mb-3">
                 <?php
                 if ( $pkg_tour_details && is_array($pkg_tour_details) ) { ?>
