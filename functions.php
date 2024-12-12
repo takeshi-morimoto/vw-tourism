@@ -846,6 +846,14 @@ function generate_dynamic_tour_shortcode($atts) {
 
     return $shortcode;
 }
+
+// サイト内のすべての投稿タイプを確認
+$post_types = get_post_types();
+echo '<pre>';
+print_r($post_types);
+echo '</pre>';
+exit;
+
 add_shortcode('dynamic_tour_shortcode', 'generate_dynamic_tour_shortcode');
 
 add_filter('excerpt_length', 'custom_excerpt_length');
