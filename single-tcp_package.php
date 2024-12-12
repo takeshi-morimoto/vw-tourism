@@ -92,24 +92,18 @@ get_header();
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
                     <?php
-                        // 現在の投稿スラッグを取得
-                        $service_slug = get_post_field('post_name', get_post());
+                    // サービススラッグをカスタムフィールドから取得（必要に応じて変更）
+                    $service_slug = get_post_meta($post_id, 'associated_service_slug', true);
 
-                        // MotoPress公式ショートコードを表示
-                        echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
+                    // サービススラッグが空の場合は、デフォルトで投稿スラッグを使用
+                    if (empty($service_slug)) {
+                        $service_slug = get_post_field('post_name', get_post());
+                    }
+
+                    // MotoPressの予約フォームショートコードを出力
+                    echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
                     ?>
                 </div>
-
-                <?php
-                    // ショートコードを手動でテスト
-                    echo do_shortcode('[mphb_booking_form services="ikebukuro-anime-tour"]');
-
-                    // 現在のサービススラッグを確認
-                    echo '<pre>';
-                    print_r($service_slug);
-                    echo '</pre>';
-                ?>
-
                 
                 <div class="pack-days-tab mb-3">
                 <?php
