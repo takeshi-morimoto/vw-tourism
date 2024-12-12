@@ -171,7 +171,7 @@ get_header();
                 <div class="col-lg-12 col-md-6">
                   <div class="pack-content-video position-relative">
                     <video width="100%" height="400" controls>
-                       <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
+                        <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
                     </video>
                     <!-- <video id="tourVideo" width="100%" height="400"  audio="muted" autoplay="false" src="<?php echo $pkg_additional_video; ?>" type="video/mp4"></video> -->
                     <!-- <div class="video-bg-img">
@@ -186,7 +186,7 @@ get_header();
                         <div class="modal-contents">
                           <button class="close-one">&times;<span class="screen-reader-text"><?php echo esc_html('Close button', 'vw-musician-band-artist-pro' ) ; ?></span></button>
                           <video width="100%" height="400" controls>
-                             <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
+                              <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
                           </video>
                         </div>
                       </div>
