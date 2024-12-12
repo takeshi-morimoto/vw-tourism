@@ -97,10 +97,11 @@ get_header();
 
                     // 動的にショートコードを生成して表示
                     echo do_shortcode('[appointment_form post="' . $current_post_id . '"]');
+
+                    // 投稿IDを確認するためのデバッグ出力
+                    echo '<p>Current Post ID: ' . $current_post_id . '</p>';
                     ?>
                 </div>
-                
-                echo 'Current Post ID: ' . $current_post_id;
                 
                 <div class="pack-days-tab mb-3">
                 <?php
