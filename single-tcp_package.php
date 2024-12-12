@@ -88,7 +88,7 @@ get_header();
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
                   <?php the_content();?>
                 </div>
-                
+
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-wizard mt-4">
                     <?php echo do_shortcode('[appointment_form post="'. $post->post_name .'"]'); ?>
@@ -186,102 +186,110 @@ get_header();
           ?>
         </div>
         <div id="related-places" class="mt-5">
-            <?php if(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')!=''){ ?>
-              <p class="sec-sub-heading   text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')); ?></p>
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_places_related_post_heading')!=''){ ?>
-              <h2 class="sec-heading   text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_places_related_post_heading')); ?></h2>
-            <?php } ?>
+          <?php if(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')!=''){ ?>
+            <p class="sec-sub-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')); ?></p>
+          <?php } ?>
+          <?php if(get_theme_mod('vw_tourism_pro_places_related_post_heading')!=''){ ?>
+            <h2 class="sec-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_places_related_post_heading')); ?></h2>
+          <?php } ?>
           <?php
           $current_post_type = get_post_type( $post );
           $tcp_category = get_the_terms($post, 'tcp_category');
           $tcp_category_ids_arr = array();
           if (is_array($tcp_category) && count($tcp_category)) {
-            foreach ($tcp_category as $tcp_category_term) {
-              array_push($tcp_category_ids_arr, $tcp_category_term->term_id);
-            }
+              foreach ($tcp_category as $tcp_category_term) {
+                  array_push($tcp_category_ids_arr, $tcp_category_term->term_id);
+              }
           }
           $args = array(
-            'posts_per_page' => 4,
-            'order' => 'DESC',
-            'orderby' => 'ID',
-            'post_type' => $current_post_type,
-            'post__not_in' => array( $post->ID )
+              'posts_per_page' => 4,
+              'order' => 'DESC',
+              'orderby' => 'ID',
+              'post_type' => $current_post_type,
+              'post__not_in' => array( $post->ID )
           );
           if ($tcp_category_ids_arr) {
-            $args['tax_query'] = array(
-                array(
-                    'taxonomy' => 'tcp_category',
-                    'field'    => 'term_id',
-                    'terms'    => $tcp_category_ids_arr,
-                    'operator' => 'IN',
-                )
-            );
+              $args['tax_query'] = array(
+                  array(
+                      'taxonomy' => 'tcp_category',
+                      'field'    => 'term_id',
+                      'terms'    => $tcp_category_ids_arr,
+                      'operator' => 'IN',
+                  )
+              );
           }
           $related = new WP_Query( $args );
           ?>
-            <div class="row mt-3">
-              <?php while ( $related->have_posts() ){ $related->the_post();
-                global $post;
-                $location_link = ''; $term_id = '';
-                $destination = get_the_terms($post, 'tcp_destination');
-                $destination_title = '';
-                if (is_array($destination) && count($destination)) {
-                 $destination_title = $destination[0]->name . ' Tour';
-                 $location_link = get_category_link( $destination[0]->term_id );
-                }
-                $member_text = get_post_meta( $post_id, 'pkg_person_text', true) ? get_post_meta( $post_id, 'pkg_person_text', true) : 'Per Person';
-                $pkg_sale_price   = get_post_meta( $post_id, 'pkg_sale_price', true);
-                $pkg_sale_price = $pkg_sale_price ? $pkg_sale_price : 0;
-                 ?>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+
+          <div class="row mt-3">
+              <?php while ( $related->have_posts() ) { 
+                  $related->the_post(); // ループ内で現在の投稿を取得
+                  $post_id = get_the_ID(); // 現在の投稿 ID を取得
+
+                  // 目的地のデータ取得
+                  $destination = get_the_terms($post_id, 'tcp_destination');
+                  $destination_title = $destination && !is_wp_error($destination) ? $destination[0]->name . ' Tour' : '';
+                  $location_link = $destination && !is_wp_error($destination) ? get_category_link($destination[0]->term_id) : '';
+
+                  // メタデータの取得
+                  $pkg_travel_name = get_post_meta($post_id, 'pkg_travel_name', true);
+                  $pkg_from = get_post_meta($post_id, 'pkg_from', true);
+                  $pkg_tour_days = get_post_meta($post_id, 'pkg_tour_days', true);
+                  $pkg_tour_nights = get_post_meta($post_id, 'pkg_tour_nights', true);
+                  $pkg_sale_price = get_post_meta($post_id, 'pkg_sale_price', true) ?: 0;
+                  $pkg_person_text = get_post_meta($post_id, 'pkg_person_text', true) ?: 'Per Person';
+              ?>
+              <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
                   <div class="packages-box">
-                    <div class="packages-img-main position-relative">
-                      <?php if (has_post_thumbnail()){ ?>
-                        <?php the_post_thumbnail(); ?>
-                      <?php } ?>
-                      <div class="d-flex flex-column position-absolute bottom-0 top-0 start-0 end-0 mx-auto my-3 justify-content-between packages-content-box  text-md-start text-start px-sm-1" style="z-index:1">
-                        <div class="packages-btm-content">
-                          <a href="<?php echo esc_url($location_link); ?>"><h5><?php echo esc_html($destination_title); ?></h5></a>
-                        </div>
-                        <div class="packages-btm-content">
-                          <h6 class="packages-from">From <?php echo esc_html(get_post_meta($post->ID,'pkg_from',true)); ?></h6>
-                          <div class="d-flex justify-content-between align-items-center">
-                            <div class="packages-date">
-                                <span><?php echo esc_html(get_post_meta($post->ID,'pkg_tour_days',true)); ?></span>Days
-                                <span><?php echo esc_html(get_post_meta($post->ID,'pkg_tour_nights',true)); ?></span>Nights
-                                <p class="mb-0 pac-per-year"><?php esc_html_e($member_text);?></p>
-                            </div>
-                              <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')); ?><?php echo  esc_html(number_format((float)$pkg_sale_price, 2, '.', '')); ?></p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="packges-bottom-box">
-                      <div class="d-flex flex-column gap-2 packges-bottom-box-inner  py-3 text-center">
-                        <div class="packages-title">
-                            <h3 style="line-height:0;"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                        </div>
-                        <div class="packages-name">
-                            <p class="mb-0"><?php echo esc_html(get_post_meta($post->ID,'pkg_travel_name',true)); ?></p>
-                        </div>
-                        <div class="packages-button  ">
-                          <a class="theme-btn-main" href="<?php the_permalink(); ?>">
-                            <div class="theme-btn-block">
-                                <span class="theme-btn-line-left"></span>
-                                      <span class="theme-btn-text"><?php echo esc_html(get_theme_mod('vw_tourism_pro_popular_packages_booknow_text'));?></span>
-                                <span class="theme-btn-line-right"></span>
-                                <i class="fa-solid fa-caret-down"></i>
+                      <div class="packages-img-main position-relative">
+                          <?php if ( has_post_thumbnail() ) { ?>
+                              <?php the_post_thumbnail(); ?>
+                          <?php } ?>
+                          <div class="d-flex flex-column position-absolute bottom-0 top-0 start-0 end-0 mx-auto my-3 justify-content-between packages-content-box text-md-start text-start px-sm-1" style="z-index:1">
+                              <div class="packages-btm-content">
+                                  <a href="<?php echo esc_url($location_link); ?>">
+                                      <h5><?php echo esc_html($destination_title); ?></h5>
+                                  </a>
                               </div>
-                          </a>
-                        </div>
+                              <div class="packages-btm-content">
+                                  <h6 class="packages-from">From <?php echo esc_html($pkg_from); ?></h6>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                      <div class="packages-date">
+                                          <span><?php echo esc_html($pkg_tour_days); ?></span> Days
+                                          <span><?php echo esc_html($pkg_tour_nights); ?></span> Nights
+                                          <p class="mb-0 pac-per-year"><?php echo esc_html($pkg_person_text); ?></p>
+                                      </div>
+                                      <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')) . number_format($pkg_sale_price, 2, '.', ''); ?></p>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                    </div>
+                      <div class="packges-bottom-box">
+                          <div class="d-flex flex-column gap-2 packges-bottom-box-inner py-3 text-center">
+                              <div class="packages-title">
+                                  <h3 style="line-height:0;">
+                                      <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                  </h3>
+                              </div>
+                              <div class="packages-name">
+                                  <p class="mb-0"><?php echo esc_html($pkg_travel_name); ?></p>
+                              </div>
+                              <div class="packages-button">
+                                  <a class="theme-btn-main" href="<?php the_permalink(); ?>">
+                                      <div class="theme-btn-block">
+                                          <span class="theme-btn-line-left"></span>
+                                          <span class="theme-btn-text"><?php echo esc_html(get_theme_mod('vw_tourism_pro_popular_packages_booknow_text')); ?></span>
+                                          <span class="theme-btn-line-right"></span>
+                                          <i class="fa-solid fa-caret-down"></i>
+                                      </div>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              <?php } wp_reset_query(); ?>
-            </div>
-        </div>
-    </div>
+              </div>
+              <?php } wp_reset_postdata(); ?>
+          </div>
+        </div>  
 </section>
 <?php get_footer(); ?>
