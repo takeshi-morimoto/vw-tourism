@@ -100,6 +100,17 @@ get_header();
                         echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
                     ?>
                 </div>
+
+                <?php
+                    // ショートコードを手動でテスト
+                    echo do_shortcode('[mphb_booking_form services="ikebukuro-anime-tour"]');
+
+                    // 現在のサービススラッグを確認
+                    echo '<pre>';
+                    print_r($service_slug);
+                    echo '</pre>';
+                ?>
+
                 
                 <div class="pack-days-tab mb-3">
                 <?php
