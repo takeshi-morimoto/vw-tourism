@@ -92,7 +92,10 @@ get_header();
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
                     <h4>Book this Tour</h4>
-                    <?php echo do_shortcode('[mphb_booking_form service="' . esc_attr($post->post_name) . '"]'); ?>
+                    <?php
+                    $current_slug = $post->post_name; // 現在の投稿のスラッグを取得
+                    echo do_shortcode('[mphb_booking_form service="' . esc_attr($current_slug) . '"]');
+                    ?>
                 </div>
                 
                 <div class="pack-days-tab mb-3">
