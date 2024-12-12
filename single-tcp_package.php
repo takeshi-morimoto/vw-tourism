@@ -90,15 +90,16 @@ get_header();
                 </div>
 
                 <!-- MotoPressの予約ウィザード -->
-                <div class="booking-wizard mt-4">
-                    <?php 
-                        // 現在の投稿スラッグを取得
-                        $service_slug = get_post_field('post_name', get_post());
-                        
-                        // ショートコードを実行
-                        echo do_shortcode('[appointment_form post="'. $service_slug .'"]');
+                <div class="booking-section">
+                    <?php
+                    // 現在の投稿IDを取得
+                    $current_post_id = get_the_ID();
+
+                    // 動的にショートコードを生成して表示
+                    echo do_shortcode('[appointment_form post="' . $current_post_id . '"]');
                     ?>
                 </div>
+
                 
                 <div class="pack-days-tab mb-3">
                 <?php
