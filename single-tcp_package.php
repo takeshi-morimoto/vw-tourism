@@ -90,18 +90,13 @@ get_header();
                 </div>
 
                 <!-- MotoPressの予約ウィザード -->
-                <div class="booking-section">
-                    <?php
-                    // サービススラッグをカスタムフィールドから取得（必要に応じて変更）
-                    $service_slug = get_post_meta($post_id, 'associated_service_slug', true);
-
-                    // サービススラッグが空の場合は、デフォルトで投稿スラッグを使用
-                    if (empty($service_slug)) {
+                <div class="booking-wizard mt-4">
+                    <?php 
+                        // 現在の投稿スラッグを取得
                         $service_slug = get_post_field('post_name', get_post());
-                    }
-
-                    // MotoPressの予約フォームショートコードを出力
-                    echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
+                        
+                        // ショートコードを実行
+                        echo do_shortcode('[appointment_form post="'. $service_slug .'"]');
                     ?>
                 </div>
                 
