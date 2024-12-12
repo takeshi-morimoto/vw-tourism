@@ -91,17 +91,13 @@ get_header();
 
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
-                  <h4>Book this Tour</h4>
+                    <h4>Book this Tour</h4>
                     <?php
-                        // 現在の投稿に関連付けられたサービスIDまたはスラッグを取得
-                        $service_slug = get_post_meta(get_the_ID(), 'service_slug', true); // 'service_slug' はカスタムフィールド名の例
+                        // 投稿スラッグを取得
+                        $service_slug = get_post_field('post_name', get_post());
 
-                        // ショートコードを動的に生成
-                        if ($service_slug) {
-                            echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
-                        } else {
-                            echo '<p>No booking service associated with this tour.</p>';
-                        }
+                        // ショートコードを生成して表示
+                        echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
                     ?>
                 </div>
                 
