@@ -84,16 +84,16 @@ get_header();
                   </div>
                 </div>
 
-                <!-- MotoPressの予約ウィザード -->
-                <div class="booking-wizard mt-4">
-                    <?php echo do_shortcode('[appointment_form post="'. $post->post_name .'"]'); ?>
-                </div>
-
                 <div class="pack-desc mt-4">
                   <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
                   <?php the_content();?>
                 </div>
-
+                
+                <!-- MotoPressの予約ウィザード -->
+                <div class="booking-wizard mt-4">
+                    <?php echo do_shortcode('[appointment_form post="'. $post->post_name .'"]'); ?>
+                </div>
+                
                 <div class="pack-days-tab mb-3">
                 <?php
                 if ( $pkg_tour_details && is_array($pkg_tour_details) ) { ?>
