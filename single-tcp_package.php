@@ -91,12 +91,11 @@ get_header();
 
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
-                    <h4>Book this Tour</h4>
                     <?php
-                        // 投稿スラッグを取得
+                        // 現在の投稿スラッグを取得
                         $service_slug = get_post_field('post_name', get_post());
 
-                        // ショートコードを生成して表示
+                        // MotoPress公式ショートコードを表示
                         echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
                     ?>
                 </div>
