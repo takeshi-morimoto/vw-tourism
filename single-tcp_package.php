@@ -90,32 +90,9 @@ get_header();
                 </div>
 
                 <!-- MotoPressの予約ウィザード -->
-                <div class="booking-wizard mt-4">
-                    <form id="service-form">
-                        <label for="service-select">Select a Service:</label>
-                        <select name="service" id="service-select">
-                            <option value="">-- Select --</option>
-                            <?php
-                            // 固定のスラッグリスト
-                            $allowed_slugs = ['hikawa-shrine', 'sugamo-takoyaki', 'ikebukuro-anime-tour'];
-
-                            // サービス投稿タイプ（mpa_service）から投稿を取得
-                            $services = get_posts(array(
-                                'post_type' => 'mpa_service', // 投稿タイプをmpa_serviceに設定
-                                'posts_per_page' => -1,
-                                'post_status' => 'publish'
-                            ));
-
-                            // ドロップダウンオプションを生成
-                            foreach ($services as $service) {
-                                if (in_array($service->post_name, $allowed_slugs)) { // スラッグでフィルタリング
-                                    echo '<option value="' . esc_attr($service->post_name) . '">' . esc_html($service->post_title) . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                        <button type="submit" class="theme-btn-main" style="margin-top: 10px;">Submit</button>
-                    </form>
+                <div class="booking-section">
+                    <h4>Book this Tour</h4>
+                    <?php echo do_shortcode('[mphb_booking_form service="' . esc_attr($post->post_name) . '"]'); ?>
                 </div>
                 
                 <div class="pack-days-tab mb-3">
