@@ -95,10 +95,17 @@ get_header();
                     // 現在の投稿IDを取得
                     $current_post_id = get_the_ID();
 
-                    // 動的にショートコードを生成して表示
-                    echo do_shortcode('[appointment_form post="' . $current_post_id . '"]');
+                    // 投稿に関連付けられたサービスのIDを取得
+                    $service_id = get_post_meta($current_post_id, '_service_id', true); // カスタムフィールドでサービスIDを保存している場合
 
-                    // 投稿IDを確認するためのデバッグ出力
+                    if ($service_id) {
+                        // サービスIDを使ってショートコードを表示
+                        echo do_shortcode('[appointment_form post="' . $service_id . '"]');
+                    } else {
+                        echo '<p>No associated service found for this post.</p>';
+                    }
+
+                    // デバッグ用: 投稿IDの表示
                     echo '<p>Current Post ID: ' . $current_post_id . '</p>';
                     ?>
                 </div>
