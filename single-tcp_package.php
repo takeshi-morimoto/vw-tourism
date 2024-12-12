@@ -93,8 +93,8 @@ get_header();
                 <div class="booking-section">
                     <h4>Book this Tour</h4>
                     <?php
-                    $current_slug = $post->post_name; // 現在の投稿のスラッグを取得
-                    echo do_shortcode('[mphb_booking_form service="' . esc_attr($current_slug) . '"]');
+                      $service_slug = get_post_field('post_name', get_post());
+                      echo do_shortcode('[mphb_booking_form services="' . esc_attr($service_slug) . '"]');
                     ?>
                 </div>
                 
