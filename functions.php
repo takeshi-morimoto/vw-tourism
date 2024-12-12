@@ -847,6 +847,19 @@ function generate_dynamic_tour_shortcode($atts) {
     return $shortcode;
 }
 
+add_action('init', function() {
+    $post_types = get_post_types([], 'objects'); // オブジェクト情報を取得
+    echo '<pre>';
+    foreach ($post_types as $post_type => $details) {
+        echo 'Name: ' . $post_type . "\n";
+        echo 'Label: ' . $details->label . "\n";
+        echo 'Public: ' . ($details->public ? 'Yes' : 'No') . "\n\n";
+    }
+    echo '</pre>';
+    exit;
+});
+
+
 add_shortcode('dynamic_tour_shortcode', 'generate_dynamic_tour_shortcode');
 
 add_filter('excerpt_length', 'custom_excerpt_length');
