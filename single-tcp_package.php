@@ -99,7 +99,8 @@ get_header();
                     echo do_shortcode('[appointment_form post="' . $current_post_id . '"]');
                     ?>
                 </div>
-
+                
+                echo 'Current Post ID: ' . $current_post_id;
                 
                 <div class="pack-days-tab mb-3">
                 <?php
