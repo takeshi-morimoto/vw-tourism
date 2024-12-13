@@ -817,43 +817,38 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-// 投稿編集画面にショートコードIDフィールドを追加
-add_action('add_meta_boxes', function () {
+add_action('add_meta_boxes', function() {
     add_meta_box(
-        'shortcode_id_meta_box',       // メタボックス ID
-        'Shortcode ID',                // メタボックスのタイトル
-        'render_shortcode_id_meta_box', // コールバック関数
-        'tcp_package',                 // 対象投稿タイプ
-        'side',                        // 表示場所（サイドバー）
-        'default'                      // 優先度
+        'additional_meta_fields',
+        'Additional Meta Fields',
+        'render_additional_meta_fields',
+        'tcp_package', // カスタム投稿タイプ名
+        'normal',
+        'default'
     );
 });
 
-// メタボックスの中身を描画
-function render_shortcode_id_meta_box($post) {
-    $shortcode_id = get_post_meta($post->ID, '_shortcode_id', true); // カスタムフィールド値を取得
-    wp_nonce_field('save_shortcode_id', 'shortcode_id_nonce'); // セキュリティ用 nonce
+function render_additional_meta_fields($post) {
+    // 既存のメタデータを取得
+    $shortcode = get_post_meta($post->ID, 'application_form_shortcode', true);
+
+    // フィールドの描画
     ?>
-    <label for="shortcode_id_field">Shortcode ID:</label>
-    <input type="text" name="shortcode_id_field" id="shortcode_id_field" value="<?php echo esc_attr($shortcode_id); ?>" style="width: 100%;">
+    <div>
+        <label for="application_form_shortcode">Application Form Shortcode:</label>
+        <input type="text" name="application_form_shortcode" id="application_form_shortcode" 
+               value="<?php echo esc_attr($shortcode); ?>" style="width: 100%;">
+    </div>
     <?php
 }
 
-// ショートコードIDを保存
-add_action('save_post', function ($post_id) {
-    if (!isset($_POST['shortcode_id_nonce']) || !wp_verify_nonce($_POST['shortcode_id_nonce'], 'save_shortcode_id')) {
-        return;
-    }
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-    if (!current_user_can('edit_post', $post_id)) {
-        return;
-    }
-    if (isset($_POST['shortcode_id_field'])) {
-        update_post_meta($post_id, '_shortcode_id', sanitize_text_field($_POST['shortcode_id_field']));
+add_action('save_post', function($post_id) {
+    // フィールドが送信されていれば保存
+    if (isset($_POST['application_form_shortcode'])) {
+        update_post_meta($post_id, 'application_form_shortcode', sanitize_text_field($_POST['application_form_shortcode']));
     }
 });
+
 
 add_action('init', function () {
     $post_types = get_post_types([], 'objects');
