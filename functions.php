@@ -817,44 +817,47 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-// 投稿編集画面に Shortcode ID フィールドを追加
+// 投稿編集画面にショートコードIDフィールドを追加
 add_action('add_meta_boxes', function () {
     add_meta_box(
         'shortcode_id_meta_box',       // メタボックス ID
         'Shortcode ID',                // メタボックスのタイトル
         'render_shortcode_id_meta_box', // コールバック関数
-        'post',                        // 対象投稿タイプ（必要に応じて変更）
-        'side',                        // 表示場所
+        'tcp_package',                 // 対象投稿タイプ
+        'side',                        // 表示場所（サイドバー）
         'default'                      // 優先度
     );
 });
 
-// メタボックスの HTML をレンダリング
+// メタボックスの中身を描画
 function render_shortcode_id_meta_box($post) {
-    $shortcode_id = get_post_meta($post->ID, '_shortcode_id', true); // 保存済みの値を取得
-    wp_nonce_field('save_shortcode_id_meta_box', 'shortcode_id_meta_box_nonce');
+    $shortcode_id = get_post_meta($post->ID, '_shortcode_id', true); // カスタムフィールド値を取得
+    wp_nonce_field('save_shortcode_id', 'shortcode_id_nonce'); // セキュリティ用 nonce
     ?>
-    <label for="shortcode_id">Shortcode ID</label>
-    <input type="text" name="shortcode_id" id="shortcode_id" value="<?php echo esc_attr($shortcode_id); ?>" style="width: 100%;" />
+    <label for="shortcode_id_field">Shortcode ID:</label>
+    <input type="text" name="shortcode_id_field" id="shortcode_id_field" value="<?php echo esc_attr($shortcode_id); ?>" style="width: 100%;">
     <?php
 }
 
-// Shortcode ID を保存
+// ショートコードIDを保存
 add_action('save_post', function ($post_id) {
-    // セキュリティチェック
-    if (!isset($_POST['shortcode_id_meta_box_nonce']) || !wp_verify_nonce($_POST['shortcode_id_meta_box_nonce'], 'save_shortcode_id_meta_box')) {
+    if (!isset($_POST['shortcode_id_nonce']) || !wp_verify_nonce($_POST['shortcode_id_nonce'], 'save_shortcode_id')) {
         return;
     }
-
-    // 自動保存時は処理をスキップ
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
-
-    // ショートコード ID を保存
-    if (isset($_POST['shortcode_id'])) {
-        update_post_meta($post_id, '_shortcode_id', sanitize_text_field($_POST['shortcode_id']));
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
     }
+    if (isset($_POST['shortcode_id_field'])) {
+        update_post_meta($post_id, '_shortcode_id', sanitize_text_field($_POST['shortcode_id_field']));
+    }
+});
+
+add_action('init', function () {
+    $post_types = get_post_types([], 'objects');
+    error_log(print_r($post_types, true)); // デバッグログに投稿タイプ一覧を出力
 });
 
 add_action('admin_menu', function() {
