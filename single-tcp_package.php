@@ -91,24 +91,21 @@ get_header();
 
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
-                    <?php
-                    // 現在の投稿IDを取得
+                  <?php
+                    // 現在の投稿 ID を取得
                     $current_post_id = get_the_ID();
 
-                    // 投稿に関連付けられたサービスのIDを取得
-                    $service_id = get_post_meta($current_post_id, '_service_id', true); // カスタムフィールドでサービスIDを保存している場合
+                    // 投稿に保存された Shortcode ID を取得
+                    $shortcode_id = get_post_meta($current_post_id, '_shortcode_id', true);
 
-                    if ($service_id) {
-                        // サービスIDを使ってショートコードを表示
-                        echo do_shortcode('[appointment_form post="' . $service_id . '"]');
+                    if ($shortcode_id) {
+                        // Shortcode ID に基づいてフォームを表示
+                        echo do_shortcode('[appointment_form post="' . esc_attr($shortcode_id) . '"]');
                     } else {
                         echo '<p>No associated service found for this post.</p>';
                     }
-
-                    // デバッグ用: 投稿IDの表示
-                    echo '<p>Current Post ID: ' . $current_post_id . '</p>';
                     ?>
-                </div>
+                  </div>
                 
                 <div class="pack-days-tab mb-3">
                 <?php
