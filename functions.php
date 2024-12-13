@@ -817,118 +817,41 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
+// 投稿編集画面にショートコードIDフィールドを追加
 add_action('add_meta_boxes', function () {
     add_meta_box(
-        'additional_meta_fields',
-        'Additional Meta Fields',
-        'render_combined_meta_fields',
-        'tcp_package', // カスタム投稿タイプ名
-        'normal',
-        'default'
+        'shortcode_id_meta_box',       // メタボックス ID
+        'Shortcode ID',                // メタボックスのタイトル
+        'render_shortcode_id_meta_box', // コールバック関数
+        'tcp_package',                 // 対象投稿タイプ
+        'side',                        // 表示場所（サイドバー）
+        'default'                      // 優先度
     );
 });
 
-// Application Form Shortcode」フィールドを既存の「Additional Meta Fields」メタボックスに統合
-function render_combined_meta_fields($post)
-{
-    // 既存のメタデータを取得
-    $package_from = get_post_meta($post->ID, 'package_from', true);
-    $package_to = get_post_meta($post->ID, 'package_to', true);
-    $regular_price = get_post_meta($post->ID, 'regular_price', true);
-    $sale_price = get_post_meta($post->ID, 'sale_price', true);
-    $per_person = get_post_meta($post->ID, 'per_person', true);
-    $nights = get_post_meta($post->ID, 'nights', true);
-    $days = get_post_meta($post->ID, 'days', true);
-    $location_latitude = get_post_meta($post->ID, 'location_latitude', true);
-    $location_longitude = get_post_meta($post->ID, 'location_longitude', true);
-    $travel_name = get_post_meta($post->ID, 'travel_name', true);
-    $shortcode = get_post_meta($post->ID, 'application_form_shortcode', true);
-
-    // フィールドを描画
+// メタボックスの中身を描画
+function render_shortcode_id_meta_box($post) {
+    $shortcode_id = get_post_meta($post->ID, '_shortcode_id', true); // カスタムフィールド値を取得
+    wp_nonce_field('save_shortcode_id', 'shortcode_id_nonce'); // セキュリティ用 nonce
     ?>
-    <table class="form-table">
-        <tr>
-            <th><label for="package_from">Package From</label></th>
-            <td><input type="text" name="package_from" id="package_from" value="<?php echo esc_attr($package_from); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="package_to">Package To</label></th>
-            <td><input type="text" name="package_to" id="package_to" value="<?php echo esc_attr($package_to); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="regular_price">Regular Price</label></th>
-            <td><input type="text" name="regular_price" id="regular_price" value="<?php echo esc_attr($regular_price); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="sale_price">Sale Price</label></th>
-            <td><input type="text" name="sale_price" id="sale_price" value="<?php echo esc_attr($sale_price); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="per_person">Per Person/Members</label></th>
-            <td><input type="text" name="per_person" id="per_person" value="<?php echo esc_attr($per_person); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="nights">Nights</label></th>
-            <td><input type="text" name="nights" id="nights" value="<?php echo esc_attr($nights); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="days">Days</label></th>
-            <td><input type="text" name="days" id="days" value="<?php echo esc_attr($days); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="location_latitude">Location (Latitude)</label></th>
-            <td><input type="text" name="location_latitude" id="location_latitude" value="<?php echo esc_attr($location_latitude); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="location_longitude">Location (Longitude)</label></th>
-            <td><input type="text" name="location_longitude" id="location_longitude" value="<?php echo esc_attr($location_longitude); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="travel_name">Travel Name</label></th>
-            <td><input type="text" name="travel_name" id="travel_name" value="<?php echo esc_attr($travel_name); ?>" style="width: 100%;"></td>
-        </tr>
-        <tr>
-            <th><label for="application_form_shortcode">Application Form Shortcode</label></th>
-            <td><input type="text" name="application_form_shortcode" id="application_form_shortcode" value="<?php echo esc_attr($shortcode); ?>" style="width: 100%;"></td>
-        </tr>
-    </table>
+    <label for="shortcode_id_field">Shortcode ID:</label>
+    <input type="text" name="shortcode_id_field" id="shortcode_id_field" value="<?php echo esc_attr($shortcode_id); ?>" style="width: 100%;">
     <?php
 }
 
-// 保存処理
+// ショートコードIDを保存
 add_action('save_post', function ($post_id) {
-    if (array_key_exists('package_from', $_POST)) {
-        update_post_meta($post_id, 'package_from', sanitize_text_field($_POST['package_from']));
+    if (!isset($_POST['shortcode_id_nonce']) || !wp_verify_nonce($_POST['shortcode_id_nonce'], 'save_shortcode_id')) {
+        return;
     }
-    if (array_key_exists('package_to', $_POST)) {
-        update_post_meta($post_id, 'package_to', sanitize_text_field($_POST['package_to']));
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
     }
-    if (array_key_exists('regular_price', $_POST)) {
-        update_post_meta($post_id, 'regular_price', sanitize_text_field($_POST['regular_price']));
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
     }
-    if (array_key_exists('sale_price', $_POST)) {
-        update_post_meta($post_id, 'sale_price', sanitize_text_field($_POST['sale_price']));
-    }
-    if (array_key_exists('per_person', $_POST)) {
-        update_post_meta($post_id, 'per_person', sanitize_text_field($_POST['per_person']));
-    }
-    if (array_key_exists('nights', $_POST)) {
-        update_post_meta($post_id, 'nights', sanitize_text_field($_POST['nights']));
-    }
-    if (array_key_exists('days', $_POST)) {
-        update_post_meta($post_id, 'days', sanitize_text_field($_POST['days']));
-    }
-    if (array_key_exists('location_latitude', $_POST)) {
-        update_post_meta($post_id, 'location_latitude', sanitize_text_field($_POST['location_latitude']));
-    }
-    if (array_key_exists('location_longitude', $_POST)) {
-        update_post_meta($post_id, 'location_longitude', sanitize_text_field($_POST['location_longitude']));
-    }
-    if (array_key_exists('travel_name', $_POST)) {
-        update_post_meta($post_id, 'travel_name', sanitize_text_field($_POST['travel_name']));
-    }
-    if (array_key_exists('application_form_shortcode', $_POST)) {
-        update_post_meta($post_id, 'application_form_shortcode', sanitize_text_field($_POST['application_form_shortcode']));
+    if (isset($_POST['shortcode_id_field'])) {
+        update_post_meta($post_id, '_shortcode_id', sanitize_text_field($_POST['shortcode_id_field']));
     }
 });
 
