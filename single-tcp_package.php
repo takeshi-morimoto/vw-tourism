@@ -89,32 +89,6 @@ get_header();
                   <?php the_content();?>
                 </div>
 
-                <!-- MotoPressの予約ウィザード -->
-                <div class="booking-section">
-                  <?php
-                      // 現在の投稿 ID を取得
-                      $current_post_id = get_the_ID();
-
-                      // 投稿に保存されたショートコードを取得
-                      $shortcode_raw = get_post_meta($current_post_id, 'application_form_shortcode', true);
-
-                      // ショートコードのスペースや改行を削除
-                      $shortcode_clean = trim($shortcode_raw);
-
-                      // ショートコードを出力
-                      if (!empty($shortcode_clean)) {
-                          echo do_shortcode($shortcode_clean);
-                      } else {
-                          echo '<p>No associated service found for this post.</p>';
-                      }
-
-                      echo '<pre>';
-                      print_r($shortcode_id);
-                      echo '</pre>';
-
-                    ?>
-                  </div>
-                
                 <div class="pack-days-tab mb-3">
                 <?php
                 if ( $pkg_tour_details && is_array($pkg_tour_details) ) { ?>
