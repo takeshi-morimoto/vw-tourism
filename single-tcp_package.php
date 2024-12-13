@@ -95,12 +95,15 @@ get_header();
                       // 現在の投稿 ID を取得
                       $current_post_id = get_the_ID();
 
-                      // 投稿に保存された Shortcode ID を取得
-                      $shortcode_id = get_post_meta($current_post_id, 'application_form_shortcode', true); // メタキーを修正
+                      // 投稿に保存されたショートコードを取得
+                      $shortcode_raw = get_post_meta($current_post_id, 'application_form_shortcode', true);
 
-                      if ($shortcode_id) {
-                          // Shortcode を表示
-                          echo do_shortcode($shortcode_id);
+                      // ショートコードのスペースや改行を削除
+                      $shortcode_clean = trim($shortcode_raw);
+
+                      // ショートコードを出力
+                      if (!empty($shortcode_clean)) {
+                          echo do_shortcode($shortcode_clean);
                       } else {
                           echo '<p>No associated service found for this post.</p>';
                       }
