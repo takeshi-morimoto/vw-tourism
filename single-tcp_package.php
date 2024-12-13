@@ -84,11 +84,6 @@ get_header();
                   </div>
                 </div>
 
-                <div class="pack-desc mt-4">
-                  <h4 class="my-2"><?php echo get_the_content() != '' ? 'Description' : '' ?></h4>
-                  <?php the_content();?>
-                </div>
-
                 <div class="pack-days-tab mb-3">
                 <?php
                 if ( $pkg_tour_details && is_array($pkg_tour_details) ) { ?>
