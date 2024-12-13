@@ -92,18 +92,23 @@ get_header();
                 <!-- MotoPressの予約ウィザード -->
                 <div class="booking-section">
                   <?php
-                    // 現在の投稿 ID を取得
-                    $current_post_id = get_the_ID();
+                      // 現在の投稿 ID を取得
+                      $current_post_id = get_the_ID();
 
-                    // 投稿に保存された Shortcode ID を取得
-                    $shortcode_id = get_post_meta($current_post_id, '_shortcode_id', true);
+                      // 投稿に保存された Shortcode ID を取得
+                      $shortcode_id = get_post_meta($current_post_id, 'application_form_shortcode', true); // メタキーを修正
 
-                    if ($shortcode_id) {
-                        // Shortcode ID に基づいてフォームを表示
-                        echo do_shortcode('[appointment_form post="' . esc_attr($shortcode_id) . '"]');
-                    } else {
-                        echo '<p>No associated service found for this post.</p>';
-                    }
+                      if ($shortcode_id) {
+                          // Shortcode を表示
+                          echo do_shortcode($shortcode_id);
+                      } else {
+                          echo '<p>No associated service found for this post.</p>';
+                      }
+
+                      echo '<pre>';
+                      print_r($shortcode_id);
+                      echo '</pre>';
+
                     ?>
                   </div>
                 
