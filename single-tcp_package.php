@@ -141,9 +141,9 @@ get_header();
                 </div>
                 <div class="col-lg-12 col-md-6">
                   <div class="pack-content-video position-relative">
-                    <video width="100%" height="400" controls>
+                    <!-- <video width="100%" height="400" controls>
                         <source src="<?php echo $pkg_additional_video; ?>" type="video/mp4">
-                    </video>
+                    </video> -->
                     <!-- <video id="tourVideo" width="100%" height="400"  audio="muted" autoplay="false" src="<?php echo $pkg_additional_video; ?>" type="video/mp4"></video> -->
                     <!-- <div class="video-bg-img">
                         <?php if(get_theme_mod('vw_tourism_pro_single_packages_video_img')!=''){ ?>
