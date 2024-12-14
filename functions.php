@@ -817,19 +817,6 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-add_action('init', function () {
-    $post_types = get_post_types([], 'objects');
-    error_log(print_r($post_types, true)); // デバッグログに投稿タイプ一覧を出力
-});
-
-add_action('admin_menu', function() {
-    add_post_type_support('post', 'custom-fields');
-    add_post_type_support('page', 'custom-fields');
-    add_post_type_support('your_custom_post_type', 'custom-fields'); // 必要に応じてカスタム投稿タイプを追加
-});
-
-add_shortcode('dynamic_tour_shortcode', 'generate_dynamic_tour_shortcode');
-
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
