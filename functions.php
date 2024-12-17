@@ -817,6 +817,34 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
+function get_post_data() {
+	if (!isset($_GET['id'])) {
+	  wp_send_json_error('No post ID provided.');
+	  wp_die();
+	}
+  
+	$post_id = intval($_GET['id']);
+	$post = get_post($post_id);
+  
+	if ($post) {
+	  $image_url = get_the_post_thumbnail_url($post_id, 'full') ?: 'https://koikoi.co.jp/wp-content/uploads/default-image.jpg';
+	  $excerpt = wp_trim_words($post->post_content, 40, '...');
+  
+	  wp_send_json_success([
+		'title'   => esc_html($post->post_title),
+		'excerpt' => esc_html($excerpt),
+		'image'   => esc_url($image_url),
+	  ]);
+	} else {
+	  wp_send_json_error('Post not found.');
+	}
+  
+	wp_die();
+  }
+  add_action('wp_ajax_get_post_data', 'get_post_data');
+  add_action('wp_ajax_nopriv_get_post_data', 'get_post_data');
+  
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
