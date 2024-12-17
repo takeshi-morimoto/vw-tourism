@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const options = document.querySelectorAll('.custom-option');
   const contentWrapper = document.querySelector('.explore-main-wrapper');
   const selectTrigger = document.querySelector('.custom-select-trigger');
+  let isDefaultLoaded = false; // 初期表示時のフラグ
 
   options.forEach(option => {
     option.addEventListener('click', function () {
@@ -111,26 +112,30 @@ document.addEventListener('DOMContentLoaded', function () {
       const selectedContent = this.dataset.content;
       const selectedImage = this.dataset.image;
 
-      // コンテンツを安全に更新
-      contentWrapper.innerHTML = '';
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'content';
+      // コンテンツを動的に更新（デフォルト時はスキップ）
+      if (!isDefaultLoaded) {
+        isDefaultLoaded = true;
+      } else {
+        contentWrapper.innerHTML = '';
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'content';
 
-      const titleElement = document.createElement('h3');
-      titleElement.textContent = selectedTitle;
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = selectedTitle;
 
-      const contentElement = document.createElement('p');
-      contentElement.textContent = selectedContent;
+        const contentElement = document.createElement('p');
+        contentElement.textContent = selectedContent;
 
-      const imageElement = document.createElement('img');
-      imageElement.src = selectedImage;
-      imageElement.alt = selectedTitle;
+        const imageElement = document.createElement('img');
+        imageElement.src = selectedImage;
+        imageElement.alt = selectedTitle;
 
-      contentDiv.appendChild(titleElement);
-      contentDiv.appendChild(contentElement);
-      contentDiv.appendChild(imageElement);
+        contentDiv.appendChild(titleElement);
+        contentDiv.appendChild(contentElement);
+        contentDiv.appendChild(imageElement);
 
-      contentWrapper.appendChild(contentDiv);
+        contentWrapper.appendChild(contentDiv);
+      }
 
       // UIの選択状態を更新
       selectTrigger.textContent = selectedTitle;
