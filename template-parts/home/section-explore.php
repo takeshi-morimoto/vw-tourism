@@ -154,9 +154,9 @@ document.addEventListener('DOMContentLoaded', function () {
     this.parentNode.classList.toggle('open');
   });
 });
-</script>
-
 // デバッグ用 - 投稿データをログに出力
 error_log("Title: " . $selected_post_title);
 error_log("Content: " . strip_tags($selected_post_content));
 error_log("Image: " . $selected_post_image);
+</script>
+
