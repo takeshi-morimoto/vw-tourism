@@ -104,38 +104,42 @@ document.addEventListener('DOMContentLoaded', function () {
   const options = document.querySelectorAll('.custom-option');
   const contentWrapper = document.querySelector('.explore-main-wrapper');
   const selectTrigger = document.querySelector('.custom-select-trigger');
-  let isDefaultLoaded = false; // 初期表示時のフラグ
 
+  // 初期表示用データ
+  const firstOption = options[0]; // 最初の選択肢を取得
+  if (firstOption) {
+    const selectedTitle = firstOption.innerText;
+    const selectedContent = firstOption.dataset.content;
+    const selectedImage = firstOption.dataset.image;
+
+    // デフォルトコンテンツを表示
+    contentWrapper.innerHTML = `
+      <div class="content">
+        <h3>${selectedTitle}</h3>
+        <p>${selectedContent}</p>
+        <img src="${selectedImage}" alt="${selectedTitle}">
+      </div>
+    `;
+
+    // セレクトトリガーも初期状態に反映
+    selectTrigger.textContent = selectedTitle;
+  }
+
+  // 選択肢クリックイベントの設定
   options.forEach(option => {
     option.addEventListener('click', function () {
       const selectedTitle = this.innerText;
       const selectedContent = this.dataset.content;
       const selectedImage = this.dataset.image;
 
-      // コンテンツを動的に更新（デフォルト時はスキップ）
-      if (!isDefaultLoaded) {
-        isDefaultLoaded = true;
-      } else {
-        contentWrapper.innerHTML = '';
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'content';
-
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = selectedTitle;
-
-        const contentElement = document.createElement('p');
-        contentElement.textContent = selectedContent;
-
-        const imageElement = document.createElement('img');
-        imageElement.src = selectedImage;
-        imageElement.alt = selectedTitle;
-
-        contentDiv.appendChild(titleElement);
-        contentDiv.appendChild(contentElement);
-        contentDiv.appendChild(imageElement);
-
-        contentWrapper.appendChild(contentDiv);
-      }
+      // コンテンツを動的に更新
+      contentWrapper.innerHTML = `
+        <div class="content">
+          <h3>${selectedTitle}</h3>
+          <p>${selectedContent}</p>
+          <img src="${selectedImage}" alt="${selectedTitle}">
+        </div>
+      `;
 
       // UIの選択状態を更新
       selectTrigger.textContent = selectedTitle;
