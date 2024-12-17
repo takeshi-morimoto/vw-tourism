@@ -62,7 +62,7 @@ error_log("Image: " . $selected_post_image);
                     $post_id = get_the_ID();
                     $post_title = get_the_title();
                     $post_content = wp_kses_post(get_the_content());
-                    $post_image = get_the_post_thumbnail_url($post_id, 'full') ?: 'path/to/default-image.jpg';
+                    $selected_post_image = get_the_post_thumbnail_url($post_id, 'full') ?: 'https://koikoi.co.jp/wp-content/uploads/default-image.jpg';
 
                     // 初回の投稿をデフォルト表示
                     if ($first_post) {
