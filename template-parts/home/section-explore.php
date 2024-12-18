@@ -11,7 +11,6 @@ if( get_theme_mod('vw_tourism_pro_explore_bgcolor','') ) {
   $explore_bg = '';
 }
 $img_bg = get_theme_mod('vw_tourism_pro_explore_bg_attachment');
-
 $args = array(
   'post_type'      => 'tcp_explore',
   'posts_per_page' => 10,
@@ -42,19 +41,15 @@ $query = new WP_Query($args);
                     <span class="custom-select-trigger explore-select-title">Select an option <i class="fa-solid fa-chevron-down"></i></span>
                     <ul class="custom-options">
                       <?php
-
                         $selected_post_id = '';
                         $selected_post_title = '';
-
                         while ($query->have_posts()) {
                           $query->the_post();
-
                           if ($first_post) {
                             $selected_post_id = esc_attr(get_the_ID());
                             $selected_post_title = esc_html(get_the_title());
                             $first_post = false;
                           }
-
                           ?>
                           <li class="custom-option" data-value="<?php echo esc_attr(get_the_ID()); ?>"><?php echo esc_html(get_the_title()); ?></li>
                         <?php }
