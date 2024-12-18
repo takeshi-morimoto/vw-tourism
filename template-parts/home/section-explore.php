@@ -91,6 +91,30 @@ $query = new WP_Query($args);
             ?>
             <div class="explore-main-wrapper mt-2">
               <!-- ここにコンテンツが表示される -->
+              <div class="owl-carousel owl-theme" id="explore-carousel">
+                <?php
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    $images = get_post_meta(get_the_ID(), 'additional_meta_fields', true); // カスタムフィールドから画像取得
+                    ?>
+                    <div class="explore-inners">
+                        <div class="explore-img">
+                            <img style="border-radius: 10px;" src="<?php echo esc_url($images['image'] ?? ''); ?>" alt="Explore Image">
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="explore-inner-box">
+                                <h6 class="explore-inner-title"><?php echo esc_html($images['text1'] ?? ''); ?></h6>
+                                <h6 class="explore-inner-title"><?php echo esc_html($images['text2'] ?? ''); ?></h6>
+                            </div>
+                            <div class="explore-inner-box">
+                                <h6 class="explore-inner-title"><?php echo esc_html($images['text3'] ?? ''); ?></h6>
+                                <h6 class="explore-inner-title"><?php echo esc_html($images['text4'] ?? ''); ?></h6>
+                            </div>
+                        </div>
+                    </div>
+                <?php }
+                wp_reset_postdata(); ?>
+              </div>
             </div>
           </div>
         </div>
@@ -98,9 +122,6 @@ $query = new WP_Query($args);
         <!-- 右側の地図画像表示 -->
         <div class="col-lg-6 wow zoomIn delay-2000">
             <img class="map-img" src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_explore_map_img')); ?>" alt="Explore Map">
-            <div id="explore-image-wrapper" class="mt-3">
-              <!-- 選択した投稿の画像を表示 -->
-            </div>
         </div>
       </div>
   </div>
@@ -108,48 +129,18 @@ $query = new WP_Query($args);
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const customOptions = document.querySelectorAll('.custom-option');
-    const exploreMainWrapper = document.querySelector('.explore-main-wrapper');
-    const exploreImageWrapper = document.querySelector('#explore-image-wrapper');
-    const defaultPostID = '<?php echo $selected_post_id; ?>';
-
-    // 初期表示: 最初の投稿の内容を表示
-    if (defaultPostID) {
-        fetchExploreContent(defaultPostID);
-    }
-
-    // 選択肢がクリックされたときの処理
-    customOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const postID = this.getAttribute('data-value');
-            fetchExploreContent(postID);
-        });
+    $('#explore-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        dots: false,
+        items: 3,
+        navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>'],
+        responsive: {
+            0: { items: 1 },
+            600: { items: 2 },
+            1000: { items: 3 }
+        }
     });
-
-    // コンテンツを取得して表示する関数
-    function fetchExploreContent(postID) {
-        fetch(`<?php echo esc_url( home_url('/wp-json/wp/v2/tcp_explore/')); ?>${postID}`)
-            .then(response => response.json())
-            .then(data => {
-                exploreMainWrapper.innerHTML = `
-                    <h3>${data.title.rendered}</h3>
-                    <div>${data.content.rendered}</div>
-                `;
-
-                if (data.featured_media) {
-                    fetch(`<?php echo esc_url( home_url('/wp-json/wp/v2/media/')); ?>${data.featured_media}`)
-                        .then(response => response.json())
-                        .then(imageData => {
-                            exploreImageWrapper.innerHTML = `<img src="${imageData.source_url}" alt="Explore Image" />`;
-                        });
-                } else {
-                    exploreImageWrapper.innerHTML = '<p>No image available.</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching content:', error);
-                exploreMainWrapper.innerHTML = '<p>コンテンツの読み込みに失敗しました。</p>';
-            });
-    }
 });
 </script>
