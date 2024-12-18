@@ -144,3 +144,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<?php
+while ($query->have_posts()) {
+    $query->the_post();
+    $images = get_post_meta(get_the_ID(), 'additional_meta_fields', true); // カスタムフィールドから画像取得
+    echo '<pre>';
+    print_r($images); // デバッグ: 取得した値を確認
+    echo '</pre>';
+    ?>
+    <div class="explore-inners">
+        <div class="explore-img">
+            <?php if (!empty($images['image'])) { ?>
+                <img style="border-radius: 10px;" src="<?php echo esc_url($images['image']); ?>" alt="Explore Image">
+            <?php } else { ?>
+                <p>No image available.</p>
+            <?php } ?>
+        </div>
+    </div>
+<?php }
+wp_reset_postdata();
+
+if (empty($images)) {
+    echo '<p>No custom field data available.</p>';
+}
+
+?>
