@@ -63,7 +63,7 @@ $query = new WP_Query($args);
                 ?>
                 <div class="custom-select-wrapper">
                   <div class="custom-select">
-                    <span class="custom-select-trigger explore-select-title">「Select an option」 <i class="fa-solid fa-chevron-down"></i></span>
+                    <span class="custom-select-trigger explore-select-title">Select an option <i class="fa-solid fa-chevron-down"></i></span>
                     <ul class="custom-options">
                       <?php
                         $selected_post_id = '';
@@ -98,6 +98,9 @@ $query = new WP_Query($args);
         <!-- 右側の地図画像表示 -->
         <div class="col-lg-6 wow zoomIn delay-2000">
             <img class="map-img" src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_explore_map_img')); ?>" alt="Explore Map">
+            <div id="explore-image-wrapper" class="mt-3">
+              <!-- 選択した投稿の画像を表示 -->
+            </div>
         </div>
       </div>
   </div>
@@ -107,9 +110,10 @@ $query = new WP_Query($args);
 document.addEventListener('DOMContentLoaded', function() {
     const customOptions = document.querySelectorAll('.custom-option');
     const exploreMainWrapper = document.querySelector('.explore-main-wrapper');
+    const exploreImageWrapper = document.querySelector('#explore-image-wrapper');
     const defaultPostID = '<?php echo $selected_post_id; ?>';
 
-    // 初期表示：最初の投稿の内容を表示
+    // 初期表示: 最初の投稿の内容を表示
     if (defaultPostID) {
         fetchExploreContent(defaultPostID);
     }
@@ -131,6 +135,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${data.title.rendered}</h3>
                     <div>${data.content.rendered}</div>
                 `;
+
+                if (data.featured_media) {
+                    fetch(`<?php echo esc_url( home_url('/wp-json/wp/v2/media/')); ?>${data.featured_media}`)
+                        .then(response => response.json())
+                        .then(imageData => {
+                            exploreImageWrapper.innerHTML = `<img src="${imageData.source_url}" alt="Explore Image" />`;
+                        });
+                } else {
+                    exploreImageWrapper.innerHTML = '<p>No image available.</p>';
+                }
             })
             .catch(error => {
                 console.error('Error fetching content:', error);
