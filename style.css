@@ -1604,3 +1604,49 @@ display: none
 }
 
 /* new css */
+.explore-section {
+  padding: 50px 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  color: #777;
+}
+
+.explore-item {
+  text-align: center;
+  margin: 15px;
+}
+
+.explore-item-img img {
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+}
+
+.explore-item-info {
+  margin-top: 10px;
+}
+
+.explore-item-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.explore-item-description {
+  font-size: 16px;
+  color: #777;
+}
