@@ -817,13 +817,6 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-function register_tcp_explore_api() {
-    register_post_type('tcp_explore', array(
-        'show_in_rest' => true, // REST APIを有効化
-    ));
-}
-add_action('init', 'register_tcp_explore_api');
-
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
