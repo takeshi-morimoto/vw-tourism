@@ -24,7 +24,34 @@ $args = array(
   'fields'         => 'ids' // 投稿IDのみを取得
 );
 $query = new WP_Query($args);
+
 ?>
+
+<?php
+while ($query->have_posts()) {
+    $query->the_post();
+    $post_id = get_the_ID();
+
+    // カスタムフィールドを取得
+    $image = get_post_meta($post_id, 'image_meta_field', true);
+    $text1 = get_post_meta($post_id, 'text1_meta_field', true);
+    $text2 = get_post_meta($post_id, 'text2_meta_field', true);
+    $text3 = get_post_meta($post_id, 'text3_meta_field', true);
+    $text4 = get_post_meta($post_id, 'text4_meta_field', true);
+    ?>
+    <div class="custom-option" data-value="<?php echo esc_attr($post_id); ?>">
+        <?php if ($image) { ?>
+            <img src="<?php echo esc_url($image); ?>" alt="Meta Image">
+        <?php } ?>
+        <p><?php echo esc_html($text1); ?></p>
+        <p><?php echo esc_html($text2); ?></p>
+        <p><?php echo esc_html($text3); ?></p>
+        <p><?php echo esc_html($text4); ?></p>
+    </div>
+<?php }
+wp_reset_postdata();
+?>
+
 
 <!-- 「Explore」セクションの表示実装 -->
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>" class="<?php echo esc_attr($img_bg); ?> pb-0" >
