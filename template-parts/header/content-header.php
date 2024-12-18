@@ -4,16 +4,22 @@
  *
  * @package vw_tourism_pro
  */
- $header_widgets_section = get_theme_mod( 'vw_tourism_pro_header_widgets_enable' );
- if ( 'Disable' == $header_widgets_section ) {
+
+// 変数の初期化
+$menu_width = get_theme_mod('vw_tourism_pro_menu_width', 'default'); // デフォルト値を設定
+
+$header_widgets_section = get_theme_mod( 'vw_tourism_pro_header_widgets_enable' );
+if ( 'Disable' == $header_widgets_section ) {
    return;
- }
- if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
+}
+
+if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
    $background_setting = 'background-color:'.esc_attr(get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','')).';';
- }else{
+} else {
    $background_setting = '';
- }
+}
 ?>
+
   <div class="container">
     <div class="row justify-content-between  bg-media align-items-center   ">
         <div class="logo col-lg-2 col-md-4 col-4  order-lg-1 order-md-1 order-sm-1 order-1">
@@ -110,7 +116,7 @@
 
 
   </div>
- <span class="d-none" id="menu-width"><?php echo esc_html($menu_width); ?></span>
+  <span class="d-none" id="menu-width"><?php echo esc_html($menu_width); ?></span>
 
 
 </div>
