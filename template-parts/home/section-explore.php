@@ -102,3 +102,40 @@ $query = new WP_Query($args);
       </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const customOptions = document.querySelectorAll('.custom-option');
+    const exploreMainWrapper = document.querySelector('.explore-main-wrapper');
+    const defaultPostID = '<?php echo $selected_post_id; ?>';
+
+    // 初期表示：最初の投稿の内容を表示
+    if (defaultPostID) {
+        fetchExploreContent(defaultPostID);
+    }
+
+    // 選択肢がクリックされたときの処理
+    customOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const postID = this.getAttribute('data-value');
+            fetchExploreContent(postID);
+        });
+    });
+
+    // コンテンツを取得して表示する関数
+    function fetchExploreContent(postID) {
+        fetch(`<?php echo esc_url( home_url('/wp-json/wp/v2/tcp_explore/')); ?>${postID}`)
+            .then(response => response.json())
+            .then(data => {
+                exploreMainWrapper.innerHTML = `
+                    <h3>${data.title.rendered}</h3>
+                    <div>${data.content.rendered}</div>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+                exploreMainWrapper.innerHTML = '<p>コンテンツの読み込みに失敗しました。</p>';
+            });
+    }
+});
+</script>
