@@ -148,25 +148,29 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php
 while ($query->have_posts()) {
     $query->the_post();
-    $images = get_post_meta(get_the_ID(), 'additional_meta_fields', true); // カスタムフィールドから画像取得
-    echo '<pre>';
-    print_r($images); // デバッグ: 取得した値を確認
-    echo '</pre>';
+    $images = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+    $images = is_array($images) ? $images : []; // 配列でない場合は空配列
+
+    // デフォルト画像URL設定
+    $default_image = 'https://example.com/path/to/default-image.jpg';
     ?>
     <div class="explore-inners">
         <div class="explore-img">
-            <?php if (!empty($images['image'])) { ?>
-                <img style="border-radius: 10px;" src="<?php echo esc_url($images['image']); ?>" alt="Explore Image">
-            <?php } else { ?>
-                <p>No image available.</p>
-            <?php } ?>
+            <img style="border-radius: 10px;" 
+                 src="<?php echo esc_url($images['image'] ?? $default_image); ?>" 
+                 alt="Explore Image">
+        </div>
+        <div class="d-flex gap-2 mt-2">
+            <div class="explore-inner-box">
+                <h6 class="explore-inner-title"><?php echo esc_html($images['text1'] ?? 'N/A'); ?></h6>
+                <h6 class="explore-inner-title"><?php echo esc_html($images['text2'] ?? 'N/A'); ?></h6>
+            </div>
+            <div class="explore-inner-box">
+                <h6 class="explore-inner-title"><?php echo esc_html($images['text3'] ?? 'N/A'); ?></h6>
+                <h6 class="explore-inner-title"><?php echo esc_html($images['text4'] ?? 'N/A'); ?></h6>
+            </div>
         </div>
     </div>
 <?php }
 wp_reset_postdata();
-
-if (empty($images)) {
-    echo '<p>No custom field data available.</p>';
-}
-
 ?>
