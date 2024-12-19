@@ -1621,6 +1621,7 @@ display: none
   padding: 10px;
   cursor: pointer;
   width: 100%;
+  z-index: 10; /* 必要に応じて追加 */
 }
 
 .custom-select-trigger {
@@ -1630,7 +1631,7 @@ display: none
 
 .custom-options {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px); /* 少し下げて表示 */
   left: 0;
   right: 0;
   background: #fff;
@@ -1640,6 +1641,7 @@ display: none
   overflow-y: auto;
   z-index: 1000;
   display: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ドロップダウンを際立たせる影 */
 }
 
 .custom-options.open {
