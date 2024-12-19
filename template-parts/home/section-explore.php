@@ -101,13 +101,16 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // スライダーの内容をクリア
                 slider.innerHTML = '';
+                
+                // 新しいスライド要素を追加
                 data.meta_fields.forEach(field => {
                     const slide = document.createElement('div');
                     slide.className = 'explore-inners';
                     slide.innerHTML = `
                         <div class="explore-img">
-                            <img src="${field.image}" alt="${field.text1}">
+                            <img src="${field.image}" alt="${field.text1}" style="border-radius: 10px;">
                         </div>
                         <div class="d-flex gap-2 mt-2">
                             <div class="explore-inner-box">
@@ -119,27 +122,36 @@ document.addEventListener('DOMContentLoaded', function () {
                     slider.appendChild(slide);
                 });
 
-                // Owl Carouselの再初期化
-                $(slider).owlCarousel({
-                    loop: true,
-                    margin: 20,
-                    nav: true,
-                    dots: true,
-                    autoplay: true,
-                    autoplayTimeout: 5000,
-                    items: 3,
-                    responsive: {
-                        0: { items: 1 },
-                        576: { items: 2 },
-                        992: { items: 3 },
-                    },
-                });
+                // OwlCarouselの初期化
+                initializeOwlCarousel();
             } else {
                 console.error('Failed to fetch data:', data.message);
             }
         })
         .catch(error => console.error('Error:', error));
     }
+
+    // OwlCarouselを初期化または再初期化する関数
+    function initializeOwlCarousel() {
+        $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
+        $(slider).owlCarousel({
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            items: 3,
+            responsive: {
+                0: { items: 1 },
+                576: { items: 2 },
+                992: { items: 3 },
+            },
+        });
+    }
+
+    // ページロード時に初期化
+    initializeOwlCarousel();
 });
 </script>
 
