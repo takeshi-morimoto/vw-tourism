@@ -92,59 +92,29 @@ $default_image = 'https://example.com/default-image.jpg';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // セレクトボックス要素を取得
     const selectTrigger = document.querySelector('.custom-select-trigger');
     const selectOptions = document.querySelector('.custom-options');
+    const selectWrapper = document.querySelector('.custom-select-wrapper');
 
-    selectTrigger.addEventListener('click', () => {
-        selectOptions.style.display = selectOptions.style.display === 'block' ? 'none' : 'block';
+    // ドロップダウンを表示・非表示にする
+    selectTrigger.addEventListener('click', (e) => {
+        e.stopPropagation(); // イベントのバブリングを停止
+        selectOptions.classList.toggle('open');
     });
 
+    // オプションをクリックした際に選択された値をトリガーに表示
     selectOptions.addEventListener('click', (e) => {
         if (e.target.classList.contains('custom-option')) {
             selectTrigger.textContent = e.target.textContent;
-            selectOptions.style.display = 'none';
+            selectOptions.classList.remove('open'); // ドロップダウンを閉じる
         }
     });
 
-    // Owl Carousel Initialization
-    if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
-        jQuery('.explore-carousel').owlCarousel({
-            loop: true,
-            margin: 20,
-            nav: true,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 5000,
-            items: 3,
-            responsive: {
-                0: { items: 1 },
-                576: { items: 2 },
-                992: { items: 3 }
-            }
-        });
-    }
-});
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
-        jQuery('.explore-carousel').owlCarousel({
-            loop: true,
-            margin: 30,
-            nav: true,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 5000,
-            items: 3,
-            responsive: {
-                0: { items: 1 },
-                576: { items: 2 },
-                992: { items: 3 }
-            }
-        });
-    }
+    // ページのどこかをクリックした際にドロップダウンを閉じる
+    document.addEventListener('click', () => {
+        selectOptions.classList.remove('open');
+    });
 });
 </script>
 

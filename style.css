@@ -1606,9 +1606,9 @@ display: none
 /* new css */
 .custom-select-wrapper {
   position: relative;
-  display: inline-block;
   width: 100%;
-  margin-bottom: 20px;
+  max-width: 300px;
+  margin: 20px auto;
 }
 
 .custom-select {
@@ -1640,6 +1640,12 @@ display: none
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 100;
   display: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.custom-options.open {
+  display: block;
 }
 
 .custom-option {
@@ -1649,13 +1655,4 @@ display: none
 
 .custom-option:hover {
   background-color: #f1f1f1;
-}
-
-.custom-select:hover .custom-options {
-  display: block;
-}
-
-.map-img {
-  width: 100%;
-  border-radius: 10px;
 }
