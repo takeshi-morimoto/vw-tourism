@@ -21,26 +21,7 @@ $query = new WP_Query($args);
 // デフォルト画像
 $default_image = 'https://example.com/default-image.jpg';
 
-$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-if (!empty($additional_fields)) {
-    foreach ($additional_fields as $field) {
-        $image = isset($field['image']) ? esc_url($field['image']) : '';
-        $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
-        $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
-        $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
-        $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
-        
-        // 表示例
-        echo '<div class="explore-item">';
-        echo '<img src="' . $image . '" alt="' . $text1 . '">';
-        echo '<p>' . $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4 . '</p>';
-        echo '</div>';
-    }
-}
-
 ?>
-
-
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
     <div class="container">
@@ -50,37 +31,37 @@ if (!empty($additional_fields)) {
                 <p class="sec-sub-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_sub_heading', 'Explore')); ?></p>
                 <h2 class="sec-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
                 <p class="exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
-                
+
                 <!-- スライダー -->
                 <div class="explore-carousel owl-carousel mt-3">
-                <?php
-                if ($query->have_posts()):
-                    while ($query->have_posts()): $query->the_post();
-                        $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+                    <?php
+                    if ($query->have_posts()):
+                        while ($query->have_posts()): $query->the_post();
+                            $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
 
-                        if (!empty($additional_fields)) {
-                            foreach ($additional_fields as $field) {
-                                $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-                                $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
-                                $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
-                                $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
-                                $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
-                                ?>
-                                <div class="explore-item text-center">
-                                    <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
-                                    <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
-                                </div>
-                                <?php
+                            if (!empty($additional_fields) && is_array($additional_fields)) {
+                                foreach ($additional_fields as $field) {
+                                    $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+                                    $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
+                                    $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
+                                    $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
+                                    $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
+                                    ?>
+                                    <div class="explore-item text-center">
+                                        <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
+                                        <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
+                                    </div>
+                                    <?php
+                                }
+                            } else {
+                                echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                             }
-                        } else {
-                            echo '<p>No additional data available for this post. Please check the custom fields.</p>';
-                        }
-                    endwhile;
-                    wp_reset_postdata();
-                else:
-                    echo '<p>No posts available.</p>';
-                endif;
-                ?>
+                        endwhile;
+                        wp_reset_postdata();
+                    else:
+                        echo '<p>No posts available.</p>';
+                    endif;
+                    ?>
                 </div>
             </div>
 
@@ -98,48 +79,37 @@ if (!empty($additional_fields)) {
     </div>
 </section>
 
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
-    jQuery('.explore-carousel').owlCarousel({
-      loop: true,
-      margin: 20,
-      nav: true,
-      dots: false,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      items: 3,
-      responsive: {
-          0: { items: 1 },
-          576: { items: 2 },
-          992: { items: 3 }
-      }
-    });
-  }
+    if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
+        jQuery('.explore-carousel').owlCarousel({
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            items: 3,
+            responsive: {
+                0: { items: 1 },
+                576: { items: 2 },
+                992: { items: 3 }
+            }
+        });
+    }
 });
 </script>
 
 <?php
 // 投稿データのデバッグ用コード
-$args = [
-    'post_type' => 'tcp_explore',
-    'posts_per_page' => 10,
-];
-$query = new WP_Query($args);
-
+echo '<h3>テスト: 投稿データ</h3>';
 if ($query->have_posts()):
-    echo '<h3>テスト: 投稿データ</h3>';
     while ($query->have_posts()): $query->the_post();
-        // 投稿のタイトルを表示
         echo '<p>タイトル: ' . get_the_title() . '</p>';
-        
-        // カスタムフィールドを取得
         $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
         if (!empty($additional_fields)) {
             echo '<pre>';
-            print_r($additional_fields); // カスタムフィールドデータを表示
+            print_r($additional_fields);
             echo '</pre>';
         } else {
             echo '<p>追加メタフィールドが見つかりません</p>';
@@ -149,42 +119,4 @@ if ($query->have_posts()):
 else:
     echo '<p>投稿が見つかりませんでした。</p>';
 endif;
-?>
-
-<?php
-$all_meta = get_post_meta(get_the_ID());
-echo '<h3>全メタデータのデバッグ</h3>';
-echo '<pre>';
-print_r($all_meta);
-echo '</pre>';
-
-
-// デバッグ用に投稿IDと全メタデータを確認
-echo '<h3>現在の投稿ID: ' . get_the_ID() . '</h3>';
-
-$all_meta = get_post_meta(get_the_ID());
-echo '<h3>全メタデータの確認:</h3>';
-echo '<pre>';
-print_r($all_meta);
-echo '</pre>';
-
-// additional_meta_fields のデータ取得
-$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-
-if (!empty($additional_fields) && is_array($additional_fields)) {
-    foreach ($additional_fields as $field) {
-        $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-        $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
-        $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
-        $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
-        $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
-
-        echo '<div class="explore-item">';
-        echo '<img src="' . $image . '" alt="' . $text1 . '">';
-        echo '<p>' . $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4 . '</p>';
-        echo '</div>';
-    }
-} else {
-    echo '<p>追加メタフィールドが見つかりません</p>';
-}
 ?>
