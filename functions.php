@@ -818,9 +818,11 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // explole追加
+// Ajax ハンドラーを登録
 add_action('wp_ajax_get_explore_meta_fields', 'get_explore_meta_fields');
 add_action('wp_ajax_nopriv_get_explore_meta_fields', 'get_explore_meta_fields');
 
+// Ajax リクエストの処理
 function get_explore_meta_fields() {
     check_ajax_referer('explore_nonce', 'nonce'); // セキュリティチェック
 
@@ -834,10 +836,13 @@ function get_explore_meta_fields() {
     }
 }
 
+// スクリプトに Ajax URL と nonce を渡す
 add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_script('your-script-handle', get_template_directory_uri() . '/assets/js/your-script.js', ['jquery'], null, true);
+
     wp_localize_script('your-script-handle', 'ajax_object', [
         'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce'    => wp_create_nonce('explore_nonce'),
+        'nonce'   => wp_create_nonce('explore_nonce'),
     ]);
 });
 
