@@ -1,22 +1,22 @@
 <?php
-// セクションの表示/非表示設定
-$section_hide = get_theme_mod('vw_tourism_pro_explore_enabledisable');
-if ($section_hide === 'Disable') return;
+// // セクションの表示/非表示設定
+// $section_hide = get_theme_mod('vw_tourism_pro_explore_enabledisable');
+// if ($section_hide === 'Disable') return;
 
-// 背景設定
-$explore_bg = '';
-if ($bg_color = get_theme_mod('vw_tourism_pro_explore_bgcolor', '')) {
-    $explore_bg = 'background-color:' . esc_attr($bg_color) . ';';
-} elseif ($bg_image = get_theme_mod('vw_tourism_pro_explore_bgimage', '')) {
-    $explore_bg = 'background-image:url(' . esc_url($bg_image) . ');';
-}
+// // 背景設定
+// $explore_bg = '';
+// if ($bg_color = get_theme_mod('vw_tourism_pro_explore_bgcolor', '')) {
+//     $explore_bg = 'background-color:' . esc_attr($bg_color) . ';';
+// } elseif ($bg_image = get_theme_mod('vw_tourism_pro_explore_bgimage', '')) {
+//     $explore_bg = 'background-image:url(' . esc_url($bg_image) . ');';
+// }
 
-// WP_Queryでカスタム投稿タイプ「tcp_explore」を取得
-$args = [
-    'post_type' => 'tcp_explore',
-    'posts_per_page' => 10,
-];
-$query = new WP_Query($args);
+// // WP_Queryでカスタム投稿タイプ「tcp_explore」を取得
+// $args = [
+//     'post_type' => 'tcp_explore',
+//     'posts_per_page' => 10,
+// ];
+// $query = new WP_Query($args);
 
 // // デフォルト画像
 // $default_image = 'https://example.com/default-image.jpg';
