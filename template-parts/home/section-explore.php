@@ -25,7 +25,6 @@ $default_image = 'https://example.com/default-image.jpg';
 <section id="explore" class="pb-0" style="<?php echo esc_attr($explore_bg); ?>">
   <div class="container">
     <div class="row align-items-center">
-      <!-- 左カラム（テキストとカスタムセレクト） -->
       <div class="col-lg-6">
         <p class="sec-sub-heading text-md-start text-center">Explore</p>
         <h2 class="sec-heading text-md-start text-center">France Discover</h2>
@@ -50,9 +49,7 @@ $default_image = 'https://example.com/default-image.jpg';
             <p class="text-md-start text-center">
               Lorem Ipsum is simply dummy text of the printing and typesetting industry...
             </p>
-            <!-- Slickスライダー用コンテナ -->
             <div class="slider">
-              <!-- スライド1 -->
               <div class="slide-item">
                 <div class="explore-inners">
                   <div class="explore-img">
@@ -72,7 +69,6 @@ $default_image = 'https://example.com/default-image.jpg';
                   </div>
                 </div>
               </div>
-              <!-- スライド2 -->
               <div class="slide-item">
                 <div class="explore-inners">
                   <div class="explore-img">
@@ -92,7 +88,6 @@ $default_image = 'https://example.com/default-image.jpg';
                   </div>
                 </div>
               </div>
-              <!-- スライド3 -->
               <div class="slide-item">
                 <div class="explore-inners">
                   <div class="explore-img">
@@ -112,13 +107,12 @@ $default_image = 'https://example.com/default-image.jpg';
                   </div>
                 </div>
               </div>
-              <!-- 必要に応じてスライド追加 -->
+              <!-- 必要に応じて他のスライドを追加 -->
             </div>
           </div>
         </div>
       </div>
       
-      <!-- 右カラム（地図画像） -->
       <div class="col-lg-6">
         <img class="map-img"
              src="https://preview.vwthemesdemo.com/vw-tourism/wp-content/themes/vw-tourism-pro/assets/images/explore/map.png" 
@@ -128,39 +122,41 @@ $default_image = 'https://example.com/default-image.jpg';
   </div>
 </section>
 
-<!-- Slick初期化用スクリプト -->
 <script>
-// Slickを使用する前に、必ずslick.min.jsとslick.css、jqueryが正しく読み込まれているか確認。
-// もしこのスクリプトが<head>内にあり、slick.min.jsがfooterで読み込まれるなら、フッターでこのスクリプトを実行するか、Slick読み込み後にこのコードを実行してください。
-
-jQuery(document).ready(function($){
-  // .sliderクラスが存在するか確認
-  if ($('.slider').length > 0) {
-    console.log($('.slider'));
-    $('.slider').slick({
-      infinite: true,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      arrows: true,
-      dots: true,
-      autoplay: true,
-      autoplaySpeed: 4000,
-      responsive: [
-        {
-          breakpoint: 992,
-          settings: {
-            slidesToShow: 2
+// 全てのスクリプトと画像が読み込まれた後にSlickを初期化
+jQuery(window).on('load', function($){
+  var $slider = jQuery('.slider');
+  if ($slider.length > 0) {
+    console.log('Slider element found:', $slider);
+    // Slickがロード済みか確認：jQuery.fn.slickが存在するか
+    if (typeof jQuery.fn.slick !== 'undefined') {
+      $slider.slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: true,
+        autoplay: true,
+        autoplaySpeed: 4000,
+        responsive: [
+          {
+            breakpoint: 992,
+            settings: {
+              slidesToShow: 2
+            }
+          },{
+            breakpoint: 576,
+            settings: {
+              slidesToShow: 1
+            }
           }
-        },{
-          breakpoint: 576,
-          settings: {
-            slidesToShow: 1
-          }
-        }
-      ]
-    });
+        ]
+      });
+    } else {
+      console.error('Slick is not loaded. Check if slick.min.js is enqueued properly.');
+    }
   } else {
-    console.error('.slider要素が見つかりません。');
+    console.error('.slider element not found.');
   }
 });
 </script>
