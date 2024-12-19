@@ -123,13 +123,12 @@ $default_image = 'https://example.com/default-image.jpg';
 </section>
 
 <script>
-// 全てのスクリプトと画像が読み込まれた後にSlickを初期化
-jQuery(window).on('load', function($){
+jQuery(window).on('load', function(){
   var $slider = jQuery('.slider');
   if ($slider.length > 0) {
     console.log('Slider element found:', $slider);
-    // Slickがロード済みか確認：jQuery.fn.slickが存在するか
     if (typeof jQuery.fn.slick !== 'undefined') {
+      // ここでslick()を初期化
       $slider.slick({
         infinite: true,
         slidesToShow: 3,
