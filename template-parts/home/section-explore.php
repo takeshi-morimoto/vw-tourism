@@ -37,56 +37,39 @@ $default_image = 'https://example.com/default-image.jpg';
         <?php } ?>
 
         <div class="explore-inner">
-          <?php
-            if ($query->have_posts()) {
-              $first_post = true;
-              $selected_post_title = '';
-              $selected_post_id = '';
-              ?>
-              <div class="custom-select-wrapper">
-                <div class="custom-select">
-                  <?php 
-                    // 一度投稿を取得して最初の投稿タイトルをデフォルトに設定
-                    $query->the_post();
-                    $selected_post_id = get_the_ID();
-                    $selected_post_title = get_the_title();
-                    wp_reset_postdata();
+          <?php if ($query->have_posts()) : ?>
+            <?php
+              // 最初の投稿を取得
+              $query->the_post();
+              $selected_post_id = get_the_ID();
+              $selected_post_title = get_the_title();
 
-                    // 再ループ開始
-                    $query->rewind_posts();
-                  ?>
-                  <span class="custom-select-trigger explore-select-title" data-value="<?php echo esc_attr($selected_post_id); ?>">
-                    <?php echo esc_html($selected_post_title); ?> <i class="fa-solid fa-chevron-down"></i>
-                  </span>
-                  <ul class="custom-options" style="display: none;">
-                    <?php
-                      while ($query->have_posts()) {
-                        $query->the_post();
-                        $post_id = get_the_ID();
-                        $post_title = get_the_title();
-                        ?>
-                        <li class="custom-option" data-value="<?php echo esc_attr($post_id); ?>"><?php echo esc_html($post_title); ?></li>
-                        <?php
-                      }
-                      wp_reset_postdata();
-                    ?>
-                  </ul>
-                </div>
+              // 再度ループ開始地点へ戻す
+              $query->rewind_posts();
+            ?>
+            <div class="custom-select-wrapper">
+              <div class="custom-select">
+                <span class="custom-select-trigger explore-select-title" data-value="<?php echo esc_attr($selected_post_id); ?>">
+                  <?php echo esc_html($selected_post_title); ?> <i class="fa-solid fa-chevron-down"></i>
+                </span>
+                <ul class="custom-options" style="display: none;">
+                  <?php while ($query->have_posts()) : $query->the_post(); ?>
+                    <li class="custom-option" data-value="<?php echo esc_attr(get_the_ID()); ?>">
+                      <?php echo esc_html(get_the_title()); ?>
+                    </li>
+                  <?php endwhile; wp_reset_postdata(); ?>
+                </ul>
               </div>
-            <?php } else {
-              // 投稿がない場合
-              ?>
-              <p>No Regions Available</p>
-              <?php
-            }
-          ?>
+            </div>
+          <?php else : ?>
+            <p>No Regions Available</p>
+          <?php endif; ?>
 
           <div class="explore-main-wrapper mt-2">
             <p class="text-md-start text-center">
-              <!-- ここは単純なテキスト表示のみ -->
               Lorem Ipsum is simply dummy text of the printing and typesetting industry...
             </p>
-            <!-- スライダー部分をリスト表示に変更 -->
+            <!-- スライダー部分をリスト表示に変更（例） -->
             <div class="explore-list">
               <ul>
                 <li>
