@@ -109,10 +109,11 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => console.error('Fetch Error:', error));
 }
 
-function initializeOwlCarousel(items) {
+function initializeOwlCarousel(items = []) {
     const slider = document.querySelector('.owl-carousel');
     slider.innerHTML = ''; // スライダーの初期化
 
+    // アイテムを追加
     items.forEach(item => {
         const slide = document.createElement('div');
         slide.className = 'explore-inners';
@@ -130,6 +131,7 @@ function initializeOwlCarousel(items) {
         slider.appendChild(slide);
     });
 
+    // OwlCarouselを初期化
     $(slider).owlCarousel({
         loop: true,
         margin: 20,
