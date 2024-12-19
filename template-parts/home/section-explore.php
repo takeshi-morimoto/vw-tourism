@@ -98,6 +98,8 @@ if (!empty($additional_fields)) {
     </div>
 </section>
 
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
@@ -118,3 +120,34 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<?php
+// 投稿データのデバッグ用コード
+$args = [
+    'post_type' => 'tcp_explore',
+    'posts_per_page' => 10,
+];
+$query = new WP_Query($args);
+
+if ($query->have_posts()):
+    echo '<h3>テスト: 投稿データ</h3>';
+    while ($query->have_posts()): $query->the_post();
+        // 投稿のタイトルを表示
+        echo '<p>タイトル: ' . get_the_title() . '</p>';
+        
+        // カスタムフィールドを取得
+        $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+        if (!empty($additional_fields)) {
+            echo '<pre>';
+            print_r($additional_fields); // カスタムフィールドデータを表示
+            echo '</pre>';
+        } else {
+            echo '<p>追加メタフィールドが見つかりません</p>';
+        }
+    endwhile;
+    wp_reset_postdata();
+else:
+    echo '<p>投稿が見つかりませんでした。</p>';
+endif;
+?>
+
