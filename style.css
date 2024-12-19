@@ -1604,44 +1604,58 @@ display: none
 }
 
 /* new css */
-.explore-carousel {
-  margin-top: 20px;
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-.explore-item {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+.custom-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.explore-item img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.explore-item p {
-  margin-top: 10px;
+.custom-select-trigger {
   font-size: 16px;
-  font-weight: 400;
-  text-align: center;
-}
-
-.sec-sub-heading {
-  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
 
-.sec-heading {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 15px;
+.custom-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: none;
 }
 
-.exp-para {
-  font-size: 16px;
-  color: #555;
+.custom-option {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.custom-option:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-select:hover .custom-options {
+  display: block;
+}
+
+.map-img {
+  width: 100%;
+  border-radius: 10px;
 }

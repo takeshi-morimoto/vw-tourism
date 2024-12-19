@@ -22,57 +22,110 @@ $query = new WP_Query($args);
 $default_image = 'https://example.com/default-image.jpg';
 ?>
 
-<section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
+<section id="explore" style="<?php echo esc_attr($explore_bg); ?>" class="pb-0">
     <div class="container">
         <div class="row align-items-center">
             <!-- 左カラム -->
-            <div class="col-lg-6">
-                <p class="sec-sub-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_sub_heading', 'Explore')); ?></p>
-                <h2 class="sec-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
-                <p class="exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
+            <div class="col-lg-6 wow zoomIn delay-2000">
+                <p class="sec-sub-heading text-md-start text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_sub_heading', 'Explore')); ?></p>
+                <h2 class="sec-heading text-md-start text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
+                <p class="text-md-start text-center exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
+
+                <!-- カスタムセレクト -->
+                <div class="custom-select-wrapper">
+                    <div class="custom-select">
+                        <span class="custom-select-trigger explore-select-title">Select Region</span>
+                        <ul class="custom-options">
+                            <?php if ($query->have_posts()): ?>
+                                <?php while ($query->have_posts()): $query->the_post(); ?>
+                                    <li class="custom-option" data-value="<?php echo get_the_ID(); ?>"><?php echo get_the_title(); ?></li>
+                                <?php endwhile; ?>
+                                <?php wp_reset_postdata(); ?>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
 
                 <!-- スライダー -->
-                <div class="explore-carousel owl-carousel mt-3">
-                    <?php
-                    if ($query->have_posts()):
-                        while ($query->have_posts()): $query->the_post();
-                            $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
-
-                            if (!empty($additional_fields) && is_array($additional_fields)) {
-                                foreach ($additional_fields as $field) {
-                                    $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-                                    $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
-                                    $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
-                                    $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
-                                    $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
-                                    ?>
-                                    <div class="explore-item text-center">
-                                        <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
-                                        <p><strong><?php echo $text1; ?></strong></p>
-                                        <p><?php echo $text2; ?></p>
-                                        <p><?php echo $text3; ?></p>
-                                        <p><?php echo $text4; ?></p>
-                                    </div>
-                                    <?php
+                <div class="explore-main-wrapper mt-2">
+                    <p class="text-md-start text-center">Click on a region to explore more details.</p>
+                    <div class="explore-carousel owl-carousel owl-loaded owl-drag">
+                        <?php
+                        if ($query->have_posts()):
+                            while ($query->have_posts()): $query->the_post();
+                                $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+                                if (!empty($additional_fields) && is_array($additional_fields)) {
+                                    foreach ($additional_fields as $field) {
+                                        $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+                                        $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
+                                        $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
+                                        ?>
+                                        <div class="explore-inners">
+                                            <div class="explore-img">
+                                                <img style="border-radius: 10px;" src="<?php echo $image; ?>" alt="<?php echo $text1; ?>">
+                                            </div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <div class="explore-inner-box">
+                                                    <h6 class="explore-inner-title"><?php echo $text1; ?></h6>
+                                                    <h6 class="explore-inner-title"><?php echo $text2; ?></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    }
                                 }
-                            }
-                        endwhile;
-                        wp_reset_postdata();
-                    endif;
-                    ?>
+                            endwhile;
+                            wp_reset_postdata();
+                        endif;
+                        ?>
+                    </div>
                 </div>
             </div>
 
             <!-- 右カラム：地図画像 -->
-            <?php
-            $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', $default_image);
-            ?>
-            <div class="col-lg-6">
-                <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
+            <div class="col-lg-6 wow zoomIn delay-2000">
+                <img class="map-img" src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_explore_map_img', $default_image)); ?>" alt="Explore Map">
             </div>
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectTrigger = document.querySelector('.custom-select-trigger');
+    const selectOptions = document.querySelector('.custom-options');
+
+    selectTrigger.addEventListener('click', () => {
+        selectOptions.style.display = selectOptions.style.display === 'block' ? 'none' : 'block';
+    });
+
+    selectOptions.addEventListener('click', (e) => {
+        if (e.target.classList.contains('custom-option')) {
+            selectTrigger.textContent = e.target.textContent;
+            selectOptions.style.display = 'none';
+        }
+    });
+
+    // Owl Carousel Initialization
+    if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
+        jQuery('.explore-carousel').owlCarousel({
+            loop: true,
+            margin: 20,
+            nav: true,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            items: 3,
+            responsive: {
+                0: { items: 1 },
+                576: { items: 2 },
+                992: { items: 3 }
+            }
+        });
+    }
+});
+</script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
