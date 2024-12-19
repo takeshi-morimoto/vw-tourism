@@ -22,24 +22,30 @@ $query = new WP_Query($args);
 $default_image = 'https://example.com/default-image.jpg';
 ?>
 
-<section id="explore">
+<section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
     <div class="container">
         <div class="row align-items-center">
             <!-- 左カラム -->
             <div class="col-lg-6">
                 <p class="sec-sub-heading">Explore</p>
-                <h2 class="sec-heading">France Discover</h2>
+                <h2 class="sec-heading">Discover Japan</h2>
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 
                 <!-- カスタムセレクト -->
                 <div class="custom-select-wrapper">
                     <div class="custom-select">
-                        <span class="custom-select-trigger">Ile De France 1</span>
+                        <span class="custom-select-trigger">Select Region</span>
                         <ul class="custom-options">
-                            <li class="custom-option" data-post-id="125">Ile De France 3</li>
-                            <li class="custom-option" data-post-id="124">Ile De France 2</li>
-                            <li class="custom-option" data-post-id="123">Ile De France 1</li>
-                            <li class="custom-option" data-post-id="122">Ile De France</li>
+                            <?php if ($query->have_posts()): ?>
+                                <?php while ($query->have_posts()): $query->the_post(); ?>
+                                    <li class="custom-option" data-post-id="<?php echo get_the_ID(); ?>">
+                                        <?php echo get_the_title(); ?>
+                                    </li>
+                                <?php endwhile; ?>
+                                <?php wp_reset_postdata(); ?>
+                            <?php else: ?>
+                                <li class="custom-option">No Regions Available</li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>
@@ -47,14 +53,14 @@ $default_image = 'https://example.com/default-image.jpg';
                 <!-- スライダー -->
                 <div class="explore-main-wrapper mt-2">
                     <div class="owl-carousel owl-loaded">
-                        <!-- Ajax でスライダー要素を挿入 -->
+                        <!-- Ajaxでスライダー要素を挿入 -->
                     </div>
                 </div>
             </div>
 
             <!-- 右カラム：地図画像 -->
             <div class="col-lg-6">
-                <img src="https://via.placeholder.com/600x400" alt="Explore Map">
+                <img src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_explore_map_img', $default_image)); ?>" alt="Explore Map">
             </div>
         </div>
     </div>
@@ -64,11 +70,14 @@ $default_image = 'https://example.com/default-image.jpg';
 document.addEventListener('DOMContentLoaded', function () {
     const selectTrigger = document.querySelector('.custom-select-trigger');
     const selectOptions = document.querySelector('.custom-options');
+    const slider = document.querySelector('.owl-carousel');
 
+    // ドロップダウン開閉
     selectTrigger.addEventListener('click', () => {
         selectOptions.classList.toggle('open');
     });
 
+    // ドロップダウン選択時にスライダーを更新
     selectOptions.addEventListener('click', (e) => {
         if (e.target.classList.contains('custom-option')) {
             const postId = e.target.getAttribute('data-post-id');
@@ -78,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // スライダーを更新する関数
     function updateSlider(postId) {
         fetch(ajax_object.ajaxurl, {
             method: 'POST',
@@ -88,47 +98,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 nonce: ajax_object.nonce,
             }),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const slider = document.querySelector('.owl-carousel');
-                    slider.innerHTML = '';
-                    data.meta_fields.forEach(field => {
-                        const slide = document.createElement('div');
-                        slide.className = 'explore-inners';
-                        slide.innerHTML = `
-                            <div class="explore-img">
-                                <img src="${field.image}" alt="${field.text1}">
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                slider.innerHTML = '';
+                data.meta_fields.forEach(field => {
+                    const slide = document.createElement('div');
+                    slide.className = 'explore-inners';
+                    slide.innerHTML = `
+                        <div class="explore-img">
+                            <img src="${field.image}" alt="${field.text1}">
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="explore-inner-box">
+                                <h6 class="explore-inner-title">${field.text1}</h6>
+                                <h6 class="explore-inner-title">${field.text2}</h6>
                             </div>
-                            <div class="d-flex gap-2 mt-2">
-                                <div class="explore-inner-box">
-                                    <h6 class="explore-inner-title">${field.text1}</h6>
-                                    <h6 class="explore-inner-title">${field.text2}</h6>
-                                </div>
-                            </div>
-                        `;
-                        slider.appendChild(slide);
-                    });
+                        </div>
+                    `;
+                    slider.appendChild(slide);
+                });
 
-                    $(slider).owlCarousel({
-                        loop: true,
-                        margin: 20,
-                        nav: true,
-                        dots: true,
-                        autoplay: true,
-                        autoplayTimeout: 5000,
-                        items: 3,
-                        responsive: {
-                            0: { items: 1 },
-                            576: { items: 2 },
-                            992: { items: 3 },
-                        },
-                    });
-                } else {
-                    console.error('Failed to fetch data:', data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                // Owl Carouselの再初期化
+                $(slider).owlCarousel({
+                    loop: true,
+                    margin: 20,
+                    nav: true,
+                    dots: true,
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    items: 3,
+                    responsive: {
+                        0: { items: 1 },
+                        576: { items: 2 },
+                        992: { items: 3 },
+                    },
+                });
+            } else {
+                console.error('Failed to fetch data:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 });
 </script>
