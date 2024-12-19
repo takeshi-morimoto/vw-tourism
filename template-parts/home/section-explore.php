@@ -52,7 +52,7 @@ $default_image = 'https://example.com/default-image.jpg';
 
                 <!-- スライダー -->
                 <div class="explore-main-wrapper mt-2">
-                    <div class="owl-carousel">
+                    <div class="owl-carousel explore-slider">
                         <!-- Ajaxでスライダー要素を挿入 -->
                     </div>
                 </div>
@@ -70,7 +70,7 @@ $default_image = 'https://example.com/default-image.jpg';
 document.addEventListener('DOMContentLoaded', function () {
     const selectTrigger = document.querySelector('.custom-select-trigger');
     const selectOptions = document.querySelector('.custom-options');
-    const slider = document.querySelector('.owl-carousel');
+    const slider = document.querySelector('.explore-slider');
 
     // ドロップダウン開閉
     selectTrigger.addEventListener('click', () => {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // OwlCarouselを初期化する
     function initializeOwlCarousel() {
-        if ($(slider).data('owl.carousel')) {
+        if ($(slider).hasClass('owl-loaded')) {
             $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
         }
 
