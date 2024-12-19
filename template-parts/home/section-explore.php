@@ -152,7 +152,16 @@ endif;
 ?>
 
 <?php
+// `additional_meta_fields` の確認
+$additional_meta = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+echo '<h3>additional_meta_fields デバッグ</h3>';
+echo '<pre>';
+print_r($additional_meta);
+echo '</pre>';
+
+// `explore_meta` の確認
 $explore_meta = get_post_meta(get_the_ID(), 'explore_meta', true);
+echo '<h3>explore_meta デバッグ</h3>';
 echo '<pre>';
 print_r($explore_meta);
 echo '</pre>';
