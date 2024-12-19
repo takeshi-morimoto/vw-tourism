@@ -73,7 +73,7 @@ if (!empty($additional_fields)) {
                                 <?php
                             }
                         } else {
-                            echo '<p>No additional data available for this post.</p>';
+                            echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                         }
                     endwhile;
                     wp_reset_postdata();
@@ -97,12 +97,6 @@ if (!empty($additional_fields)) {
         </div>
     </div>
 </section>
-
-
-<?php
-  $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-  var_dump($additional_fields);
-?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
