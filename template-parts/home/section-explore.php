@@ -151,3 +151,11 @@ else:
 endif;
 ?>
 
+<?php
+$all_meta = get_post_meta(get_the_ID());
+echo '<pre>';
+print_r($all_meta);
+echo '</pre>';
+?>
+
+
