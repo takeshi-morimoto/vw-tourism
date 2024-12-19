@@ -20,7 +20,6 @@ $query = new WP_Query($args);
 
 // デフォルト画像
 $default_image = 'https://example.com/default-image.jpg';
-
 ?>
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
