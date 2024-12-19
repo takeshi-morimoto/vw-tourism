@@ -43,68 +43,31 @@ if (!empty($additional_fields)) {
 
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
-<div class="container">
-    <div class="row align-items-center">
-        <div class="col-lg-6 wow zoomIn delay-2000">
-            <?php if(get_theme_mod('vw_tourism_pro_explore_sub_heading')!=''){ ?>
-                <p class="sec-sub-heading text-md-start text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_sub_heading')); ?></p>
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_explore_heading')!=''){ ?>
-                <h2 class="sec-heading text-md-start text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading')); ?></h2>
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_explore_paragraph')!=''){ ?>
-                <p class="text-md-start text-center exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph')); ?></p>
-            <?php } ?>
-            <div class="explore-inner">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- 左カラム -->
+            <div class="col-lg-6">
+                <p class="sec-sub-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_sub_heading', 'Explore')); ?></p>
+                <h2 class="sec-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
+                <p class="exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
+                
+                <!-- スライダー -->
+                <div class="explore-carousel owl-carousel mt-3">
                 <?php
-                if ($query->have_posts()) {
-                    $first_post = true;
-                    ?>
-                    <div class="custom-select-wrapper">
-                        <div class="custom-select">
-                            <span class="custom-select-trigger explore-select-title">Select an option <i class="fa-solid fa-chevron-down"></i></span>
-                            <ul class="custom-options">
-                                <?php
-                                $selected_post_id = '';
-                                $selected_post_title = '';
-                                while ($query->have_posts()) {
-                                    $query->the_post();
-                                    if ($first_post) {
-                                        $selected_post_id = esc_attr(get_the_ID());
-                                        $selected_post_title = esc_html(get_the_title());
-                                        $first_post = false;
-                                    }
-                                    ?>
-                                    <li class="custom-option" data-value="<?php echo esc_attr(get_the_ID()); ?>"><?php echo esc_html(get_the_title()); ?></li>
-                                    <?php
-                                }
-                                wp_reset_postdata();
-                                ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <?php
-                }
-                ?>
-                <div class="explore-main-wrapper mt-2">
-                    <?php
-                    if (!empty($selected_post_id)) {
-                        // 選択された投稿のカスタムフィールドを取得
-                        $additional_fields = get_post_meta($selected_post_id, 'additional_meta_fields', true);
+                if ($query->have_posts()):
+                    while ($query->have_posts()): $query->the_post();
+                        $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+
                         if (!empty($additional_fields)) {
                             foreach ($additional_fields as $field) {
-                                $image = isset($field['image']) ? esc_url($field['image']) : '';
-                                $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
-                                $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
-                                $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
-                                $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
-
-                                // HTML出力
+                                $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+                                $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
+                                $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
+                                $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
+                                $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
                                 ?>
-                                <div class="explore-item">
-                                    <?php if ($image): ?>
-                                        <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="img-fluid rounded-3">
-                                    <?php endif; ?>
+                                <div class="explore-item text-center">
+                                    <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
                                     <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
                                 </div>
                                 <?php
@@ -112,16 +75,27 @@ if (!empty($additional_fields)) {
                         } else {
                             echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                         }
-                    }
-                    ?>
+                    endwhile;
+                    wp_reset_postdata();
+                else:
+                    echo '<p>No posts available.</p>';
+                endif;
+                ?>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6 wow zoomIn delay-2000">
-            <img class="map-img" src="<?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_map_img')); ?>" alt="" >
+
+            <!-- 右カラム：地図画像 -->
+            <?php
+            $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', $default_image);
+            if (empty($map_img)) {
+                $map_img = $default_image;
+            }
+            ?>
+            <div class="col-lg-6">
+                <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
+            </div>
         </div>
     </div>
-</div>
 </section>
 
 
