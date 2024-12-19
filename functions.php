@@ -817,31 +817,6 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-// explole追加
-add_action('wp_ajax_get_explore_meta_fields', 'get_explore_meta_fields');
-add_action('wp_ajax_nopriv_get_explore_meta_fields', 'get_explore_meta_fields');
-
-function get_explore_meta_fields() {
-    check_ajax_referer('explore_nonce', 'nonce');
-    $post_id = intval($_POST['post_id']);
-    $meta_fields = get_post_meta($post_id, 'package_explore_meta_fields', true);
-
-    if ($meta_fields) {
-        wp_send_json_success(['meta_fields' => $meta_fields]);
-    } else {
-        wp_send_json_error(['message' => 'Meta fields not found.']);
-    }
-}
-
-// JavaScriptにAjaxの情報を渡す
-add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom.js', ['jquery'], null, true);
-    wp_localize_script('custom-script', 'ajax_object', [
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce'   => wp_create_nonce('explore_nonce'),
-    ]);
-});
-
 
 
 add_filter('excerpt_length', 'custom_excerpt_length');
