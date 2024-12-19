@@ -152,14 +152,6 @@ endif;
 ?>
 
 <?php
-$all_meta = get_post_meta(get_the_ID());
-echo '<pre>';
-print_r($all_meta);
-echo '</pre>';
-?>
-
-
-<?php
 $explore_meta = get_post_meta(get_the_ID(), 'explore_meta', true);
 echo '<pre>';
 print_r($explore_meta);
