@@ -136,6 +136,7 @@ $default_image = 'https://example.com/default-image.jpg';
 jQuery(document).ready(function($){
   // .sliderクラスが存在するか確認
   if ($('.slider').length > 0) {
+    console.log($('.slider'));
     $('.slider').slick({
       infinite: true,
       slidesToShow: 3,
