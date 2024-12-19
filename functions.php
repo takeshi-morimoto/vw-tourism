@@ -822,12 +822,24 @@ add_action('wp_ajax_get_explore_meta_fields', 'get_explore_meta_fields');
 add_action('wp_ajax_nopriv_get_explore_meta_fields', 'get_explore_meta_fields');
 
 function get_explore_meta_fields() {
+    // デバッグ用にPOSTデータを確認
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log(print_r($_POST, true));
+    }
+
     $post_id = intval($_POST['post_id']);
 
     if (!$post_id) {
         wp_send_json_error(['message' => 'Invalid post ID']);
     }
 
+    // 投稿の存在確認
+    $post = get_post($post_id);
+    if (!$post) {
+        wp_send_json_error(['message' => 'Post not found']);
+    }
+
+    // メタフィールドの取得
     $meta_fields = get_post_meta($post_id, 'additional_meta_fields', true);
 
     if ($meta_fields) {
