@@ -30,7 +30,7 @@ $default_image = 'https://example.com/default-image.jpg';
                 <p class="sec-sub-heading">Explore</p>
                 <h2 class="sec-heading">Discover Japan</h2>
                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                
+
                 <!-- カスタムセレクト -->
                 <div class="custom-select-wrapper">
                     <div class="custom-select">
@@ -49,10 +49,10 @@ $default_image = 'https://example.com/default-image.jpg';
                         </ul>
                     </div>
                 </div>
-                
+
                 <!-- スライダー -->
                 <div class="explore-main-wrapper mt-2">
-                    <div class="owl-carousel owl-loaded">
+                    <div class="owl-carousel">
                         <!-- Ajaxでスライダー要素を挿入 -->
                     </div>
                 </div>
@@ -70,15 +70,11 @@ $default_image = 'https://example.com/default-image.jpg';
 document.addEventListener('DOMContentLoaded', function () {
     const selectTrigger = document.querySelector('.custom-select-trigger');
     const selectOptions = document.querySelector('.custom-options');
+    const slider = document.querySelector('.owl-carousel');
 
     // ドロップダウン開閉
     selectTrigger.addEventListener('click', () => {
-        // メニューの開閉
-        if (selectOptions.classList.contains('open')) {
-            selectOptions.classList.remove('open');
-        } else {
-            selectOptions.classList.add('open');
-        }
+        selectOptions.classList.toggle('open');
     });
 
     // オプション選択時の処理
@@ -112,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                initializeOwlCarousel(data.meta_fields);
+                populateSlider(data.meta_fields);
             } else {
                 console.error('AJAX Error:', data.message);
             }
@@ -120,9 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Fetch Error:', error));
     }
 
-    // OwlCarouselを初期化する
-    function initializeOwlCarousel(items = []) {
-        const slider = document.querySelector('.owl-carousel');
+    // スライダーのアイテムを生成
+    function populateSlider(items = []) {
         slider.innerHTML = ''; // スライダーの初期化
 
         items.forEach(item => {
@@ -142,6 +137,11 @@ document.addEventListener('DOMContentLoaded', function () {
             slider.appendChild(slide);
         });
 
+        initializeOwlCarousel();
+    }
+
+    // OwlCarouselを初期化する
+    function initializeOwlCarousel() {
         if ($(slider).data('owl.carousel')) {
             $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
         }
@@ -161,6 +161,9 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         });
     }
+
+    // 初期化
+    initializeOwlCarousel();
 });
 </script>
 
