@@ -67,75 +67,86 @@ $default_image = 'https://example.com/default-image.jpg';
 </section>
 
 <script>
-jQuery(document).ready(function ($) {
-    const selectTrigger = $('.custom-select-trigger');
-    const selectOptions = $('.custom-options');
-    const slider = $('.owl-carousel');
+document.addEventListener('DOMContentLoaded', function () {
+    const selectTrigger = document.querySelector('.custom-select-trigger');
+    const selectOptions = document.querySelector('.custom-options');
 
     // ドロップダウン開閉
-    selectTrigger.on('click', function () {
-        selectOptions.toggleClass('open');
+    selectTrigger.addEventListener('click', () => {
+        // メニューの開閉
+        if (selectOptions.classList.contains('open')) {
+            selectOptions.classList.remove('open');
+        } else {
+            selectOptions.classList.add('open');
+        }
     });
 
-    // ドロップダウン選択時にスライダーを更新
-    selectOptions.on('click', '.custom-option', function () {
-        const postId = $(this).data('post-id');
-        selectTrigger.text($(this).text());
-        selectOptions.removeClass('open');
-        updateSlider(postId);
+    // オプション選択時の処理
+    selectOptions.addEventListener('click', (e) => {
+        if (e.target.classList.contains('custom-option')) {
+            const selectedOption = e.target.textContent; // 選択したテキストを取得
+            const postId = e.target.getAttribute('data-post-id'); // 選択したオプションの投稿IDを取得
+
+            // トリガーテキストを更新
+            selectTrigger.textContent = selectedOption;
+
+            // ドロップダウンを閉じる
+            selectOptions.classList.remove('open');
+
+            // スライダーを更新
+            updateSlider(postId);
+        }
     });
 
     // スライダーを更新する関数
     function updateSlider(postId) {
-        $.ajax({
-            url: ajax_object.ajaxurl,
+        fetch(ajax_object.ajaxurl, {
             method: 'POST',
-            data: {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
                 action: 'get_explore_meta_fields',
                 post_id: postId,
                 nonce: ajax_object.nonce,
-            },
-            success: function (response) {
-                if (response.success) {
-                    populateSlider(response.meta_fields);
-                } else {
-                    console.error('AJAX Error:', response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Fetch Error:', error);
-            },
-        });
-    }
-
-    // スライダーのアイテムを生成
-    function populateSlider(items = []) {
-        slider.trigger('destroy.owl.carousel'); // 既存のスライダーを破棄
-        slider.html(''); // スライダーの初期化
-
-        // アイテムを追加
-        items.forEach(item => {
-            slider.append(`
-                <div class="explore-inners">
-                    <div class="explore-img">
-                        <img src="${item.image}" alt="${item.text1}">
-                    </div>
-                    <div class="d-flex gap-2 mt-2">
-                        <div class="explore-inner-box">
-                            <h6 class="explore-inner-title">${item.text1}</h6>
-                            <h6 class="explore-inner-title">${item.text2}</h6>
-                        </div>
-                    </div>
-                </div>
-            `);
-        });
-
-        initializeOwlCarousel();
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                initializeOwlCarousel(data.meta_fields);
+            } else {
+                console.error('AJAX Error:', data.message);
+            }
+        })
+        .catch(error => console.error('Fetch Error:', error));
     }
 
     // OwlCarouselを初期化する
-    function initializeOwlCarousel() {
-        slider.owlCarousel({
+    function initializeOwlCarousel(items = []) {
+        const slider = document.querySelector('.owl-carousel');
+        slider.innerHTML = ''; // スライダーの初期化
+
+        items.forEach(item => {
+            const slide = document.createElement('div');
+            slide.className = 'explore-inners';
+            slide.innerHTML = `
+                <div class="explore-img">
+                    <img src="${item.image}" alt="${item.text1}">
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    <div class="explore-inner-box">
+                        <h6 class="explore-inner-title">${item.text1}</h6>
+                        <h6 class="explore-inner-title">${item.text2}</h6>
+                    </div>
+                </div>
+            `;
+            slider.appendChild(slide);
+        });
+
+        if ($(slider).data('owl.carousel')) {
+            $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
+        }
+
+        $(slider).owlCarousel({
             loop: true,
             margin: 20,
             nav: true,
@@ -150,9 +161,6 @@ jQuery(document).ready(function ($) {
             },
         });
     }
-
-    // ページロード時に初期化
-    initializeOwlCarousel();
 });
 </script>
 
