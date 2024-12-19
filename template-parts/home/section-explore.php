@@ -82,29 +82,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ページのどこかをクリックした際にドロップダウンを閉じる
+    // ページ外をクリックしたときにドロップダウンを閉じる
     document.addEventListener('click', () => {
         selectOptions.classList.remove('open');
     });
 
     // スライダーを更新する関数
     function updateSlider(postId) {
-        // Ajaxリクエスト
         fetch(ajaxurl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 action: 'get_explore_meta_fields',
                 post_id: postId,
             }),
         })
-            .then((response) => response.json())
-            .then((data) => {
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
                     slider.innerHTML = ''; // スライダーの内容をクリア
-                    data.meta_fields.forEach((field) => {
+                    data.meta_fields.forEach(field => {
                         const slide = document.createElement('div');
                         slide.classList.add('explore-inners');
                         slide.innerHTML = `
@@ -121,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         slider.appendChild(slide);
                     });
 
-                    // スライダー再初期化
+                    // スライダーの再初期化
                     if (jQuery(slider).hasClass('owl-carousel')) {
                         jQuery(slider).trigger('destroy.owl.carousel').removeClass('owl-carousel');
                         jQuery(slider).addClass('owl-carousel').owlCarousel({
@@ -140,12 +137,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                     }
                 } else {
-                    console.error('Failed to fetch meta fields');
+                    console.error('Failed to fetch meta fields:', data.message);
                 }
             })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            .catch(error => console.error('Error:', error));
     }
 });
 </script>

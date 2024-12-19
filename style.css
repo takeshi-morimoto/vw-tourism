@@ -1608,40 +1608,38 @@ display: none
   position: relative;
   display: inline-block;
   width: 100%;
-  max-width: 300px;
-  margin: 20px auto;
 }
 
 .custom-select {
   position: relative;
-  display: block;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
 }
 
 .custom-select-trigger {
-  display: block;
   font-size: 16px;
-  font-weight: bold;
   color: #333;
-  text-align: left;
 }
 
 .custom-options {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 100;
+  right: 0;
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  display: none;
   max-height: 200px;
   overflow-y: auto;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
 }
 
 .custom-options.open {
@@ -1651,10 +1649,9 @@ display: none
 .custom-option {
   padding: 10px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s ease;
 }
 
 .custom-option:hover {
-  background: #f1f1f1;
+  background: #f0f0f0;
 }
-
