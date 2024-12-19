@@ -40,10 +40,6 @@ if (!empty($additional_fields)) {
 
 ?>
 
-<?php
-$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-var_dump($additional_fields);
-?>
 
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
@@ -61,20 +57,29 @@ var_dump($additional_fields);
                 if ($query->have_posts()):
                     while ($query->have_posts()): $query->the_post();
                         $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-                        if (!empty($additional_fields)) {
-                            foreach ($additional_fields as $field) {
-                                $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-                                $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
-                                $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
-                                $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
-                                $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
-                                ?>
-                                <div class="explore-item text-center">
-                                    <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
-                                    <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
-                                </div>
-                                <?php
-                            }
+                        if (empty($additional_fields)) {
+                            $additional_fields = [
+                                [
+                                    'image' => $default_image,
+                                    'text1' => 'Default Title',
+                                    'text2' => 'Default Subtitle',
+                                    'text3' => 'Default Description',
+                                    'text4' => 'Default Footer',
+                                ],
+                            ];
+                        }
+                        foreach ($additional_fields as $field) {
+                            $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+                            $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
+                            $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
+                            $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
+                            $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
+                            ?>
+                            <div class="explore-item text-center">
+                                <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
+                                <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
+                            </div>
+                            <?php
                         }
                     endwhile;
                     wp_reset_postdata();
@@ -84,16 +89,15 @@ var_dump($additional_fields);
                 ?>
                 </div>
             </div>
-
-            <!-- 右カラム：地図画像 -->
-            <?php if ($map_img): ?>
-                <div class="col-lg-6">
-                    <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 </section>
+
+
+<?php
+  $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+  var_dump($additional_fields);
+?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
