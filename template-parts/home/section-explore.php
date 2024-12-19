@@ -31,14 +31,14 @@ $default_image = 'https://example.com/default-image.jpg';
                 <h2 class="sec-heading text-md-start text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
                 <p class="text-md-start text-center exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
 
-                <!-- カスタムセレクト -->
+                <!-- ドロップダウン -->
                 <div class="custom-select-wrapper">
                     <div class="custom-select">
                         <span class="custom-select-trigger explore-select-title">Select Region</span>
                         <ul class="custom-options">
                             <?php if ($query->have_posts()): ?>
                                 <?php while ($query->have_posts()): $query->the_post(); ?>
-                                    <li class="custom-option" data-value="<?php echo get_the_ID(); ?>"><?php echo get_the_title(); ?></li>
+                                    <li class="custom-option" data-post-id="<?php echo get_the_ID(); ?>"><?php echo get_the_title(); ?></li>
                                 <?php endwhile; ?>
                                 <?php wp_reset_postdata(); ?>
                             <?php endif; ?>
@@ -46,39 +46,9 @@ $default_image = 'https://example.com/default-image.jpg';
                     </div>
                 </div>
 
-                <!-- スライダー -->
+                <!-- 動的に更新されるスライダー -->
                 <div class="explore-main-wrapper mt-2">
-                    <p class="text-md-start text-center">Click on a region to explore more details.</p>
-                    <div class="explore-carousel owl-carousel owl-loaded owl-drag">
-                        <?php
-                        if ($query->have_posts()):
-                            while ($query->have_posts()): $query->the_post();
-                                $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-                                if (!empty($additional_fields) && is_array($additional_fields)) {
-                                    foreach ($additional_fields as $field) {
-                                        $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-                                        $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
-                                        $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
-                                        ?>
-                                        <div class="explore-inners">
-                                            <div class="explore-img">
-                                                <img style="border-radius: 10px;" src="<?php echo $image; ?>" alt="<?php echo $text1; ?>">
-                                            </div>
-                                            <div class="d-flex gap-2 mt-2">
-                                                <div class="explore-inner-box">
-                                                    <h6 class="explore-inner-title"><?php echo $text1; ?></h6>
-                                                    <h6 class="explore-inner-title"><?php echo $text2; ?></h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php
-                                    }
-                                }
-                            endwhile;
-                            wp_reset_postdata();
-                        endif;
-                        ?>
-                    </div>
+                    <div class="explore-carousel owl-carousel"></div>
                 </div>
             </div>
 
@@ -91,23 +61,24 @@ $default_image = 'https://example.com/default-image.jpg';
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // セレクトボックス要素を取得
+document.addEventListener('DOMContentLoaded', function () {
     const selectTrigger = document.querySelector('.custom-select-trigger');
     const selectOptions = document.querySelector('.custom-options');
-    const selectWrapper = document.querySelector('.custom-select-wrapper');
+    const slider = document.querySelector('.explore-carousel');
 
-    // ドロップダウンを表示・非表示にする
+    // ドロップダウンの開閉
     selectTrigger.addEventListener('click', (e) => {
-        e.stopPropagation(); // イベントのバブリングを停止
+        e.stopPropagation();
         selectOptions.classList.toggle('open');
     });
 
-    // オプションをクリックした際に選択された値をトリガーに表示
+    // ドロップダウンの選択処理
     selectOptions.addEventListener('click', (e) => {
         if (e.target.classList.contains('custom-option')) {
+            const postId = e.target.getAttribute('data-post-id');
             selectTrigger.textContent = e.target.textContent;
-            selectOptions.classList.remove('open'); // ドロップダウンを閉じる
+            selectOptions.classList.remove('open');
+            updateSlider(postId);
         }
     });
 
@@ -115,6 +86,67 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', () => {
         selectOptions.classList.remove('open');
     });
+
+    // スライダーを更新する関数
+    function updateSlider(postId) {
+        // Ajaxリクエスト
+        fetch(ajaxurl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'get_explore_meta_fields',
+                post_id: postId,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    slider.innerHTML = ''; // スライダーの内容をクリア
+                    data.meta_fields.forEach((field) => {
+                        const slide = document.createElement('div');
+                        slide.classList.add('explore-inners');
+                        slide.innerHTML = `
+                            <div class="explore-img">
+                                <img style="border-radius: 10px;" src="${field.image}" alt="${field.text1}">
+                            </div>
+                            <div class="d-flex gap-2 mt-2">
+                                <div class="explore-inner-box">
+                                    <h6 class="explore-inner-title">${field.text1}</h6>
+                                    <h6 class="explore-inner-title">${field.text2}</h6>
+                                </div>
+                            </div>
+                        `;
+                        slider.appendChild(slide);
+                    });
+
+                    // スライダー再初期化
+                    if (jQuery(slider).hasClass('owl-carousel')) {
+                        jQuery(slider).trigger('destroy.owl.carousel').removeClass('owl-carousel');
+                        jQuery(slider).addClass('owl-carousel').owlCarousel({
+                            loop: true,
+                            margin: 20,
+                            nav: true,
+                            dots: true,
+                            autoplay: true,
+                            autoplayTimeout: 5000,
+                            items: 3,
+                            responsive: {
+                                0: { items: 1 },
+                                576: { items: 2 },
+                                992: { items: 3 },
+                            },
+                        });
+                    }
+                } else {
+                    console.error('Failed to fetch meta fields');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 });
 </script>
 
