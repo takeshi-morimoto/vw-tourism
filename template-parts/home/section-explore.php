@@ -43,6 +43,9 @@ $default_image = 'https://example.com/default-image.jpg';
               $query->the_post();
               $selected_post_id = get_the_ID();
               $selected_post_title = get_the_title();
+              
+              // 選択した投稿のadditional_fieldsを取得
+              $additional_fields = get_post_meta($selected_post_id, 'package_explore_meta_fields', true);
 
               // 再度ループ開始地点へ戻す
               $query->rewind_posts();
@@ -69,45 +72,37 @@ $default_image = 'https://example.com/default-image.jpg';
             <p class="text-md-start text-center">
               Lorem Ipsum is simply dummy text of the printing and typesetting industry...
             </p>
-            <!-- スライダー部分をリスト表示に変更（例） -->
-            <div class="explore-list">
-              <ul>
-                <li>
-                  <div class="explore-inners">
-                    <div class="explore-img">
-                      <img style="border-radius:10px;" src="<?php echo esc_url($default_image); ?>" alt="Sample">
-                    </div>
-                    <div class="d-flex gap-2 mt-2">
-                      <div class="explore-inner-box">
-                        <h6 class="explore-inner-title">875Km</h6>
-                        <h6 class="explore-inner-title">Area</h6>
+            
+            <!-- ここで $additional_fields を表示 -->
+            <?php if(!empty($additional_fields) && is_array($additional_fields)): ?>
+              <div class="explore-list">
+                <ul>
+                  <?php foreach($additional_fields as $field): 
+                    // $field['text1'], $field['text2'], $field['text3'], $field['text4'], $field['image']が利用可能
+                  ?>
+                  <li>
+                    <div class="explore-inners">
+                      <div class="explore-img">
+                        <img style="border-radius:10px;" src="<?php echo esc_url($field['image']); ?>" alt="<?php echo esc_attr($field['text1']); ?>">
                       </div>
-                      <div class="explore-inner-box">
-                        <h6 class="explore-inner-title">91,12,520</h6>
-                        <h6 class="explore-inner-title">Population</h6>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="explore-inners">
-                    <div class="explore-img">
-                      <img style="border-radius:10px;" src="<?php echo esc_url($default_image); ?>" alt="Sample2">
-                    </div>
-                    <div class="d-flex gap-2 mt-2">
-                      <div class="explore-inner-box">
-                        <h6 class="explore-inner-title">85.09%</h6>
-                        <h6 class="explore-inner-title">Literacy</h6>
-                      </div>
-                      <div class="explore-inner-box">
-                        <h6 class="explore-inner-title">123456</h6>
-                        <h6 class="explore-inner-title">Pincode</h6>
+                      <div class="d-flex gap-2 mt-2">
+                        <div class="explore-inner-box">
+                          <h6 class="explore-inner-title"><?php echo esc_html($field['text1']); ?></h6>
+                          <h6 class="explore-inner-title"><?php echo esc_html($field['text2']); ?></h6>
+                        </div>
+                        <div class="explore-inner-box">
+                          <h6 class="explore-inner-title"><?php echo esc_html($field['text3']); ?></h6>
+                          <h6 class="explore-inner-title"><?php echo esc_html($field['text4']); ?></h6>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+                  </li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php else: ?>
+              <p>No additional fields found for this post.</p>
+            <?php endif; ?>
           </div>
         </div>
       </div>
@@ -126,6 +121,7 @@ $default_image = 'https://example.com/default-image.jpg';
 if (defined('WP_DEBUG') && WP_DEBUG) {
     echo '<h3>テスト: 投稿データ</h3>';
     if ($query->have_posts()):
+        $query->rewind_posts(); // 再度初期位置に戻す
         while ($query->have_posts()): $query->the_post();
             echo '<p>タイトル: ' . get_the_title() . '</p>';
             $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
