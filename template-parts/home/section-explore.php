@@ -137,6 +137,7 @@ jQuery(window).on('load', function(){
         dots: true,
         autoplay: true,
         autoplaySpeed: 4000,
+        accessibility: false, // 追加
         responsive: [
           {
             breakpoint: 992,
