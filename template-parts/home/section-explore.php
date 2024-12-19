@@ -97,4 +97,11 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
                 print_r($debug_additional_fields);
                 echo '</pre>';
             } else {
-                
+                echo '<p>追加メタフィールドが見つかりません</p>';
+            }
+        endwhile;
+        wp_reset_postdata();
+    else:
+        echo '<p>投稿が見つかりませんでした。</p>';
+    endif;
+}
