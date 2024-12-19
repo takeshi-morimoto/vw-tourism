@@ -22,7 +22,7 @@ $query = new WP_Query($args);
 $default_image = 'https://example.com/default-image.jpg';
 ?>
 
-<section id="explore" class="pb-0">
+<section id="explore" class="pb-0" style="<?php echo esc_attr($explore_bg); ?>">
   <div class="container">
     <div class="row align-items-center">
       <!-- 左カラム（テキストとカスタムセレクト） -->
@@ -130,29 +130,37 @@ $default_image = 'https://example.com/default-image.jpg';
 
 <!-- Slick初期化用スクリプト -->
 <script>
+// Slickを使用する前に、必ずslick.min.jsとslick.css、jqueryが正しく読み込まれているか確認。
+// もしこのスクリプトが<head>内にあり、slick.min.jsがfooterで読み込まれるなら、フッターでこのスクリプトを実行するか、Slick読み込み後にこのコードを実行してください。
+
 jQuery(document).ready(function($){
-  $('.slider').slick({
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: true,
-    dots: true,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 2
+  // .sliderクラスが存在するか確認
+  if ($('.slider').length > 0) {
+    $('.slider').slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: true,
+      autoplay: true,
+      autoplaySpeed: 4000,
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 2
+          }
+        },{
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 1
+          }
         }
-      },{
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1
-        }
-      }
-    ]
-  });
+      ]
+    });
+  } else {
+    console.error('.slider要素が見つかりません。');
+  }
 });
 </script>
 
@@ -177,4 +185,3 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
         echo '<p>投稿が見つかりませんでした。</p>';
     endif;
 }
-?>
