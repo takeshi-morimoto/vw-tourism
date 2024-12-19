@@ -36,8 +36,10 @@ $default_image = 'https://example.com/default-image.jpg';
                     <?php
                     if ($query->have_posts()):
                         while ($query->have_posts()): $query->the_post();
+                            // 投稿のメタフィールドを取得
                             $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
 
+                            // メタフィールドのデータがある場合に表示
                             if (!empty($additional_fields) && is_array($additional_fields)) {
                                 foreach ($additional_fields as $field) {
                                     $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
@@ -55,6 +57,11 @@ $default_image = 'https://example.com/default-image.jpg';
                             } else {
                                 echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                             }
+
+                            // デバッグ用に全てのメタデータを表示
+                            echo '<pre>';
+                            print_r(get_post_meta(get_the_ID()));
+                            echo '</pre>';
                         endwhile;
                         wp_reset_postdata();
                     else:
@@ -98,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 
 <?php
 // 投稿データのデバッグ用コード
