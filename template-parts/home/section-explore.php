@@ -67,74 +67,73 @@ $default_image = 'https://example.com/default-image.jpg';
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const selectTrigger = document.querySelector('.custom-select-trigger');
-    const selectOptions = document.querySelector('.custom-options');
-    const slider = document.querySelector('.explore-slider');
+jQuery(document).ready(function ($) {
+    const selectTrigger = $('.custom-select-trigger');
+    const selectOptions = $('.custom-options');
+    const slider = $('.explore-slider');
 
     // ドロップダウン開閉
-    selectTrigger.addEventListener('click', () => {
-        selectOptions.classList.toggle('open');
+    selectTrigger.on('click', function () {
+        selectOptions.toggleClass('open');
     });
 
     // オプション選択時の処理
-    selectOptions.addEventListener('click', (e) => {
-        if (e.target.classList.contains('custom-option')) {
-            const selectedOption = e.target.textContent; // 選択したテキストを取得
-            const postId = e.target.getAttribute('data-post-id'); // 選択したオプションの投稿IDを取得
+    selectOptions.on('click', '.custom-option', function () {
+        const selectedOption = $(this).text(); // 選択したテキストを取得
+        const postId = $(this).data('post-id'); // 選択したオプションの投稿IDを取得
 
-            // トリガーテキストを更新
-            selectTrigger.textContent = selectedOption;
+        // トリガーテキストを更新
+        selectTrigger.text(selectedOption);
 
-            // ドロップダウンを閉じる
-            selectOptions.classList.remove('open');
+        // ドロップダウンを閉じる
+        selectOptions.removeClass('open');
 
-            // スライダーを更新
-            updateSlider(postId);
-        }
+        // スライダーを更新
+        updateSlider(postId);
     });
 
     // スライダーを更新する関数
     function updateSlider(postId) {
-        fetch(ajax_object.ajaxurl, {
+        $.ajax({
+            url: ajax_object.ajaxurl,
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
+            data: {
                 action: 'get_explore_meta_fields',
                 post_id: postId,
                 nonce: ajax_object.nonce,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                populateSlider(data.meta_fields);
-            } else {
-                console.error('AJAX Error:', data.message);
-            }
-        })
-        .catch(error => console.error('Fetch Error:', error));
+            },
+            success: function (response) {
+                if (response.success) {
+                    populateSlider(response.meta_fields);
+                } else {
+                    console.error('AJAX Error:', response.message);
+                }
+            },
+            error: function (error) {
+                console.error('Fetch Error:', error);
+            },
+        });
     }
 
     // スライダーのアイテムを生成
     function populateSlider(items = []) {
-        slider.innerHTML = ''; // スライダーの初期化
+        slider.empty(); // スライダーの初期化
 
-        items.forEach(item => {
-            const slide = document.createElement('div');
-            slide.className = 'explore-inners';
-            slide.innerHTML = `
-                <div class="explore-img">
-                    <img src="${item.image}" alt="${item.text1}">
-                </div>
-                <div class="d-flex gap-2 mt-2">
-                    <div class="explore-inner-box">
-                        <h6 class="explore-inner-title">${item.text1}</h6>
-                        <h6 class="explore-inner-title">${item.text2}</h6>
+        items.forEach(function (item) {
+            const slide = `
+                <div class="explore-inners">
+                    <div class="explore-img">
+                        <img src="${item.image}" alt="${item.text1}">
+                    </div>
+                    <div class="d-flex gap-2 mt-2">
+                        <div class="explore-inner-box">
+                            <h6 class="explore-inner-title">${item.text1}</h6>
+                            <h6 class="explore-inner-title">${item.text2}</h6>
+                        </div>
                     </div>
                 </div>
             `;
-            slider.appendChild(slide);
+            slider.append(slide);
         });
 
         initializeOwlCarousel();
@@ -142,11 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // OwlCarouselを初期化する
     function initializeOwlCarousel() {
-        if ($(slider).hasClass('owl-loaded')) {
-            $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
+        if (slider.hasClass('owl-loaded')) {
+            slider.trigger('destroy.owl.carousel'); // 既存のインスタンスを破棄
         }
 
-        $(slider).owlCarousel({
+        slider.owlCarousel({
             loop: true,
             margin: 20,
             nav: true,
