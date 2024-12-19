@@ -1604,49 +1604,44 @@ display: none
 }
 
 /* new css */
-.explore-section {
-  padding: 50px 0;
-  background-size: cover;
-  background-position: center;
-}
-
-.section-header {
-  margin-bottom: 30px;
-}
-
-.section-title {
-  font-size: 36px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.section-subtitle {
-  font-size: 18px;
-  color: #777;
+.explore-carousel {
+  margin-top: 20px;
 }
 
 .explore-item {
-  text-align: center;
-  margin: 15px;
-}
-
-.explore-item-img img {
+  padding: 15px;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.explore-item img {
+  max-width: 100%;
   height: auto;
+  border-radius: 8px;
 }
 
-.explore-item-info {
+.explore-item p {
   margin-top: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
 }
 
-.explore-item-title {
-  font-size: 20px;
+.sec-sub-heading {
+  font-size: 18px;
   font-weight: bold;
   color: #333;
 }
 
-.explore-item-description {
+.sec-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.exp-para {
   font-size: 16px;
-  color: #777;
+  color: #555;
 }

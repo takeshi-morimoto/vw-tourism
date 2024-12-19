@@ -36,10 +36,8 @@ $default_image = 'https://example.com/default-image.jpg';
                     <?php
                     if ($query->have_posts()):
                         while ($query->have_posts()): $query->the_post();
-                            // 投稿のメタフィールドを取得
                             $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
 
-                            // メタフィールドのデータがある場合に表示
                             if (!empty($additional_fields) && is_array($additional_fields)) {
                                 foreach ($additional_fields as $field) {
                                     $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
@@ -50,17 +48,16 @@ $default_image = 'https://example.com/default-image.jpg';
                                     ?>
                                     <div class="explore-item text-center">
                                         <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
-                                        <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
+                                        <p><strong><?php echo $text1; ?></strong></p>
+                                        <p><?php echo $text2; ?></p>
+                                        <p><?php echo $text3; ?></p>
+                                        <p><?php echo $text4; ?></p>
                                     </div>
                                     <?php
                                 }
-                            } else {
-                                echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                             }
                         endwhile;
                         wp_reset_postdata();
-                    else:
-                        echo '<p>No posts available.</p>';
                     endif;
                     ?>
                 </div>
@@ -69,9 +66,6 @@ $default_image = 'https://example.com/default-image.jpg';
             <!-- 右カラム：地図画像 -->
             <?php
             $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', $default_image);
-            if (empty($map_img)) {
-                $map_img = $default_image;
-            }
             ?>
             <div class="col-lg-6">
                 <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
@@ -85,9 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
         jQuery('.explore-carousel').owlCarousel({
             loop: true,
-            margin: 20,
+            margin: 30,
             nav: true,
-            dots: false,
+            dots: true,
             autoplay: true,
             autoplayTimeout: 5000,
             items: 3,
