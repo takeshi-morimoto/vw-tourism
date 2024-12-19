@@ -62,6 +62,7 @@ $default_image = 'https://example.com/default-image.jpg';
                     ?>
                 </div>
             </div>
+            
 
             <!-- 右カラム：地図画像 -->
             <?php
