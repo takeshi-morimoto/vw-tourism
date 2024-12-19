@@ -364,10 +364,10 @@ background-color: transparent !important;
   left: 50%; /* ボタン内で横方向の中央に配置 */
   transform: translate(-50%, -50%); /* 完全に中央揃え */
   z-index: 2; /* ボタンより前面に表示 */
-  width: 20px; /* スピナーの幅 */
-  height: 20px; /* スピナーの高さ */
+  width: 50px; /* スピナーの幅 */
+  height: 50px; /* スピナーの高さ */
   display: none; /* 初期状態では非表示 */
-  background: url("https://loading.io/spinners/azure/lg.azure-round-loader.gif") no-repeat center center; /* スピナー画像の例 */
+  background: url("https://koikoi.co.jp/koikoi-japan-tour/wp-content/uploads/sites/17/2024/12/Spinner@1x-1.0s-200px-200px.gif") no-repeat center center; /* 新しいスピナー画像 */
   background-size: contain; /* 背景画像のサイズ調整 */
 }
 
