@@ -66,6 +66,51 @@ $default_image = 'https://example.com/default-image.jpg';
     </div>
 </section>
 
+<section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- 左カラム -->
+            <div class="col-lg-6">
+                <p class="sec-sub-heading">Explore</p>
+                <h2 class="sec-heading">Discover Japan</h2>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+
+                <!-- カスタムセレクト -->
+                <div class="custom-select-wrapper">
+                    <div class="custom-select">
+                        <span class="custom-select-trigger">Select Region</span>
+                        <ul class="custom-options">
+                            <?php if ($query->have_posts()): ?>
+                                <?php while ($query->have_posts()): $query->the_post(); ?>
+                                    <li class="custom-option" data-post-id="<?php echo get_the_ID(); ?>">
+                                        <?php echo get_the_title(); ?>
+                                    </li>
+                                <?php endwhile; ?>
+                                <?php wp_reset_postdata(); ?>
+                            <?php else: ?>
+                                <li class="custom-option">No Regions Available</li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- スライダー -->
+                <div class="explore-main-wrapper mt-2">
+                    <!-- Slick用のラッパ -->
+                    <div class="explore-slider">
+                        <!-- Ajaxでスライダー要素を挿入 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右カラム：地図画像 -->
+            <div class="col-lg-6">
+                <img src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_explore_map_img', $default_image)); ?>" alt="Explore Map">
+            </div>
+        </div>
+    </div>
+</section>
+
 <script>
 jQuery(document).ready(function ($) {
     const selectTrigger = $('.custom-select-trigger');
@@ -136,33 +181,43 @@ jQuery(document).ready(function ($) {
             slider.append(slide);
         });
 
-        initializeOwlCarousel();
+        initializeSlick(); // Slick初期化
     }
 
-    // OwlCarouselを初期化する
-    function initializeOwlCarousel() {
-        if (slider.hasClass('owl-loaded')) {
-            slider.trigger('destroy.owl.carousel'); // 既存のインスタンスを破棄
+    // Slickを初期化する関数
+    function initializeSlick() {
+        // すでに初期化されていたらdestroy
+        if (slider.hasClass('slick-initialized')) {
+            slider.slick('unslick');
         }
 
-        slider.owlCarousel({
-            loop: true,
-            margin: 20,
-            nav: true,
-            dots: true,
+        slider.slick({
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 1,
             autoplay: true,
-            autoplayTimeout: 5000,
-            items: 3,
-            responsive: {
-                0: { items: 1 },
-                576: { items: 2 },
-                992: { items: 3 },
-            },
+            autoplaySpeed: 5000,
+            dots: true,
+            arrows: true,
+            responsive: [
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
         });
     }
 
-    // 初期化
-    initializeOwlCarousel();
+    // ページ読み込み時にSlickを初期化（初期にアイテムがない場合は空スライダーになる）
+    initializeSlick();
 });
 </script>
 
