@@ -89,68 +89,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // スライダーを更新する関数
     function updateSlider(postId) {
-    fetch(ajax_object.ajaxurl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            action: 'get_explore_meta_fields',
-            post_id: postId,
-            nonce: ajax_object.nonce,
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            initializeOwlCarousel(data.meta_fields);
-        } else {
-            console.error('AJAX Error:', data.message);
-        }
-    })
-    .catch(error => console.error('Fetch Error:', error));
-}
+        fetch(ajax_object.ajaxurl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                action: 'get_explore_meta_fields',
+                post_id: postId,
+                nonce: ajax_object.nonce,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                populateSlider(data.meta_fields);
+            } else {
+                console.error('AJAX Error:', data.message);
+            }
+        })
+        .catch(error => console.error('Fetch Error:', error));
+    }
 
-function initializeOwlCarousel(items = []) {
-    const slider = document.querySelector('.owl-carousel');
-    slider.innerHTML = ''; // スライダーの初期化
+    // スライダーのアイテムを生成
+    function populateSlider(items = []) {
+        slider.innerHTML = ''; // スライダーの初期化
 
-    // アイテムを追加
-    items.forEach(item => {
-        const slide = document.createElement('div');
-        slide.className = 'explore-inners';
-        slide.innerHTML = `
-            <div class="explore-img">
-                <img src="${item.image}" alt="${item.text1}">
-            </div>
-            <div class="d-flex gap-2 mt-2">
-                <div class="explore-inner-box">
-                    <h6 class="explore-inner-title">${item.text1}</h6>
-                    <h6 class="explore-inner-title">${item.text2}</h6>
+        // アイテムを追加
+        items.forEach(item => {
+            const slide = document.createElement('div');
+            slide.className = 'explore-inners';
+            slide.innerHTML = `
+                <div class="explore-img">
+                    <img src="${item.image}" alt="${item.text1}">
                 </div>
-            </div>
-        `;
-        slider.appendChild(slide);
-    });
+                <div class="d-flex gap-2 mt-2">
+                    <div class="explore-inner-box">
+                        <h6 class="explore-inner-title">${item.text1}</h6>
+                        <h6 class="explore-inner-title">${item.text2}</h6>
+                    </div>
+                </div>
+            `;
+            slider.appendChild(slide);
+        });
 
-    // OwlCarouselを初期化
-    $(slider).owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        dots: true,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        items: 3,
-        responsive: {
-            0: { items: 1 },
-            576: { items: 2 },
-            992: { items: 3 },
-        },
-    });
-}
+        initializeOwlCarousel();
+    }
 
-    // OwlCarouselを初期化または再初期化する関数
+    // OwlCarouselを初期化する
     function initializeOwlCarousel() {
-        $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
+        if ($(slider).data('owl.carousel')) {
+            $(slider).owlCarousel('destroy'); // 既存のインスタンスを破棄
+        }
+
         $(slider).owlCarousel({
             loop: true,
             margin: 20,
@@ -167,7 +156,7 @@ function initializeOwlCarousel(items = []) {
         });
     }
 
-    // ページロード時に初期化
+    // 初期化
     initializeOwlCarousel();
 });
 </script>
