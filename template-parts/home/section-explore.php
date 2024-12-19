@@ -18,8 +18,7 @@ $args = [
 ];
 $query = new WP_Query($args);
 
-// デフォルト画像
-$default_image = 'https://example.com/default-image.jpg';
+// デフォルト画像は使わないので、ここでは省略可能
 ?>
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
@@ -31,90 +30,71 @@ $default_image = 'https://example.com/default-image.jpg';
                 <h2 class="sec-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
                 <p class="exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
 
-                <!-- スライダー -->
-                <div class="explore-carousel owl-carousel mt-3">
+                <div class="explore-text-list mt-3">
                     <?php
                     if ($query->have_posts()):
                         while ($query->have_posts()): $query->the_post();
                             $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
 
                             if (!empty($additional_fields) && is_array($additional_fields)) {
+                                // タイトル表示(投稿タイトル)
+                                echo '<h3>' . esc_html(get_the_title()) . '</h3>';
+                                echo '<ul>';
                                 foreach ($additional_fields as $field) {
-                                    $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
                                     $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
                                     $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
                                     $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
                                     $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
-                                    ?>
-                                    <div class="explore-item text-center">
-                                        <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
-                                        <p><strong><?php echo $text1; ?></strong></p>
-                                        <p><?php echo $text2; ?></p>
-                                        <p><?php echo $text3; ?></p>
-                                        <p><?php echo $text4; ?></p>
-                                    </div>
-                                    <?php
+
+                                    // テキストのみ表示
+                                    echo '<li>';
+                                    echo '<p><strong>' . $text1 . '</strong></p>';
+                                    echo '<p>' . $text2 . '</p>';
+                                    echo '<p>' . $text3 . '</p>';
+                                    echo '<p>' . $text4 . '</p>';
+                                    echo '</li>';
                                 }
+                                echo '</ul>';
+                            } else {
+                                echo '<p>追加メタフィールドが見つかりません</p>';
                             }
                         endwhile;
                         wp_reset_postdata();
+                    else:
+                        echo '<p>投稿が見つかりませんでした。</p>';
                     endif;
                     ?>
                 </div>
             </div>
-            
 
             <!-- 右カラム：地図画像 -->
             <?php
-            $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', $default_image);
-            ?>
+            $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', '');
+            if(!empty($map_img)): ?>
             <div class="col-lg-6">
                 <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
-        jQuery('.explore-carousel').owlCarousel({
-            loop: true,
-            margin: 30,
-            nav: true,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 5000,
-            items: 3,
-            responsive: {
-                0: { items: 1 },
-                576: { items: 2 },
-                992: { items: 3 }
-            }
-        });
-    }
-});
-</script>
 
 <?php
 // デバッグ用コード（開発中のみ有効にする）
 if (defined('WP_DEBUG') && WP_DEBUG) {
     echo '<h3>テスト: 投稿データ</h3>';
-    if ($query->have_posts()):
-        while ($query->have_posts()): $query->the_post();
+    $debug_args = [
+        'post_type' => 'tcp_explore',
+        'posts_per_page' => 10,
+    ];
+    $debug_query = new WP_Query($debug_args);
+    if ($debug_query->have_posts()):
+        while ($debug_query->have_posts()): $debug_query->the_post();
             echo '<p>タイトル: ' . get_the_title() . '</p>';
-            $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
-            if (!empty($additional_fields)) {
+            $debug_additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
+            if (!empty($debug_additional_fields)) {
                 echo '<pre>';
-                print_r($additional_fields);
+                print_r($debug_additional_fields);
                 echo '</pre>';
             } else {
-                echo '<p>追加メタフィールドが見つかりません</p>';
-            }
-        endwhile;
-        wp_reset_postdata();
-    else:
-        echo '<p>投稿が見つかりませんでした。</p>';
-    endif;
-}
-?>
+                
