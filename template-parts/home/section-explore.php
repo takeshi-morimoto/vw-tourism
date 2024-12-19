@@ -37,16 +37,16 @@ $default_image = 'https://example.com/default-image.jpg';
                     if ($query->have_posts()):
                         while ($query->have_posts()): $query->the_post();
                             // 投稿のメタフィールドを取得
-                            $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+                            $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
 
                             // メタフィールドのデータがある場合に表示
                             if (!empty($additional_fields) && is_array($additional_fields)) {
                                 foreach ($additional_fields as $field) {
                                     $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
-                                    $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
-                                    $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
-                                    $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
-                                    $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
+                                    $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
+                                    $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
+                                    $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
+                                    $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
                                     ?>
                                     <div class="explore-item text-center">
                                         <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
@@ -57,11 +57,6 @@ $default_image = 'https://example.com/default-image.jpg';
                             } else {
                                 echo '<p>No additional data available for this post. Please check the custom fields.</p>';
                             }
-
-                            // デバッグ用に全てのメタデータを表示
-                            echo '<pre>';
-                            print_r(get_post_meta(get_the_ID()));
-                            echo '</pre>';
                         endwhile;
                         wp_reset_postdata();
                     else:
@@ -106,24 +101,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-
 <?php
-// 投稿データのデバッグ用コード
-echo '<h3>テスト: 投稿データ</h3>';
-if ($query->have_posts()):
-    while ($query->have_posts()): $query->the_post();
-        echo '<p>タイトル: ' . get_the_title() . '</p>';
-        $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-        if (!empty($additional_fields)) {
-            echo '<pre>';
-            print_r($additional_fields);
-            echo '</pre>';
-        } else {
-            echo '<p>追加メタフィールドが見つかりません</p>';
-        }
-    endwhile;
-    wp_reset_postdata();
-else:
-    echo '<p>投稿が見つかりませんでした。</p>';
-endif;
+// デバッグ用コード（開発中のみ有効にする）
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    echo '<h3>テスト: 投稿データ</h3>';
+    if ($query->have_posts()):
+        while ($query->have_posts()): $query->the_post();
+            echo '<p>タイトル: ' . get_the_title() . '</p>';
+            $additional_fields = get_post_meta(get_the_ID(), 'package_explore_meta_fields', true);
+            if (!empty($additional_fields)) {
+                echo '<pre>';
+                print_r($additional_fields);
+                echo '</pre>';
+            } else {
+                echo '<p>追加メタフィールドが見つかりません</p>';
+            }
+        endwhile;
+        wp_reset_postdata();
+    else:
+        echo '<p>投稿が見つかりませんでした。</p>';
+    endif;
+}
 ?>
