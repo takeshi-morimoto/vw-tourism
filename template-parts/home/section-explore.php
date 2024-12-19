@@ -40,6 +40,12 @@ if (!empty($additional_fields)) {
 
 ?>
 
+<?php
+$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+var_dump($additional_fields);
+?>
+
+
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
     <div class="container">
         <div class="row align-items-center">
