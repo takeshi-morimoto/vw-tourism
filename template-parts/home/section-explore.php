@@ -89,47 +89,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // スライダーを更新する関数
     function updateSlider(postId) {
-        fetch(ajax_object.ajaxurl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                action: 'get_explore_meta_fields',
-                post_id: postId,
-                nonce: ajax_object.nonce,
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // スライダーの内容をクリア
-                slider.innerHTML = '';
-                
-                // 新しいスライド要素を追加
-                data.meta_fields.forEach(field => {
-                    const slide = document.createElement('div');
-                    slide.className = 'explore-inners';
-                    slide.innerHTML = `
-                        <div class="explore-img">
-                            <img src="${field.image}" alt="${field.text1}" style="border-radius: 10px;">
-                        </div>
-                        <div class="d-flex gap-2 mt-2">
-                            <div class="explore-inner-box">
-                                <h6 class="explore-inner-title">${field.text1}</h6>
-                                <h6 class="explore-inner-title">${field.text2}</h6>
-                            </div>
-                        </div>
-                    `;
-                    slider.appendChild(slide);
-                });
+    fetch(ajax_object.ajaxurl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            action: 'get_explore_meta_fields',
+            post_id: postId,
+            nonce: ajax_object.nonce,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            initializeOwlCarousel(data.meta_fields);
+        } else {
+            console.error('AJAX Error:', data.message);
+        }
+    })
+    .catch(error => console.error('Fetch Error:', error));
+}
 
-                // OwlCarouselの初期化
-                initializeOwlCarousel();
-            } else {
-                console.error('Failed to fetch data:', data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+function initializeOwlCarousel(items) {
+    const slider = document.querySelector('.owl-carousel');
+    slider.innerHTML = ''; // スライダーの初期化
+
+    items.forEach(item => {
+        const slide = document.createElement('div');
+        slide.className = 'explore-inners';
+        slide.innerHTML = `
+            <div class="explore-img">
+                <img src="${item.image}" alt="${item.text1}">
+            </div>
+            <div class="d-flex gap-2 mt-2">
+                <div class="explore-inner-box">
+                    <h6 class="explore-inner-title">${item.text1}</h6>
+                    <h6 class="explore-inner-title">${item.text2}</h6>
+                </div>
+            </div>
+        `;
+        slider.appendChild(slide);
+    });
+
+    $(slider).owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        dots: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        items: 3,
+        responsive: {
+            0: { items: 1 },
+            576: { items: 2 },
+            992: { items: 3 },
+        },
+    });
+}
 
     // OwlCarouselを初期化または再初期化する関数
     function initializeOwlCarousel() {

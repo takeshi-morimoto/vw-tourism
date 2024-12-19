@@ -835,7 +835,8 @@ function get_explore_meta_fields() {
 
 // JavaScriptにAjaxの情報を渡す
 add_action('wp_enqueue_scripts', function () {
-    wp_localize_script('your-script-handle', 'ajax_object', [
+    wp_enqueue_script('custom-script', get_template_directory_uri() . '/assets/js/custom.js', ['jquery'], null, true);
+    wp_localize_script('custom-script', 'ajax_object', [
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('explore_nonce'),
     ]);
