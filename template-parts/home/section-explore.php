@@ -20,6 +20,24 @@ $query = new WP_Query($args);
 
 // デフォルト画像
 $default_image = 'https://example.com/default-image.jpg';
+
+$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+if (!empty($additional_fields)) {
+    foreach ($additional_fields as $field) {
+        $image = isset($field['image']) ? esc_url($field['image']) : '';
+        $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
+        $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
+        $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
+        $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
+        
+        // 表示例
+        echo '<div class="explore-item">';
+        echo '<img src="' . $image . '" alt="' . $text1 . '">';
+        echo '<p>' . $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4 . '</p>';
+        echo '</div>';
+    }
+}
+
 ?>
 
 <section id="explore" style="<?php echo esc_attr($explore_bg); ?>">
@@ -31,58 +49,63 @@ $default_image = 'https://example.com/default-image.jpg';
                 <h2 class="sec-heading"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_heading', 'Discover New Places')); ?></h2>
                 <p class="exp-para"><?php echo esc_html(get_theme_mod('vw_tourism_pro_explore_paragraph', 'Explore the beauty of the world.')); ?></p>
                 
-                <!-- ドロップダウンメニュー -->
-                <?php if ($query->have_posts()): ?>
-                    <div class="custom-select-wrapper">
-                        <select id="explore-dropdown" class="form-select">
-                            <?php while ($query->have_posts()): $query->the_post(); ?>
-                                <option value="<?php echo esc_attr(get_the_ID()); ?>">
-                                    <?php echo esc_html(get_the_title()); ?>
-                                </option>
-                            <?php endwhile; wp_reset_postdata(); ?>
-                        </select>
-                    </div>
-                <?php endif; ?>
-                
                 <!-- スライダー -->
                 <div class="explore-carousel owl-carousel mt-3">
-                    <?php
-                    $query->rewind_posts(); // 投稿リセット
+                <?php
+                if ($query->have_posts()):
                     while ($query->have_posts()): $query->the_post();
-                        $images = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
-                        $image_url = !empty($images['image']) ? esc_url($images['image']) : $default_image;
-                    ?>
-                        <div class="explore-item text-center">
-                            <img src="<?php echo $image_url; ?>" alt="Explore Image" class="rounded-3">
-                            <p class="mt-2"><?php echo esc_html(get_the_title()); ?></p>
-                        </div>
-                    <?php endwhile; ?>
+                        $additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+                        if (!empty($additional_fields)) {
+                            foreach ($additional_fields as $field) {
+                                $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+                                $text1 = isset($field['text1']) ? esc_html($field['text1']) : '';
+                                $text2 = isset($field['text2']) ? esc_html($field['text2']) : '';
+                                $text3 = isset($field['text3']) ? esc_html($field['text3']) : '';
+                                $text4 = isset($field['text4']) ? esc_html($field['text4']) : '';
+                                ?>
+                                <div class="explore-item text-center">
+                                    <img src="<?php echo $image; ?>" alt="<?php echo $text1; ?>" class="rounded-3">
+                                    <p><?php echo $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4; ?></p>
+                                </div>
+                                <?php
+                            }
+                        }
+                    endwhile;
+                    wp_reset_postdata();
+                else:
+                    echo '<p>No posts available.</p>';
+                endif;
+                ?>
                 </div>
             </div>
 
             <!-- 右カラム：地図画像 -->
-            <div class="col-lg-6">
-                <?php $map_img = get_theme_mod('vw_tourism_pro_explore_map_img', $default_image); ?>
-                <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
-            </div>
+            <?php if ($map_img): ?>
+                <div class="col-lg-6">
+                    <img src="<?php echo esc_url($map_img); ?>" alt="Explore Map" class="img-fluid rounded-3">
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  jQuery('.explore-carousel').owlCarousel({
-    loop: true,
-    margin: 20,
-    nav: true,
-    dots: false,
-    autoplay: true,
-    autoplayTimeout: 5000,
-    items: 3,
-    responsive: {
-        0: { items: 1 },
-        576: { items: 2 },
-        992: { items: 3 }
-    }
+  if (typeof jQuery !== 'undefined' && jQuery('.explore-carousel').length) {
+    jQuery('.explore-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: true,
+      dots: false,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      items: 3,
+      responsive: {
+          0: { items: 1 },
+          576: { items: 2 },
+          992: { items: 3 }
+      }
+    });
+  }
 });
 </script>
