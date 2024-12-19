@@ -41,6 +41,8 @@ $default_image = 'https://example.com/default-image.jpg';
                                     <li class="custom-option" data-post-id="<?php echo get_the_ID(); ?>"><?php echo get_the_title(); ?></li>
                                 <?php endwhile; ?>
                                 <?php wp_reset_postdata(); ?>
+                            <?php else: ?>
+                                <li class="custom-option">No regions available</li>
                             <?php endif; ?>
                         </ul>
                     </div>

@@ -2274,7 +2274,8 @@ for ($i=0; $i < count($explore_titles); $i++) {
 	// 	set_theme_mod('vw_tourism_pro_explore_img'.$i, get_template_directory_uri().'/assets/images/explore/explore'.$i.'.png');
 	// }
 set_theme_mod('vw_tourism_pro_explore_map_img', get_template_directory_uri().'/assets/images/explore/map.png');
-	/*------------------------ Blog--------------------------------------*/
+
+/*------------------------ Blog--------------------------------------*/
 	set_theme_mod( 'vw_tourism_pro_blog_sub_heading', 'NEWS & BLOGS' );
 	set_theme_mod( 'vw_tourism_pro_blog_heading', 'Latest News & Blogs' );
 	set_theme_mod( 'vw_tourism_pro_blog_viewmore_text', 'View More' );

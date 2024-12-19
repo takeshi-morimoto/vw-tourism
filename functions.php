@@ -822,32 +822,25 @@ add_action('wp_ajax_get_explore_meta_fields', 'get_explore_meta_fields');
 add_action('wp_ajax_nopriv_get_explore_meta_fields', 'get_explore_meta_fields');
 
 function get_explore_meta_fields() {
-    // デバッグ用にPOSTデータを確認
-    if (defined('WP_DEBUG') && WP_DEBUG) {
-        error_log(print_r($_POST, true));
-    }
+    check_ajax_referer('explore_nonce', 'nonce'); // セキュリティチェック
 
     $post_id = intval($_POST['post_id']);
-
-    if (!$post_id) {
-        wp_send_json_error(['message' => 'Invalid post ID']);
-    }
-
-    // 投稿の存在確認
-    $post = get_post($post_id);
-    if (!$post) {
-        wp_send_json_error(['message' => 'Post not found']);
-    }
-
-    // メタフィールドの取得
-    $meta_fields = get_post_meta($post_id, 'additional_meta_fields', true);
+    $meta_fields = get_post_meta($post_id, 'package_explore_meta_fields', true);
 
     if ($meta_fields) {
         wp_send_json_success(['meta_fields' => $meta_fields]);
     } else {
-        wp_send_json_error(['message' => 'No meta fields found']);
+        wp_send_json_error(['message' => 'Meta fields not found.']);
     }
 }
+
+add_action('wp_enqueue_scripts', function() {
+    wp_localize_script('your-script-handle', 'ajax_object', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('explore_nonce'),
+    ]);
+});
+
 
 
 add_filter('excerpt_length', 'custom_excerpt_length');
