@@ -157,5 +157,34 @@ echo '<h3>全メタデータのデバッグ</h3>';
 echo '<pre>';
 print_r($all_meta);
 echo '</pre>';
-?>
 
+
+// デバッグ用に投稿IDと全メタデータを確認
+echo '<h3>現在の投稿ID: ' . get_the_ID() . '</h3>';
+
+$all_meta = get_post_meta(get_the_ID());
+echo '<h3>全メタデータの確認:</h3>';
+echo '<pre>';
+print_r($all_meta);
+echo '</pre>';
+
+// additional_meta_fields のデータ取得
+$additional_fields = get_post_meta(get_the_ID(), 'additional_meta_fields', true);
+
+if (!empty($additional_fields) && is_array($additional_fields)) {
+    foreach ($additional_fields as $field) {
+        $image = isset($field['image']) ? esc_url($field['image']) : $default_image;
+        $text1 = isset($field['text1']) ? esc_html($field['text1']) : 'Default Title';
+        $text2 = isset($field['text2']) ? esc_html($field['text2']) : 'Default Subtitle';
+        $text3 = isset($field['text3']) ? esc_html($field['text3']) : 'Default Description';
+        $text4 = isset($field['text4']) ? esc_html($field['text4']) : 'Default Footer';
+
+        echo '<div class="explore-item">';
+        echo '<img src="' . $image . '" alt="' . $text1 . '">';
+        echo '<p>' . $text1 . ' - ' . $text2 . ' - ' . $text3 . ' - ' . $text4 . '</p>';
+        echo '</div>';
+    }
+} else {
+    echo '<p>追加メタフィールドが見つかりません</p>';
+}
+?>
