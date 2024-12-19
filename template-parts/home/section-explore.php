@@ -71,17 +71,18 @@ $default_image = 'https://example.com/default-image.jpg';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    jQuery('.explore-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        dots: true,
-        items: 2,
-        responsive: {
-            0: { items: 1 },
-            768: { items: 2 },
-            1200: { items: 3 }
-        }
-    });
+  jQuery('.explore-carousel').owlCarousel({
+    loop: true,
+    margin: 20,
+    nav: true,
+    dots: false,
+    autoplay: true,
+    autoplayTimeout: 5000,
+    items: 3,
+    responsive: {
+        0: { items: 1 },
+        576: { items: 2 },
+        992: { items: 3 }
+    }
 });
 </script>
