@@ -38,16 +38,18 @@ if ('Disable' == $section_hide) {
             </div>
 
             <!-- メインのバナーテキスト -->
-            <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="1s">
-                <?php if ($sub_heading_one = get_theme_mod('vw_tourism_pro_banner_sub_heading_one', '')): ?>
-                    <p class="banner-sub-heading mb-0"><?php echo esc_html($sub_heading_one); ?></p>
-                <?php endif; ?>
-                <?php if ($heading = get_theme_mod('vw_tourism_pro_banner_heading', '')): ?>
-                    <h1 class="banner-heading"><?php echo esc_html($heading); ?></h1>
-                <?php endif; ?>
-                <?php if ($sub_heading_two = get_theme_mod('vw_tourism_pro_banner_sub_heading_two', '')): ?>
-                    <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html($sub_heading_two); ?></p>
-                <?php endif; ?>
+            <div class="col-lg-6 col-md-6 col-12 order-md-2 order-sm-1 order-1">
+                <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="1s">
+                    <?php if ($sub_heading_one = get_theme_mod('vw_tourism_pro_banner_sub_heading_one', '')): ?>
+                        <p class="banner-sub-heading mb-0"><?php echo esc_html($sub_heading_one); ?></p>
+                    <?php endif; ?>
+                    <?php if ($heading = get_theme_mod('vw_tourism_pro_banner_heading', '')): ?>
+                        <h1 class="banner-heading animate__animated animate__fadeIn"><?php echo esc_html($heading); ?></h1>
+                    <?php endif; ?>
+                    <?php if ($sub_heading_two = get_theme_mod('vw_tourism_pro_banner_sub_heading_two', '')): ?>
+                        <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html($sub_heading_two); ?></p>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- 右側のコンテンツ -->
