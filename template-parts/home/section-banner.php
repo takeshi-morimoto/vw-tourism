@@ -62,7 +62,6 @@ if (get_theme_mod('vw_tourism_pro_banner_video')) {
             </div>
         </div>
     </div>
-</section>
 
 <!-- desktop svg -->
 <svg class="position-absolute banner-svg d-md-block d-none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="1820.479" height="780"  viewBox="0 0 1790 835.763">
@@ -182,3 +181,4 @@ if (get_theme_mod('vw_tourism_pro_banner_video')) {
   </g>
 </svg>
 <!-- Mobile svg End-->
+</section>
