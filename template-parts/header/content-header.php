@@ -61,10 +61,10 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
         <form role="search" method="get" class="search-form d-flex" action="<?php echo esc_url(home_url('/')); ?>">
           <input type="search" name="s" class="search-field" placeholder="Search" required />
           <button type="submit" class="search-btn">
-            <i class="<?php echo esc_html(get_theme_mod('vw_tourism_pro_header_search_icon', 'fas fa-search')); ?>"></i>
+            <i class="fas fa-search"></i>
           </button>
         </form>
-        
+
         <!-- ユーザーアカウント -->
         <div class="header-account-main">
           <?php if (is_user_logged_in()) { ?>
