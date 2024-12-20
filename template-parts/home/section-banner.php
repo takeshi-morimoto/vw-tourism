@@ -195,14 +195,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let loadedImages = 0;
 
-    // すべての画像が読み込まれたかを確認する関数
     function checkImagesLoaded() {
+        console.log(`Loaded images: ${loadedImages}/${images.length}`); // デバッグ用ログ
         if (loadedImages === images.length) {
-            bannerLeft.classList.add("loaded"); // すべての画像が読み込まれたらクラスを追加
+            bannerLeft.classList.add("loaded");
+            console.log("All images loaded, class added.");
         }
     }
 
-    // 各画像の読み込み状態を確認
     images.forEach((img) => {
         if (img.complete) {
             loadedImages++;
@@ -213,13 +213,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             img.addEventListener("error", () => {
-                console.error("画像の読み込みに失敗しました:", img.src);
+                console.error("Image failed to load:", img.src);
                 loadedImages++;
                 checkImagesLoaded();
             });
         }
     });
 
-    // ページ読み込み時点ですべての画像が読み込まれている場合
     checkImagesLoaded();
 });
