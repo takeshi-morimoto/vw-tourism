@@ -54,7 +54,8 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
       </div>
     </div>
 
-    <!-- 検索フォームとユーザーアカウント
+    <!-- 検索フォームとユーザーアカウント -->
+    <!--
     <div class="col-lg-2 col-md-7 col-7 order-lg-3">
       <div class="d-flex justify-content-end align-items-center gap-md-3">
         <!-- 検索フォーム -->
@@ -74,7 +75,8 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
           <?php } ?>
         </div>
       </div>
-    </div> -->
+    </div>
+    -->
 
   </div>
   <span class="d-none" id="menu-width"><?php echo esc_html($menu_width); ?></span>
