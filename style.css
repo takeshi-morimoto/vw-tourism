@@ -1604,3 +1604,28 @@ display: none
 }
 
 /* new css */
+/* ロゴの高さ調整 */
+.logo img {
+  max-height: 50px; /* 必要に応じて高さを調整 */
+  vertical-align: middle;
+}
+
+/* ハンバーガーメニューの位置調整 */
+.hamburger-menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; /* 縦方向中央揃え */
+}
+
+/* ハンバーガーメニューボタン */
+.hamburger-menu button {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* アイコンサイズ調整 */
+  cursor: pointer;
+}
+
+/* ハンバーガーアイコン */
+.hamburger-menu button i {
+  color: #000; /* 必要に応じて色を調整 */
+}
