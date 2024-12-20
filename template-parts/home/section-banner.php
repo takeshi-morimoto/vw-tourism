@@ -188,7 +188,7 @@ if ('Disable' == $section_hide) {
 <!-- Mobile svg End-->
 
 </section>
-
+<script>
 document.addEventListener("DOMContentLoaded", function () {
     const bannerLeft = document.querySelector(".banner-left");
     const images = bannerLeft.querySelectorAll("img");
@@ -222,3 +222,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     checkImagesLoaded();
 });
+</script>
