@@ -1,25 +1,3 @@
-<?php
-/**
- * Template part for displaying header content
- *
- * @package vw_tourism_pro
- */
-
-// 変数の初期化
-$menu_width = get_theme_mod('vw_tourism_pro_menu_width', 'default'); // デフォルト値を設定
-
-$header_widgets_section = get_theme_mod( 'vw_tourism_pro_header_widgets_enable' );
-if ( 'Disable' == $header_widgets_section ) {
-   return;
-}
-
-if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
-   $background_setting = 'background-color:'.esc_attr(get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','')).';';
-} else {
-   $background_setting = '';
-}
-?>
-
 <div class="container">
   <div class="row justify-content-between bg-media align-items-center">
     
@@ -35,7 +13,7 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
     </div>
 
     <!-- メニューナビゲーション -->
-    <div class="header-menu col-lg-8 col-md-1 col-1 order-lg-2">
+    <div class="header-menu col-lg-10 col-md-12 col-12 order-lg-2">
       <div class="menubar">
         <div class="toggle-nav mobile-menu">
           <!-- ハンバーガーメニュー -->
