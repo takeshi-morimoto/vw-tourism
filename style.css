@@ -1604,28 +1604,37 @@ display: none
 }
 
 /* new css */
-/* ロゴの高さ調整 */
+/* ロゴのスタイル */
 .logo img {
-  max-height: 50px; /* 必要に応じて高さを調整 */
+  max-height: 50px; /* ロゴの高さを調整 */
   vertical-align: middle;
 }
 
-/* ハンバーガーメニューの位置調整 */
-.hamburger-menu {
+/* メインナビゲーションのスタイル */
+.main-nav {
   display: flex;
-  justify-content: flex-end;
-  align-items: center; /* 縦方向中央揃え */
+  align-items: center; /* ロゴとナビゲーションを縦方向中央揃え */
 }
 
-/* ハンバーガーメニューボタン */
-.hamburger-menu button {
-  background: none;
-  border: none;
-  font-size: 1.5rem; /* アイコンサイズ調整 */
-  cursor: pointer;
+.main-nav .menu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* ハンバーガーアイコン */
-.hamburger-menu button i {
-  color: #000; /* 必要に応じて色を調整 */
+.main-nav .menu li {
+  margin: 0 15px; /* メニュー間の余白 */
+}
+
+.main-nav .menu li a {
+  text-decoration: none;
+  color: #000; /* メニューリンクの色を指定 */
+  font-size: 16px; /* フォントサイズを調整 */
+}
+
+/* ロゴとナビゲーションを横並びに */
+.row.align-items-center {
+  display: flex;
+  align-items: center;
 }

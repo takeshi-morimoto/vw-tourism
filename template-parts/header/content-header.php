@@ -11,20 +11,16 @@
       <?php } ?>
     </div>
 
-    <!-- ハンバーガーメニュー -->
-    <div class="hamburger-menu col-lg-2 col-md-2 col-2 text-end">
-      <button id="open_nav" aria-expanded="false" aria-label="Open Menu">
-          <i class="<?php echo esc_html(get_theme_mod('vw_tourism_pro_res_open_menu_icon', 'fas fa-bars')); ?>"></i>
-      </button>
+    <!-- メインナビゲーション -->
+    <div class="main-nav col-lg-10 col-md-8 col-8">
+      <nav id="site-navigation" class="main-navigation">
+        <?php wp_nav_menu(array(
+          'theme_location' => 'primary',
+          'container_class' => 'menu clearfix',
+          'menu_class' => 'clearfix d-flex align-items-center', /* 横並び */
+          'fallback_cb' => 'wp_page_menu',
+        )); ?>
+      </nav>
     </div>
   </div>
 </div>
-
-<nav id="site-navigation" class="main-navigation">
-  <?php wp_nav_menu(array(
-    'theme_location' => 'primary',
-    'container_class' => 'menu clearfix',
-    'menu_class' => 'clearfix',
-    'fallback_cb' => 'wp_page_menu',
-  )); ?>
-</nav>
