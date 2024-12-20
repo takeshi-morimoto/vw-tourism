@@ -54,30 +54,6 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
       </div>
     </div>
 
-<!-- 
-    <!-- 検索フォームとユーザーアカウント -->
-    <div class="col-lg-2 col-md-7 col-7 order-lg-3">
-      <div class="d-flex justify-content-end align-items-center gap-md-3">
-        <!-- 検索フォーム -->
-        <form role="search" method="get" class="search-form d-flex" action="<?php echo esc_url(home_url('/')); ?>">
-          <input type="search" name="s" class="search-field" placeholder="Search" required />
-          <button type="submit" class="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-
-        <!-- ユーザーアカウント -->
-        <div class="header-account-main">
-          <?php if (is_user_logged_in()) { ?>
-              <a href="<?php echo esc_url(home_url('/my-account')); ?>"><i class="fas fa-user"></i></a>
-          <?php } else { ?>
-              <a href="<?php echo esc_url(home_url('/login')); ?>"><i class="fas fa-sign-in-alt"></i></a>
-          <?php } ?>
-        </div>
-      </div>
-    </div>
-     -->
-
   </div>
   <span class="d-none" id="menu-width"><?php echo esc_html($menu_width); ?></span>
 </div>
