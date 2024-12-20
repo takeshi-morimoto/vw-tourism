@@ -174,11 +174,13 @@ get_header();
             </div>
         </div>
         <div class="row mt-5">
+<!-- 
           <?php
           if ( comments_open() || '0' != get_comments_number() ) {
             comments_template();
           }
           ?>
+           -->
         </div>
         <div id="related-places" class="mt-5">
           <?php if(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')!=''){ ?>
