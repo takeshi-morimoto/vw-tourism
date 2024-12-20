@@ -5,11 +5,18 @@ if ('Disable' == $section_hide) {
 }
 ?>
 
+<?php
+$section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
+if ('Disable' == $section_hide) {
+    return;
+}
+?>
+
 <section id="banner" class="position-relative" style="overflow: hidden; height: 100vh;">
     <!-- 動画背景 -->
-    <?php if (get_theme_mod('vw_tourism_pro_banner_video')): ?>
+    <?php if ($video_url = get_theme_mod('vw_tourism_pro_banner_video')): ?>
         <video autoplay muted loop id="banner-video" preload="metadata" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;">
-            <source src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_banner_video')); ?>" type="video/mp4">
+            <source src="<?php echo esc_url($video_url); ?>" type="video/mp4">
         </video>
     <?php endif; ?>
 
@@ -17,16 +24,16 @@ if ('Disable' == $section_hide) {
     <div class="container-fluid" style="position: relative; z-index: 2;">
         <div class="row">
             <!-- 左側のコンテンツ -->
-            <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 baner-left">
-                <?php for ($i=1; $i <= 3; $i++): ?>
-                    <div class="banner-box wow fadeIn delay-2000">
-                        <?php if ($img = get_theme_mod('vw_tourism_pro_banner_card_img'.$i, '')): ?>
-                            <img src="<?php echo esc_html($img); ?>" style="max-width: 100%;">
-                        <?php endif; ?>
-                        <?php if ($title = get_theme_mod('vw_tourism_pro_banner_card_title'.$i, '')): ?>
-                            <h3><?php echo esc_html($title); ?></h3>
-                        <?php endif; ?>
-                    </div>
+            <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 banner-left">
+                <?php for ($i = 1; $i <= 3; $i++): ?>
+                    <?php if ($img = get_theme_mod("vw_tourism_pro_banner_card_img$i", '')): ?>
+                        <div class="banner-box wow fadeIn delay-2000">
+                            <img src="<?php echo esc_url($img); ?>" style="max-width: 100%;">
+                            <?php if ($title = get_theme_mod("vw_tourism_pro_banner_card_title$i", '')): ?>
+                                <h3><?php echo esc_html($title); ?></h3>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 <?php endfor; ?>
             </div>
 
@@ -46,21 +53,21 @@ if ('Disable' == $section_hide) {
             </div>
 
             <!-- 右側のコンテンツ -->
-            <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 baner-right">
-                <?php for ($i=4; $i <= 6; $i++): ?>
-                    <div class="banner-box banner-box-left">
-                        <?php if ($img = get_theme_mod('vw_tourism_pro_banner_card_img'.$i, '')): ?>
-                            <img src="<?php echo esc_html($img); ?>" style="max-width: 100%;">
-                        <?php endif; ?>
-                        <?php if ($title = get_theme_mod('vw_tourism_pro_banner_card_title'.$i, '')): ?>
-                            <h3><?php echo esc_html($title); ?></h3>
-                        <?php endif; ?>
-                    </div>
+            <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 banner-right">
+                <?php for ($i = 4; $i <= 6; $i++): ?>
+                    <?php if ($img = get_theme_mod("vw_tourism_pro_banner_card_img$i", '')): ?>
+                        <div class="banner-box banner-box-left">
+                            <img src="<?php echo esc_url($img); ?>" style="max-width: 100%;">
+                            <?php if ($title = get_theme_mod("vw_tourism_pro_banner_card_title$i", '')): ?>
+                                <h3><?php echo esc_html($title); ?></h3>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 <?php endfor; ?>
             </div>
         </div>
     </div>
-    
+
 <!-- desktop svg -->
 <svg class="position-absolute banner-svg d-md-block d-none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="1820.479" height="780"  viewBox="0 0 1790 835.763">
   <defs>
