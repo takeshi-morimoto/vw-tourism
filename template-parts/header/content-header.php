@@ -76,7 +76,7 @@ if( get_theme_mod('vw_tourism_pro_header_widgets_bgcolor','') ) {
         </div>
       </div>
     </div>
--->
+     -->
 
   </div>
   <span class="d-none" id="menu-width"><?php echo esc_html($menu_width); ?></span>
