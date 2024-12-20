@@ -1,35 +1,25 @@
 <?php
-$section_hide = get_theme_mod( 'vw_tourism_pro_banner_enabledisable' );
-if ( 'Disable' == $section_hide ) {
-  return;
+$section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
+if ('Disable' == $section_hide) {
+    return;
 }
 
-// 動画または画像の背景設定
-$banner_backg = '';
-$video_active = false;  // 動画が設定されているかどうかを判定するフラグ
-
-// 動画が設定されている場合
-if ( get_theme_mod('vw_tourism_pro_banner_video') ) {
-  $video_active = true;  // 動画があるため、フラグを true に設定
-  $banner_backg = '<video autoplay muted loop id="banner-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;"><source src="'.esc_url(get_theme_mod('vw_tourism_pro_banner_video')).'" type="video/mp4"></video>';
-} elseif( get_theme_mod('vw_tourism_pro_banner_bgimage','') ) {
-  // 画像が設定されている場合
-  $banner_backg = 'background-image:url(\''.esc_url(get_theme_mod('vw_tourism_pro_banner_bgimage')).'\'); background-size: cover; background-position: center; position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;';
+// 動画背景設定
+$video_background = '';
+if (get_theme_mod('vw_tourism_pro_banner_video')) {
+    $video_background = '<video autoplay muted loop id="banner-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;">
+        <source src="' . esc_url(get_theme_mod('vw_tourism_pro_banner_video')) . '" type="video/mp4">
+    </video>';
 }
 ?>
 
 <section id="banner" class="position-relative" style="overflow: hidden; height: 100vh;">
-  <!-- 動画背景のコンテナ -->
-  <?php if ( $video_active ) { ?>
-    <div class="video-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;">
-      <?php echo $banner_backg; ?> <!-- 動画を表示 -->
-    </div>
-  <?php } ?>
-
-  <!-- 画像背景の場合、動画がないときのみ表示 -->
-  <?php if( !$video_active && get_theme_mod('vw_tourism_pro_banner_bgimage') ) { ?>
-    <div class="banner-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background-size: cover; background-position: center; z-index: -1; <?php echo esc_attr($banner_backg); ?>"></div>
-  <?php } ?>
+    <!-- 動画背景 -->
+    <?php if ($video_background): ?>
+        <div class="video-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;">
+            <?php echo $video_background; ?>
+        </div>
+    <?php endif; ?>
 
   <!-- コンテンツ部分 -->
   <div class="container-fluid" style="position: relative; z-index: 2;">
