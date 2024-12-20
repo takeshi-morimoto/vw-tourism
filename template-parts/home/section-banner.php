@@ -188,3 +188,29 @@ if ('Disable' == $section_hide) {
 <!-- Mobile svg End-->
 
 </section>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const bannerLeft = document.querySelector(".banner-left");
+    const images = bannerLeft.querySelectorAll("img");
+
+    let loadedImages = 0;
+
+    // すべての画像が読み込まれるのを検知
+    images.forEach((img) => {
+        if (img.complete) {
+            loadedImages++;
+        } else {
+            img.addEventListener("load", () => {
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    bannerLeft.classList.add("loaded");
+                }
+            });
+        }
+    });
+
+    // すでにすべての画像が読み込まれている場合
+    if (loadedImages === images.length) {
+        bannerLeft.classList.add("loaded");
+    }
+});
