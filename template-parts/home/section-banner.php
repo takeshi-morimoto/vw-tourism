@@ -3,72 +3,64 @@ $section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
 if ('Disable' == $section_hide) {
     return;
 }
-
-// 動画背景設定
-$video_background = '';
-if (get_theme_mod('vw_tourism_pro_banner_video')) {
-    $video_background = '<video autoplay muted loop id="banner-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;">
-        <source src="' . esc_url(get_theme_mod('vw_tourism_pro_banner_video')) . '" type="video/mp4">
-    </video>';
-}
 ?>
 
 <section id="banner" class="position-relative" style="overflow: hidden; height: 100vh;">
     <!-- 動画背景 -->
-    <?php if ($video_background): ?>
-        <div class="video-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;">
-            <?php echo $video_background; ?>
-        </div>
+    <?php if (get_theme_mod('vw_tourism_pro_banner_video')): ?>
+        <video autoplay muted loop id="banner-video" preload="metadata" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;">
+            <source src="<?php echo esc_url(get_theme_mod('vw_tourism_pro_banner_video')); ?>" type="video/mp4">
+        </video>
     <?php endif; ?>
 
-  <!-- コンテンツ部分 -->
-  <div class="container-fluid" style="position: relative; z-index: 2;">
-    <div class="row">
-      <!-- 左側のコンテンツ -->
-      <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 baner-left">
-        <?php for ($i=1; $i <= 3; $i++) { ?>
-          <div class="banner-box wow fadeIn delay-2000">
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)!=''){ ?>
-              <img src="<?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)); ?>" style="max-width: 100%;">
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)!=''){ ?>
-              <h3><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)); ?></h3>
-            <?php } ?>
-          </div>
-        <?php } ?>
-      </div>
+    <!-- コンテンツ部分 -->
+    <div class="container-fluid" style="position: relative; z-index: 2;">
+        <div class="row">
+            <!-- 左側のコンテンツ -->
+            <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 baner-left">
+                <?php for ($i=1; $i <= 3; $i++): ?>
+                    <div class="banner-box wow fadeIn delay-2000">
+                        <?php if ($img = get_theme_mod('vw_tourism_pro_banner_card_img'.$i, '')): ?>
+                            <img src="<?php echo esc_html($img); ?>" style="max-width: 100%;">
+                        <?php endif; ?>
+                        <?php if ($title = get_theme_mod('vw_tourism_pro_banner_card_title'.$i, '')): ?>
+                            <h3><?php echo esc_html($title); ?></h3>
+                        <?php endif; ?>
+                    </div>
+                <?php endfor; ?>
+            </div>
 
-      <!-- メインのバナーテキスト -->
-      <div class="col-lg-6 col-md-6 col-12 order-md-2 order-sm-1 order-1">
-        <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="1s">
-          <?php if(get_theme_mod('vw_tourism_pro_banner_sub_heading_one')!=''){ ?>
-            <p class="banner-sub-heading mb-0"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_sub_heading_one')); ?></p>
-          <?php } ?>
-          <?php if(get_theme_mod('vw_tourism_pro_banner_heading')!=''){ ?>
-            <h1 class="banner-heading animate__animated animate__fadeIn"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_heading')); ?></h1>
-          <?php } ?>
-          <?php if(get_theme_mod('vw_tourism_pro_banner_sub_heading_two')!=''){ ?>
-            <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_sub_heading_two')); ?></p>
-          <?php } ?>
+            <!-- メインのバナーテキスト -->
+            <div class="col-lg-6 col-md-6 col-12 order-md-2 order-sm-1 order-1">
+                <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="1s">
+                    <?php if ($sub_heading_one = get_theme_mod('vw_tourism_pro_banner_sub_heading_one', '')): ?>
+                        <p class="banner-sub-heading mb-0"><?php echo esc_html($sub_heading_one); ?></p>
+                    <?php endif; ?>
+                    <?php if ($heading = get_theme_mod('vw_tourism_pro_banner_heading', '')): ?>
+                        <h1 class="banner-heading animate__animated animate__fadeIn"><?php echo esc_html($heading); ?></h1>
+                    <?php endif; ?>
+                    <?php if ($sub_heading_two = get_theme_mod('vw_tourism_pro_banner_sub_heading_two', '')): ?>
+                        <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html($sub_heading_two); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- 右側のコンテンツ -->
+            <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 baner-right">
+                <?php for ($i=4; $i <= 6; $i++): ?>
+                    <div class="banner-box banner-box-left">
+                        <?php if ($img = get_theme_mod('vw_tourism_pro_banner_card_img'.$i, '')): ?>
+                            <img src="<?php echo esc_html($img); ?>" style="max-width: 100%;">
+                        <?php endif; ?>
+                        <?php if ($title = get_theme_mod('vw_tourism_pro_banner_card_title'.$i, '')): ?>
+                            <h3><?php echo esc_html($title); ?></h3>
+                        <?php endif; ?>
+                    </div>
+                <?php endfor; ?>
+            </div>
         </div>
-      </div>
-
-      <!-- 右側のコンテンツ -->
-      <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 baner-right">
-        <?php for ($i=4; $i <= 6; $i++) { ?>
-          <div class="banner-box banner-box-left">
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)!=''){ ?>
-              <img src="<?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)); ?>" style="max-width: 100%;">
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)!=''){ ?>
-              <h3><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)); ?></h3>
-            <?php } ?>
-          </div>
-        <?php } ?>
-      </div>
     </div>
-  </div>
-
+    
 <!-- desktop svg -->
 <svg class="position-absolute banner-svg d-md-block d-none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="1820.479" height="780"  viewBox="0 0 1790 835.763">
   <defs>
