@@ -128,8 +128,8 @@
                                 <span><?php echo esc_html($pkg_tour_nights); echo $pkg_tour_nights ? ' Nights' : '';?></span>
                                 <p class="mb-0 pac-per-year"><?php esc_html_e($member_text);?></p>
                             </div>
-                              <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')); ?><?php echo  esc_html(number_format((float)$pkg_sale_price, 2, '.', '')); ?></p>
-                          </div>
+                              <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')); ?><?php echo  esc_html(number_format((float)$pkg_sale_price, 0, '.', '')); ?></p>
+                            </div>
                         </div>
                       </div>
                     </div>
