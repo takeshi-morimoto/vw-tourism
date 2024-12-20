@@ -195,22 +195,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let loadedImages = 0;
 
-    // すべての画像が読み込まれるのを検知
+    // すべての画像が読み込まれたかを確認する関数
+    function checkImagesLoaded() {
+        if (loadedImages === images.length) {
+            bannerLeft.classList.add("loaded"); // すべての画像が読み込まれたらクラスを追加
+        }
+    }
+
+    // 各画像の読み込み状態を確認
     images.forEach((img) => {
         if (img.complete) {
             loadedImages++;
         } else {
             img.addEventListener("load", () => {
                 loadedImages++;
-                if (loadedImages === images.length) {
-                    bannerLeft.classList.add("loaded");
-                }
+                checkImagesLoaded();
+            });
+
+            img.addEventListener("error", () => {
+                console.error("画像の読み込みに失敗しました:", img.src);
+                loadedImages++;
+                checkImagesLoaded();
             });
         }
     });
 
-    // すでにすべての画像が読み込まれている場合
-    if (loadedImages === images.length) {
-        bannerLeft.classList.add("loaded");
-    }
+    // ページ読み込み時点ですべての画像が読み込まれている場合
+    checkImagesLoaded();
 });
