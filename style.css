@@ -1638,3 +1638,16 @@ display: none
   display: flex;
   align-items: center;
 }
+
+/* TOPの画像の演出 */
+.banner-left {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
+}
+
+.banner-left.loaded {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease-in-out;
+}
