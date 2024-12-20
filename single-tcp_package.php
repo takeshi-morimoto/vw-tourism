@@ -175,13 +175,11 @@ get_header();
         </div>
         <div class="row mt-5">
 
-/*
           <?php
-          if ( comments_open() || '0' != get_comments_number() ) {
-            comments_template();
-          }
+          // if ( comments_open() || '0' != get_comments_number() ) {
+            // comments_template();
+          // }
           ?>
-*/
           
         </div>
         <div id="related-places" class="mt-5">
