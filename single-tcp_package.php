@@ -72,7 +72,7 @@ get_header();
                     <div class="pack-regular-pr"> <?php echo esc_html($round_regular); ?></div>
                     <div class="pack-per-person"><?php echo $pkg_sale_price != 0 || $pkg_regular_price != 0 ? $member_text : ''; ?></div>
                   </div>
-                  <div class="book-btn col-md-4">
+                  <!-- <div class="book-btn col-md-4">
                     <a class="theme-btn-main" href="<?php echo esc_url($pkg_registation_btn_url); ?>" style="padding: 6px 15px;">
                       <div class="theme-btn-block">
                         <span class="theme-btn-line-left"></span>
@@ -81,7 +81,7 @@ get_header();
                         <i class="fa-solid fa-caret-down"></i>
                       </div>
                     </a>
-                  </div>
+                  </div> -->
                 </div>
 
                 <div class="pack-desc mt-4">
