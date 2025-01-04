@@ -78,7 +78,7 @@ get_header();
                         <span class="theme-btn-line-left"></span>
                         <span class="theme-btn-text"><?php echo esc_html($pkg_registation_btn_text); ?></span>
                         <span class="theme-btn-line-right"></span>
-                        <i class="fa-solid fa-caret-down"></i>
+                        <!-- <i class="fa-solid fa-caret-down"></i> -->
                       </div>
                     </a>
                   </div>
