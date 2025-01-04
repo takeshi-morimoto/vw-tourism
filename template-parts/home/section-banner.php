@@ -5,13 +5,6 @@ if ('Disable' == $section_hide) {
 }
 ?>
 
-<?php
-$section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
-if ('Disable' == $section_hide) {
-    return;
-}
-?>
-
 <section id="banner" class="position-relative" style="overflow: hidden; height: 100vh;">
     <!-- 動画背景 -->
     <?php if ($video_url = get_theme_mod('vw_tourism_pro_banner_video')): ?>
@@ -54,19 +47,20 @@ if ('Disable' == $section_hide) {
 
               <!-- 右側のコンテンツ -->
               <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 baner-right">
-                <?php for ($i=4; $i <= 6; $i++) { ?>
-                  <div class="banner-box banner-box-left wow fadeIn delay-2000">
-                    <?php if(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)!=''){ ?>
-                      <img src="<?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)); ?>" style="max-width: 100%;">
-                    <?php } ?>
-                    <?php if(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)!=''){ ?>
-                      <h3><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)); ?></h3>
-                    <?php } ?>
-                  </div>
-                <?php } ?>
-                </div>
-            </div>
-        </div>
+                <?php for ($i = 4; $i <= 6; $i++): ?>
+                  <?php if ($img = get_theme_mod("vw_tourism_pro_banner_card_img$i", '')): ?>
+                      <div class="banner-box banner-box-left wow fadeIn" data-wow-delay="<?php echo (($i - 3) * 0.3); ?>s">
+                          <img src="<?php echo esc_url($img); ?>" style="max-width: 100%;">
+                          <?php if ($title = get_theme_mod("vw_tourism_pro_banner_card_title$i", '')): ?>
+                              <h3><?php echo esc_html($title); ?></h3>
+                          <?php endif; ?>
+                      </div>
+                  <?php endif; ?>
+              <?php endfor; ?>
+
+              </div>
+          </div>
+      </div>
 
 
 <!-- desktop svg -->
@@ -191,36 +185,39 @@ if ('Disable' == $section_hide) {
 </section>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const bannerLeft = document.querySelector(".banner-left");
-    const images = bannerLeft.querySelectorAll("img");
+    const banners = [".banner-left", ".banner-right"]; // 左と右のカラムを対象
 
-    let loadedImages = 0;
+    banners.forEach((selector) => {
+        const banner = document.querySelector(selector);
+        const images = banner.querySelectorAll("img");
 
-    function checkImagesLoaded() {
-        console.log(`Loaded images: ${loadedImages}/${images.length}`); // デバッグ用ログ
-        if (loadedImages === images.length) {
-            bannerLeft.classList.add("loaded");
-            console.log("All images loaded, class added.");
+        let loadedImages = 0;
+
+        function checkImagesLoaded() {
+            if (loadedImages === images.length) {
+                banner.classList.add("loaded");
+                console.log(`All images loaded in ${selector}, class added.`);
+            }
         }
-    }
 
-    images.forEach((img) => {
-        if (img.complete) {
-            loadedImages++;
-        } else {
-            img.addEventListener("load", () => {
+        images.forEach((img) => {
+            if (img.complete) {
                 loadedImages++;
-                checkImagesLoaded();
-            });
+            } else {
+                img.addEventListener("load", () => {
+                    loadedImages++;
+                    checkImagesLoaded();
+                });
 
-            img.addEventListener("error", () => {
-                console.error("Image failed to load:", img.src);
-                loadedImages++;
-                checkImagesLoaded();
-            });
-        }
+                img.addEventListener("error", () => {
+                    console.error("Image failed to load:", img.src);
+                    loadedImages++;
+                    checkImagesLoaded();
+                });
+            }
+        });
+
+        checkImagesLoaded();
     });
-
-    checkImagesLoaded();
 });
 </script>
