@@ -1604,3 +1604,49 @@ display: none
 }
 
 /* new css */
+/* ロゴのスタイル */
+.logo img {
+  max-height: 50px; /* ロゴの高さを調整 */
+  vertical-align: middle;
+}
+
+/* メインナビゲーションのスタイル */
+.main-nav {
+  display: flex;
+  align-items: center; /* ロゴとナビゲーションを縦方向中央揃え */
+}
+
+.main-nav .menu {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-nav .menu li {
+  margin: 0 15px; /* メニュー間の余白 */
+}
+
+.main-nav .menu li a {
+  text-decoration: none;
+  color: #000; /* メニューリンクの色を指定 */
+  font-size: 16px; /* フォントサイズを調整 */
+}
+
+/* ロゴとナビゲーションを横並びに */
+.row.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+/* TOPの画像の演出 */
+.banner-left {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.banner-left.loaded {
+  opacity: 1;
+  visibility: visible;
+}

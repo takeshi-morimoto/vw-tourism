@@ -29,7 +29,7 @@ get_header();
         <div class="row">
             <div class="col-lg-8">
               <?php
-          				while ( have_posts() ) : the_post();
+                    while ( have_posts() ) : the_post();
                   endwhile;
                   $post_id = $post->ID;
                   $pkg_travel_name   = get_post_meta( $post_id, 'pkg_travel_name', true);
@@ -43,23 +43,23 @@ get_header();
                   $pkg_regular_price = $pkg_regular_price ? $pkg_regular_price : 0;
                   $pkg_tour_details = get_post_meta( $post_id, 'pkg_tour_details', true );
                   $pkg_tour_loc_latitude = get_post_meta($post_id,'pkg_tour_loc_latitude',true);
-                   $pkg_tour_loc_longitude = get_post_meta($post_id,'pkg_tour_loc_longitude',true);
+                  $pkg_tour_loc_longitude = get_post_meta($post_id,'pkg_tour_loc_longitude',true);
                   $pkg_registation_btn_text = get_post_meta($post_id,'pkg_registation_btn_text',true);
-                   $pkg_registation_btn_url = get_post_meta($post_id,'pkg_registation_btn_url',true);
-                   $location_address = '';
-                   if ($pkg_tour_loc_latitude != '' && $pkg_tour_loc_longitude != '') {
-                     $location_address = "https://maps.google.com/maps?q=".$pkg_tour_loc_latitude.",".$pkg_tour_loc_longitude."&hl=es;z=14&amp;output=embed";
-                   }
+                  $pkg_registation_btn_url = get_post_meta($post_id,'pkg_registation_btn_url',true);
+                  $location_address = '';
+                  if ($pkg_tour_loc_latitude != '' && $pkg_tour_loc_longitude != '') {
+                    $location_address = "https://maps.google.com/maps?q=".$pkg_tour_loc_latitude.",".$pkg_tour_loc_longitude."&hl=es;z=14&amp;output=embed";
+                  }
                     $pkg_additional_video   = get_post_meta( $post_id, 'pkg_additional_video', true);
                     $pkg_tour_additional_info   = get_post_meta( $post_id, 'pkg_tour_additional_info', true);
-                    $round_regular = $pkg_regular_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_regular_price, 2, '.', '') : '';
-                    $round_sale = $pkg_sale_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_sale_price, 2, '.', '') : '';
+                    $round_regular = $pkg_regular_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_regular_price, 0, '.', '') : '';
+                    $round_sale = $pkg_sale_price != 0 ? get_theme_mod('vw_tourism_pro_packages_currency') . number_format((float)$pkg_sale_price, 0, '.', '') : '';
                     $member_text = get_post_meta( $post_id, 'pkg_person_text', true) ? get_post_meta( $post_id, 'pkg_person_text', true) : 'Per Person';
                 ?>
                 <?php if (has_post_thumbnail()){ ?>
                   <?php the_post_thumbnail(); ?>
                 <?php } ?>
-            		<h3 class="single-room-title "><?php the_title(); ?></h3>
+                  <h3 class="single-room-title "><?php the_title(); ?></h3>
                 <div class="d-flex pack-meta-content gap-md-5 gap-2 justify-content-md-start justify-conten-sm-center justify-content-center">
                   <div class="pack-meta-text position-relative"><?php echo esc_html($pkg_travel_name) ; ?></div>
                   <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to != '' ? 'To' : ''; ?> <span><?php echo  esc_html($pkg_to); ?></span> </div>
@@ -173,13 +173,15 @@ get_header();
               </div>
             </div>
         </div>
-        <div class="row mt-5">
+        <!-- <div class="row mt-5"> -->
+
           <?php
-          if ( comments_open() || '0' != get_comments_number() ) {
-            comments_template();
-          }
+          // if ( comments_open() || '0' != get_comments_number() ) {
+            // comments_template();
+          // }
           ?>
-        </div>
+          
+        <!-- </div> -->
         <div id="related-places" class="mt-5">
           <?php if(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')!=''){ ?>
             <p class="sec-sub-heading text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_places_related_post_sub_heading')); ?></p>
@@ -254,8 +256,8 @@ get_header();
                                           <span><?php echo esc_html($pkg_tour_nights); ?></span> Nights
                                           <p class="mb-0 pac-per-year"><?php echo esc_html($pkg_person_text); ?></p>
                                       </div>
-                                      <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')) . number_format($pkg_sale_price, 2, '.', ''); ?></p>
-                                  </div>
+                                      <p class="mb-0 package-price"><?php echo esc_html(get_theme_mod('vw_tourism_pro_packages_currency')) . number_format($pkg_sale_price, 0, '.', ''); ?></p>
+                                      </div>
                               </div>
                           </div>
                       </div>

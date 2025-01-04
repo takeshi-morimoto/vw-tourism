@@ -1,65 +1,70 @@
 <?php
-$section_hide = get_theme_mod( 'vw_tourism_pro_banner_enabledisable' );
-if ( 'Disable' == $section_hide ) {
-  return;
+$section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
+if ('Disable' == $section_hide) {
+    return;
 }
+?>
 
-// 動画または画像の背景設定
-$banner_backg = '';
-$video_active = false;  // 動画が設定されているかどうかを判定するフラグ
-
-// 動画が設定されている場合
-if ( get_theme_mod('vw_tourism_pro_banner_video') ) {
-  $video_active = true;  // 動画があるため、フラグを true に設定
-  $banner_backg = '<video autoplay muted loop id="banner-video" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;"><source src="'.esc_url(get_theme_mod('vw_tourism_pro_banner_video')).'" type="video/mp4"></video>';
-} elseif( get_theme_mod('vw_tourism_pro_banner_bgimage','') ) {
-  // 画像が設定されている場合
-  $banner_backg = 'background-image:url(\''.esc_url(get_theme_mod('vw_tourism_pro_banner_bgimage')).'\'); background-size: cover; background-position: center; position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;';
+<?php
+$section_hide = get_theme_mod('vw_tourism_pro_banner_enabledisable');
+if ('Disable' == $section_hide) {
+    return;
 }
 ?>
 
 <section id="banner" class="position-relative" style="overflow: hidden; height: 100vh;">
-  <!-- 動画背景のコンテナ -->
-  <?php if ( $video_active ) { ?>
-    <div class="video-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1;">
-      <?php echo $banner_backg; ?> <!-- 動画を表示 -->
-    </div>
-  <?php } ?>
+    <!-- 動画背景 -->
+    <?php if ($video_url = get_theme_mod('vw_tourism_pro_banner_video')): ?>
+        <video autoplay muted loop id="banner-video" preload="metadata" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; object-fit: cover; z-index: -1;">
+            <source src="<?php echo esc_url($video_url); ?>" type="video/mp4">
+        </video>
+    <?php endif; ?>
 
-  <!-- 画像背景の場合、動画がないときのみ表示 -->
-  <?php if( !$video_active && get_theme_mod('vw_tourism_pro_banner_bgimage') ) { ?>
-    <div class="banner-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background-size: cover; background-position: center; z-index: -1; <?php echo esc_attr($banner_backg); ?>"></div>
-  <?php } ?>
+    <!-- コンテンツ部分 -->
+    <div class="container-fluid" style="position: relative; z-index: 2;">
+        <div class="row">
+            <!-- 左側のコンテンツ -->
+            <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 banner-left">
+                <?php for ($i = 1; $i <= 3; $i++): ?>
+                    <?php if ($img = get_theme_mod("vw_tourism_pro_banner_card_img$i", '')): ?>
+                        <div class="banner-box wow fadeIn" data-wow-delay="<?php echo ($i * 0.3); ?>s">
+                            <img src="<?php echo esc_url($img); ?>" style="max-width: 100%;">
+                            <?php if ($title = get_theme_mod("vw_tourism_pro_banner_card_title$i", '')): ?>
+                                <h3><?php echo esc_html($title); ?></h3>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </div>
 
-  <!-- コンテンツ部分 -->
-  <div class="container-fluid" style="position: relative; z-index: 2;">
-    <div class="row">
-      <!-- 左側のコンテンツ -->
-      <div class="col-lg-3 col-md-3 text-center col-6 order-md-1 order-sm-2 order-2 baner-left">
-        <?php for ($i=1; $i <= 3; $i++) { ?>
-          <div class="banner-box wow fadeIn delay-2000">
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)!=''){ ?>
-              <img src="<?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_img'.$i)); ?>" style="max-width: 100%;">
-            <?php } ?>
-            <?php if(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)!=''){ ?>
-              <h3><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_card_title'.$i)); ?></h3>
-            <?php } ?>
-          </div>
-        <?php } ?>
-      </div>
+            <!-- メインのバナーテキスト -->
+            <div class="col-lg-6 col-md-6 col-12 order-md-2 order-sm-1 order-1">
+                <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
+                    <?php if ($sub_heading_one = get_theme_mod('vw_tourism_pro_banner_sub_heading_one', '')): ?>
+                        <p class="banner-sub-heading mb-0"><?php echo esc_html($sub_heading_one); ?></p>
+                    <?php endif; ?>
+                    <?php if ($heading = get_theme_mod('vw_tourism_pro_banner_heading', '')): ?>
+                        <h1 class="banner-heading"><?php echo esc_html($heading); ?></h1>
+                    <?php endif; ?>
+                    <?php if ($sub_heading_two = get_theme_mod('vw_tourism_pro_banner_sub_heading_two', '')): ?>
+                        <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html($sub_heading_two); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-      <!-- メインのバナーテキスト -->
-      <div class="col-lg-6 col-md-6 col-12 order-md-2 order-sm-1 order-1">
-        <div class="banner-text-main wow fadeIn" data-wow-duration="1s" data-wow-delay="1s">
-          <?php if(get_theme_mod('vw_tourism_pro_banner_sub_heading_one')!=''){ ?>
-            <p class="banner-sub-heading mb-0"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_sub_heading_one')); ?></p>
-          <?php } ?>
-          <?php if(get_theme_mod('vw_tourism_pro_banner_heading')!=''){ ?>
-            <h1 class="banner-heading animate__animated animate__fadeIn"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_heading')); ?></h1>
-          <?php } ?>
-          <?php if(get_theme_mod('vw_tourism_pro_banner_sub_heading_two')!=''){ ?>
-            <p class="banner-sub-heading mb-0 text-md-end text-sm-center text-center"><?php echo esc_html(get_theme_mod('vw_tourism_pro_banner_sub_heading_two')); ?></p>
-          <?php } ?>
+            <!-- 右側のコンテンツ -->
+            <div class="col-lg-3 col-md-3 col-6 order-md-3 text-center order-sm-3 order-3 banner-right">
+                <?php for ($i = 4; $i <= 6; $i++): ?>
+                    <?php if ($img = get_theme_mod("vw_tourism_pro_banner_card_img$i", '')): ?>
+                        <div class="banner-box banner-box-left">
+                            <img src="<?php echo esc_url($img); ?>" style="max-width: 100%;">
+                            <?php if ($title = get_theme_mod("vw_tourism_pro_banner_card_title$i", '')): ?>
+                                <h3><?php echo esc_html($title); ?></h3>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </div>
         </div>
       </div>
 
@@ -77,7 +82,6 @@ if ( get_theme_mod('vw_tourism_pro_banner_video') ) {
         <?php } ?>
         </div>
     </div>
-  </div>
 
 <!-- desktop svg -->
 <svg class="position-absolute banner-svg d-md-block d-none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="1820.479" height="780"  viewBox="0 0 1790 835.763">
@@ -199,3 +203,38 @@ if ( get_theme_mod('vw_tourism_pro_banner_video') ) {
 <!-- Mobile svg End-->
 
 </section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const bannerLeft = document.querySelector(".banner-left");
+    const images = bannerLeft.querySelectorAll("img");
+
+    let loadedImages = 0;
+
+    function checkImagesLoaded() {
+        console.log(`Loaded images: ${loadedImages}/${images.length}`); // デバッグ用ログ
+        if (loadedImages === images.length) {
+            bannerLeft.classList.add("loaded");
+            console.log("All images loaded, class added.");
+        }
+    }
+
+    images.forEach((img) => {
+        if (img.complete) {
+            loadedImages++;
+        } else {
+            img.addEventListener("load", () => {
+                loadedImages++;
+                checkImagesLoaded();
+            });
+
+            img.addEventListener("error", () => {
+                console.error("Image failed to load:", img.src);
+                loadedImages++;
+                checkImagesLoaded();
+            });
+        }
+    });
+
+    checkImagesLoaded();
+});
+</script>
