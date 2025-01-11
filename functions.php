@@ -817,7 +817,24 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
+// カスタムフィールドに集合場所を追加して、予約メールに表示する
+add_filter('mp_appointment_email_template', function($template, $booking) {
+    // 投稿IDを取得
+    $post_id = $booking['post_id']; // 予約に関連付けられた投稿のID
 
+    // ACFフィールドの値を取得
+    $meeting_location = get_field('meeting_location', $post_id);
+
+    // 値が存在しない場合のデフォルト値
+    if (empty($meeting_location)) {
+        $meeting_location = '集合場所は未設定です。';
+    }
+
+    // メールテンプレート内の {location} タグを置き換え
+    $template = str_replace('{location}', $meeting_location, $template);
+
+    return $template;
+}, 10, 2);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
