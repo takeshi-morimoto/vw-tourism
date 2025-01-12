@@ -818,23 +818,28 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_filter('mp_appointment_email_template_tags', function($tags, $booking) {
-    // 投稿IDを取得
-    $post_id = $booking['post_id'];
+add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
+    // 予約の投稿IDを取得
+    $post_id = $booking->getPostId();
 
-    // カスタムフィールドから「集合場所」を取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    // カスタムフィールドから集合場所を取得
+    $meeting_location = get_post_meta( $post_id, 'meeting_location', true );
 
-    // 値が存在しない場合のデフォルト値
-    if (empty($meeting_location)) {
+    // デフォルト値を設定
+    if ( empty( $meeting_location ) ) {
         $meeting_location = '集合場所は未設定です。';
     }
 
-    // 新しいタグ `{location}` を追加
-    $tags['{location}'] = $meeting_location;
+    // メール内容を取得
+    $emailContent = $email->render();
 
-    return $tags;
-}, 10, 2);
+    // {location} タグを置換
+    $emailContent = str_replace( '{location}', $meeting_location, $emailContent );
+
+    // メール内容を更新
+    $email->setContent( $emailContent );
+
+}, 10, 3 );
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
