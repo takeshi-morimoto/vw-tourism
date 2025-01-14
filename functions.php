@@ -841,6 +841,15 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
 
 }, 10, 3 );
 
+add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
+    error_log( print_r( $booking, true ) ); // $booking オブジェクトの構造を確認
+}, 10, 3 );
+
+add_action( 'init', function() {
+    load_plugin_textdomain( 'motopress-appointment', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}, 10 );
+
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
