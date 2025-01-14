@@ -822,7 +822,7 @@ add_filter('mpa_email_tags', function ($tags, $email, $booking) {
     global $wpdb;
 
     // カスタムタグ "location" を追加
-    $tags['location'] = function () use ($booking) {
+    $tags['location'] = function () use ($booking, $wpdb) {
         // 予約IDを取得
         $booking_id = $booking->getId();
 
@@ -853,8 +853,27 @@ add_filter('mpa_email_tags', function ($tags, $email, $booking) {
     return $tags;
 }, 10, 3);
 
-add_action('mpa_before_send_email', function($email, $booking, $args) {
-    error_log(print_r($booking, true)); // $booking オブジェクトを完全出力
+add_action('mpa_before_send_email', function ($email, $booking, $args) {
+    global $wpdb;
+
+    // 予約IDを取得
+    $booking_id = $booking->getId();
+
+    // 投稿IDをデータベースから取得
+    $post_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+            $booking_id
+        )
+    );
+
+    error_log("Booking ID: $booking_id");
+    error_log("Post ID: $post_id");
+
+    // 集合場所のカスタムフィールドを取得
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+
+    error_log("Meeting Location: $meeting_location");
 }, 10, 3);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
