@@ -818,39 +818,32 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_filter('mpa_email_tags', function ($tags, $email, $booking) {
+add_action('mpa_before_send_email', function ($email, $booking, $args) {
     global $wpdb;
 
-    // カスタムタグ "location" を追加
-    $tags['location'] = function () use ($booking, $wpdb) {
-        // 予約IDを取得
-        $booking_id = $booking->getId();
+    // 予約IDを取得
+    $booking_id = $booking->getId();
+    error_log("Booking ID: $booking_id");
 
-        // 投稿IDをデータベースから取得
-        $post_id = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
-                $booking_id
-            )
-        );
+    // 投稿IDをデータベースから取得
+    $post_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+            $booking_id
+        )
+    );
+    error_log("Post ID: $post_id");
 
-        // 投稿IDが取得できない場合
-        if (empty($post_id)) {
-            return '集合場所は未設定です。';
-        }
+    // 集合場所の取得
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    error_log("Meeting Location: $meeting_location");
 
-        // 集合場所のカスタムフィールドを取得
-        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-
-        // 値がない場合のデフォルト
-        if (empty($meeting_location)) {
-            $meeting_location = '集合場所は未設定です。';
-        }
-
-        return esc_html($meeting_location);
-    };
-
-    return $tags;
+    // メールの内容を更新
+    if (!empty($meeting_location)) {
+        $emailContent = $email->render();
+        $emailContent = str_replace('{location}', esc_html($meeting_location), $emailContent);
+        $email->setContent($emailContent);
+    }
 }, 10, 3);
 
 add_action('mpa_before_send_email', function ($email, $booking, $args) {
@@ -875,6 +868,8 @@ add_action('mpa_before_send_email', function ($email, $booking, $args) {
 
     error_log("Meeting Location: $meeting_location");
 }, 10, 3);
+
+
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
