@@ -818,48 +818,41 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
-    global $wpdb;
-
+add_action('mpa_before_send_email', function($email, $booking, $args) {
     // 予約IDを取得
-    if ( method_exists( $booking, 'getId' ) ) {
+    if (method_exists($booking, 'getId')) {
         $booking_id = $booking->getId();
-        error_log( "Booking ID: {$booking_id}" );
+        error_log("Booking ID: {$booking_id}");
     } else {
-        error_log( 'Error: Booking object does not have method getId().' );
+        error_log('Error: Booking object does not have method getId().');
         return;
     }
 
-    // 投稿IDを取得
-    $post_id = $wpdb->get_var( $wpdb->prepare(
-        "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
-        $booking_id
-    ));
-    error_log( "Post ID: {$post_id}" );
-
-    if ( empty( $post_id ) ) {
-        error_log( "Error: Could not retrieve post_id for booking_id {$booking_id}." );
+    // 投稿IDを取得 (関連付けられている投稿タイプやカスタムフィールドのキーを確認)
+    $post_id = $booking->getMeta('post_id'); // getMetaを使って試す
+    if (empty($post_id)) {
+        error_log("Error: Could not retrieve post_id for booking_id {$booking_id}.");
         return;
     }
 
     // カスタムフィールドから集合場所を取得
-    $meeting_location = get_post_meta( $post_id, 'meeting_location', true );
-    error_log( "Meeting Location: {$meeting_location}" );
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    error_log("Meeting Location: {$meeting_location}");
 
     // デフォルト値を設定
-    if ( empty( $meeting_location ) ) {
+    if (empty($meeting_location)) {
         $meeting_location = '集合場所は未設定です。';
     }
 
     // メール本文を更新
-    if ( method_exists( $email, 'render' ) && method_exists( $email, 'setContent' ) ) {
+    if (method_exists($email, 'render') && method_exists($email, 'setContent')) {
         $emailContent = $email->render();
-        $emailContent = str_replace( '{location}', $meeting_location, $emailContent );
-        $email->setContent( $emailContent );
+        $emailContent = str_replace('{location}', $meeting_location, $emailContent);
+        $email->setContent($emailContent);
     } else {
-        error_log( 'Error: Email object does not support render() or setContent().' );
+        error_log('Error: Email object does not support render() or setContent().');
     }
-}, 10, 3 );
+}, 10, 3);
 
 add_action('mpa_before_send_email', function($email, $booking, $args) {
     error_log(print_r($booking, true)); // $booking オブジェクトを完全出力
