@@ -819,8 +819,8 @@ function vw_tourism_pro_excerpt_more($more) {
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
 add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
-    // 予約の投稿IDを取得
-    $post_id = $booking->getPostId();
+    // 投稿IDを取得する (メタデータ経由で取得)
+    $post_id = $booking->getMeta('post_id'); // 'post_id' でカスタムフィールドのキーを指定
 
     // カスタムフィールドから集合場所を取得
     $meeting_location = get_post_meta( $post_id, 'meeting_location', true );
