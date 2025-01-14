@@ -818,31 +818,32 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_filter('mpa_email_content', function ($content, $email, $booking, $args) {
-    global $wpdb;
+add_filter('mpa_email_tags', function ($tags, $email, $booking) {
+    $tags['location'] = function () use ($booking) {
+        global $wpdb;
 
-    // 予約IDから投稿IDを取得
-    $booking_id = $booking->getId();
-    $post_id = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
-            $booking_id
-        )
-    );
+        // 予約IDから投稿IDを取得
+        $booking_id = $booking->getId();
+        $post_id = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+                $booking_id
+            )
+        );
 
-    // 投稿IDから「meeting_location」を取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+        // 投稿IDから「meeting_location」を取得
+        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
 
-    // デフォルト値を設定
-    if (empty($meeting_location)) {
-        $meeting_location = '集合場所は未設定です。';
-    }
+        // デフォルト値を設定
+        if (empty($meeting_location)) {
+            $meeting_location = '集合場所は未設定です。';
+        }
 
-    // メール本文内の {location} タグを置き換え
-    $content = str_replace('{location}', esc_html($meeting_location), $content);
+        return esc_html($meeting_location);
+    };
 
-    return $content;
-}, 10, 4);
+    return $tags;
+}, 10, 3);
 
 add_action('mpa_before_send_email', function($email, $booking, $args) {
     error_log(print_r($booking, true)); // $booking オブジェクトを完全出力
