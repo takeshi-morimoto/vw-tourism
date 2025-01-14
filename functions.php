@@ -821,18 +821,23 @@ function vw_tourism_pro_excerpt_more($more) {
 add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
     global $wpdb;
 
-    // 予約IDを取得
-    $booking_id = $booking->getId(); // デバッグ結果で適切なメソッドを確認
+    // 予約IDを取得 (正しいメソッドを確認)
+    if ( method_exists( $booking, 'getId' ) ) {
+        $booking_id = $booking->getId();
+    } else {
+        error_log( 'Error: Booking object does not have method getId().' );
+        return;
+    }
 
-    // 投稿IDをデータベースから取得
+    // 投稿IDを取得
     $post_id = $wpdb->get_var( $wpdb->prepare(
         "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
         $booking_id
     ));
 
-    // 投稿IDが取得できない場合
     if ( empty( $post_id ) ) {
-        $post_id = 0; // デフォルト値
+        error_log( "Error: Could not retrieve post_id for booking_id {$booking_id}." );
+        return;
     }
 
     // カスタムフィールドから集合場所を取得
@@ -844,19 +849,24 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
     }
 
     // メール本文を更新
-    $emailContent = $email->render();
-    $emailContent = str_replace( '{location}', $meeting_location, $emailContent );
-    $email->setContent( $emailContent );
-
+    if ( method_exists( $email, 'render' ) && method_exists( $email, 'setContent' ) ) {
+        $emailContent = $email->render();
+        $emailContent = str_replace( '{location}', $meeting_location, $emailContent );
+        $email->setContent( $emailContent );
+    } else {
+        error_log( 'Error: Email object does not support render() or setContent().' );
+    }
 }, 10, 3 );
 
+// デバッグ用: $booking オブジェクトをログに出力
 add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
-    error_log( print_r( $booking, true ) ); // $booking オブジェクトの構造を確認
+    error_log( print_r( $booking, true ) ); // $booking の構造を確認
 }, 10, 3 );
 
-add_action( 'init', function() {
-    load_plugin_textdomain( 'motopress-appointment', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-}, 10 );
+
+add_action('init', function() {
+    load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
 
 
 add_filter('excerpt_length', 'custom_excerpt_length');
