@@ -819,8 +819,21 @@ function vw_tourism_pro_excerpt_more($more) {
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
 add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
-    // 投稿IDを取得する (メタデータ経由で取得)
-    $post_id = $booking->getMeta('post_id'); // 'post_id' でカスタムフィールドのキーを指定
+    global $wpdb;
+
+    // 予約IDを取得
+    $booking_id = $booking->getId(); // デバッグ結果で適切なメソッドを確認
+
+    // 投稿IDをデータベースから取得
+    $post_id = $wpdb->get_var( $wpdb->prepare(
+        "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+        $booking_id
+    ));
+
+    // 投稿IDが取得できない場合
+    if ( empty( $post_id ) ) {
+        $post_id = 0; // デフォルト値
+    }
 
     // カスタムフィールドから集合場所を取得
     $meeting_location = get_post_meta( $post_id, 'meeting_location', true );
@@ -830,13 +843,9 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
         $meeting_location = '集合場所は未設定です。';
     }
 
-    // メール内容を取得
+    // メール本文を更新
     $emailContent = $email->render();
-
-    // {location} タグを置換
     $emailContent = str_replace( '{location}', $meeting_location, $emailContent );
-
-    // メール内容を更新
     $email->setContent( $emailContent );
 
 }, 10, 3 );
