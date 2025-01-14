@@ -818,7 +818,7 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_action('mpa_before_send_email', function($email, $booking, $args) {
+add_filter('mpa_email_content', function ($content, $email, $booking, $args) {
     global $wpdb;
 
     // 予約IDから投稿IDを取得
@@ -839,10 +839,10 @@ add_action('mpa_before_send_email', function($email, $booking, $args) {
     }
 
     // メール本文内の {location} タグを置き換え
-    $emailContent = $email->render();
-    $emailContent = str_replace('{location}', esc_html($meeting_location), $emailContent);
-    $email->setContent($emailContent);
-}, 10, 3);
+    $content = str_replace('{location}', esc_html($meeting_location), $content);
+
+    return $content;
+}, 10, 4);
 
 add_action('mpa_before_send_email', function($email, $booking, $args) {
     error_log(print_r($booking, true)); // $booking オブジェクトを完全出力
