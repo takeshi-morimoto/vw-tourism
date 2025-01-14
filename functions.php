@@ -819,39 +819,29 @@ function vw_tourism_pro_excerpt_more($more) {
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
 add_action('mpa_before_send_email', function($email, $booking, $args) {
-    // 予約IDを取得
-    if (method_exists($booking, 'getId')) {
-        $booking_id = $booking->getId();
-        error_log("Booking ID: {$booking_id}");
-    } else {
-        error_log('Error: Booking object does not have method getId().');
-        return;
-    }
+    global $wpdb;
 
-    // 投稿IDを取得 (関連付けられている投稿タイプやカスタムフィールドのキーを確認)
-    $post_id = $booking->getMeta('post_id'); // getMetaを使って試す
-    if (empty($post_id)) {
-        error_log("Error: Could not retrieve post_id for booking_id {$booking_id}.");
-        return;
-    }
+    // 予約IDから投稿IDを取得
+    $booking_id = $booking->getId();
+    $post_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+            $booking_id
+        )
+    );
 
-    // カスタムフィールドから集合場所を取得
+    // 投稿IDから「meeting_location」を取得
     $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-    error_log("Meeting Location: {$meeting_location}");
 
     // デフォルト値を設定
     if (empty($meeting_location)) {
         $meeting_location = '集合場所は未設定です。';
     }
 
-    // メール本文を更新
-    if (method_exists($email, 'render') && method_exists($email, 'setContent')) {
-        $emailContent = $email->render();
-        $emailContent = str_replace('{location}', $meeting_location, $emailContent);
-        $email->setContent($emailContent);
-    } else {
-        error_log('Error: Email object does not support render() or setContent().');
-    }
+    // メール本文内の {location} タグを置き換え
+    $emailContent = $email->render();
+    $emailContent = str_replace('{location}', esc_html($meeting_location), $emailContent);
+    $email->setContent($emailContent);
 }, 10, 3);
 
 add_action('mpa_before_send_email', function($email, $booking, $args) {
