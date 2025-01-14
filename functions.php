@@ -835,41 +835,13 @@ add_action('mpa_before_send_email', function ($email, $booking, $args) {
     error_log("Post ID: $post_id");
 
     // 集合場所の取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-    error_log("Meeting Location: $meeting_location");
-
-    // メールの内容を更新
-    if (!empty($meeting_location)) {
-        $emailContent = $email->render();
-        $emailContent = str_replace('{location}', esc_html($meeting_location), $emailContent);
-        $email->setContent($emailContent);
+    if ($post_id) {
+        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+        error_log("Meeting Location: $meeting_location");
+    } else {
+        error_log("Post ID not found for Booking ID: $booking_id");
     }
-}, 10, 3);
-
-add_action('mpa_before_send_email', function ($email, $booking, $args) {
-    global $wpdb;
-
-    // 予約IDを取得
-    $booking_id = $booking->getId();
-
-    // 投稿IDをデータベースから取得
-    $post_id = $wpdb->get_var(
-        $wpdb->prepare(
-            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
-            $booking_id
-        )
-    );
-
-    error_log("Booking ID: $booking_id");
-    error_log("Post ID: $post_id");
-
-    // 集合場所のカスタムフィールドを取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-
-    error_log("Meeting Location: $meeting_location");
-}, 10, 3);
-
-
+});
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
