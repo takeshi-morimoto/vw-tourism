@@ -821,9 +821,10 @@ function vw_tourism_pro_excerpt_more($more) {
 add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
     global $wpdb;
 
-    // 予約IDを取得 (正しいメソッドを確認)
+    // 予約IDを取得
     if ( method_exists( $booking, 'getId' ) ) {
         $booking_id = $booking->getId();
+        error_log( "Booking ID: {$booking_id}" );
     } else {
         error_log( 'Error: Booking object does not have method getId().' );
         return;
@@ -834,6 +835,7 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
         "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
         $booking_id
     ));
+    error_log( "Post ID: {$post_id}" );
 
     if ( empty( $post_id ) ) {
         error_log( "Error: Could not retrieve post_id for booking_id {$booking_id}." );
@@ -842,6 +844,7 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
 
     // カスタムフィールドから集合場所を取得
     $meeting_location = get_post_meta( $post_id, 'meeting_location', true );
+    error_log( "Meeting Location: {$meeting_location}" );
 
     // デフォルト値を設定
     if ( empty( $meeting_location ) ) {
@@ -857,12 +860,6 @@ add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
         error_log( 'Error: Email object does not support render() or setContent().' );
     }
 }, 10, 3 );
-
-// デバッグ用: $booking オブジェクトをログに出力
-add_action( 'mpa_before_send_email', function( $email, $booking, $args ) {
-    error_log( print_r( $booking, true ) ); // $booking の構造を確認
-}, 10, 3 );
-
 
 add_action('init', function() {
     load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages');
