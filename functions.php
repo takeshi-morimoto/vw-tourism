@@ -821,13 +821,13 @@ function vw_tourism_pro_excerpt_more($more) {
 add_action('init', function() {
     if (function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        error_log('Translation loaded for motopress-appointment.');
     }
 }, 20);
 
 // mpa_booking_created フックでデータを取得して post_id を判別
 add_action('mpa_booking_created', function ($booking_data) {
     error_log('mpa_booking_created Hook Triggered.');
-    error_log('Booking Data: ' . print_r($booking_data, true));
 
     // 予約IDを取得
     $appointment_id = isset($booking_data['id']) ? $booking_data['id'] : null;
@@ -839,10 +839,10 @@ add_action('mpa_booking_created', function ($booking_data) {
         if (!empty($post_id)) {
             error_log('Post ID Found: ' . $post_id);
         } else {
-            error_log('Post ID is missing in appointment meta.');
+            error_log('Post ID is missing in appointment meta for Appointment ID: ' . $appointment_id);
         }
     } else {
-        error_log('Appointment ID is missing.');
+        error_log('Appointment ID is missing in booking data.');
     }
 }, 10, 1);
 
@@ -884,7 +884,6 @@ add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 add_action('init', function() {
     error_log('Debugging is working!'); // テスト用メッセージ
 });
-
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
