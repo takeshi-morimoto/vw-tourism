@@ -883,6 +883,9 @@ add_filter('mpa_email_body', function($email_body, $appointment_data, $appointme
     return $email_body;
 }, 10, 3);
 
+add_action('init', function() {
+    error_log('Debugging is working!'); // テスト用メッセージ
+});
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
