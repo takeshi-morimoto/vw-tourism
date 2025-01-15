@@ -884,6 +884,39 @@ add_action('init', function() {
     error_log('Debugging is working!'); // テスト用メッセージ
 });
 
+add_action('mpa_booking_created', function ($booking_data) {
+    error_log('mpa_booking_created Hook Triggered.');
+    error_log('Booking Data: ' . print_r($booking_data, true));
+});
+
+$meeting_location = get_post_meta($post_id, 'meeting_location', true);
+if (!$meeting_location) {
+    error_log("Meeting location not found for post ID: $post_id");
+} else {
+    error_log("Meeting location: $meeting_location");
+}
+
+add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
+
+function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
+    $appointment_meta = get_post_meta($appointment_id);
+    $post_id = isset($appointment_meta['post_id']) ? $appointment_meta['post_id'][0] : null;
+
+    if ($post_id) {
+        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+        if ($meeting_location) {
+            $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
+        } else {
+            error_log("Meeting location not found for post ID: $post_id");
+        }
+    } else {
+        error_log("Post ID not found for Appointment ID: $appointment_id");
+    }
+
+    return $email_body;
+}
+
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
