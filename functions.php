@@ -817,31 +817,30 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
-// Motopress Appointment の翻訳を初期化で読み込む
+// 翻訳を適切なタイミングで読み込む
 add_action('init', function() {
-    load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-});
+    if (function_exists('load_plugin_textdomain')) {
+        load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    }
+}, 20);
 
-// カスタムフィールド 'meeting_location' をメールに追加
-add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
+// カスタムフィールドをメールに追加
+add_filter('mpa_email_body', 'add_meeting_location_to_email', 5, 3);
 function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
-    // デバッグ: フィルターが実行されていることを確認
     error_log('mpa_email_body Filter Triggered.');
     error_log('Appointment Data: ' . print_r($appointment_data, true));
 
-    // 予約された投稿（パッケージ）のIDを取得
-    $post_id = !empty($appointment_data['post_id']) ? $appointment_data['post_id'] : null;
+    // post_id を取得
+    $post_id = isset($appointment_data['post_id']) ? $appointment_data['post_id'] : null;
 
-    // post_id が正しく渡されていない場合はログを出力して終了
     if (!$post_id) {
-        error_log('Post ID is missing in appointment data.');
+        error_log('Post ID is missing.');
         return $email_body;
     }
 
-    // カスタムフィールド 'meeting_location' を取得
+    // meeting_location を取得
     $meeting_location = get_post_meta($post_id, 'meeting_location', true);
 
-    // meeting_location が空でない場合のみメール本文に追加
     if (!empty($meeting_location)) {
         $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
         error_log('Meeting location added: ' . $meeting_location);
@@ -852,16 +851,10 @@ function add_meeting_location_to_email($email_body, $appointment_data, $appointm
     return $email_body;
 }
 
-// 予約が作成された際のデバッグログ
+// デバッグログ用
 add_action('mpa_booking_created', function($booking_data) {
     error_log('mpa_booking_created Hook Triggered.');
     error_log('Booking Data: ' . print_r($booking_data, true));
-}, 10, 1);
-
-// メール本文のデバッグ用ログ
-add_filter('mpa_email_body', function($email_body) {
-    error_log("Email Body Before Modification:\n" . $email_body);
-    return $email_body;
 }, 10, 1);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
