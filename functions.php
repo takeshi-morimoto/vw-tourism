@@ -827,100 +827,33 @@ add_action('plugins_loaded', function() {
     }
 });
 
-// Undefined variable $img_bg の修正
-if (!isset($img_bg)) {
-    $img_bg = ''; // デフォルト値を設定
-}
+add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
+    // `_mpa_service` を取得
+    $service_id = get_post_meta($appointment_id, '_mpa_service', true);
 
-// Undefined array key "vwsmp_admin_check_enable" の修正
-$options = get_option('vw_social_media_options', []);
-$vwsmp_admin_check_enable = isset($options['vwsmp_admin_check_enable']) ? $options['vwsmp_admin_check_enable'] : false;
+    if ($service_id) {
+        // サービス投稿から `_mpa_location` を取得
+        $location_id = get_post_meta($service_id, '_mpa_location', true);
 
-// mb_convert_encoding の非推奨問題を修正
-if (isset($input_string)) {
-    $converted_string = htmlspecialchars($input_string, ENT_QUOTES, 'UTF-8');
-} else {
-    $converted_string = ''; // デフォルト値を設定
-}
+        if ($location_id) {
+            // ロケーション投稿から `meeting_location` を取得
+            $meeting_location = get_post_meta($location_id, 'meeting_location', true);
 
-// 動的プロパティの作成を回避
-class PS_Auto_Sitemap {
-    public $wp_version; // プロパティを事前に定義
-}
-
-// mpa_booking_created フックでデータを取得して post_id を判別
-add_action('mpa_booking_created', function ($booking_data) {
-    error_log('mpa_booking_created Hook Triggered.');
-
-    // 予約IDを取得
-    $appointment_id = isset($booking_data['id']) ? $booking_data['id'] : null;
-
-    if ($appointment_id) {
-        error_log('Appointment ID: ' . $appointment_id);
-
-        // 予約メタデータから post_id を取得
-        $post_id = get_post_meta($appointment_id, 'post_id', true);
-
-        if (!empty($post_id)) {
-            error_log('Post ID Found: ' . $post_id);
-
-            // post_id に基づいて集合場所を取得してログ出力
-            $meeting_location = get_post_meta($post_id, 'meeting_location', true);
             if ($meeting_location) {
-                error_log('Meeting location found: ' . $meeting_location);
+                // メール本文に集合場所を追加
+                $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
             } else {
-                error_log('Meeting location not found for Post ID: ' . $post_id);
+                error_log('Meeting location not found for Location ID: ' . $location_id);
             }
         } else {
-            error_log('Post ID is missing in appointment meta for Appointment ID: ' . $appointment_id);
+            error_log('Location ID not found for Service ID: ' . $service_id);
         }
     } else {
-        error_log('Appointment ID is missing in booking data.');
+        error_log('Service ID not found for Appointment ID: ' . $appointment_id);
     }
-}, 10, 1);
 
-// メール本文に集合場所情報を追加する関数
-if (!function_exists('add_meeting_location_to_email')) {
-    function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
-        error_log("add_meeting_location_to_email Filter Triggered.");
-
-        // 予約IDが存在するか確認
-        if (!$appointment_id) {
-            error_log('No Appointment ID provided.');
-            return $email_body;
-        }
-
-        error_log('Processing Appointment ID: ' . $appointment_id);
-
-        // 予約IDを基に post_id を取得
-        $post_id = get_post_meta($appointment_id, 'post_id', true);
-        if (!$post_id) {
-            error_log('Post ID not found for Appointment ID: ' . $appointment_id);
-            return $email_body;
-        }
-
-        error_log('Post ID Found for Appointment ID ' . $appointment_id . ': ' . $post_id);
-
-        // post_id を基に集合場所情報を取得
-        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-        if ($meeting_location) {
-            $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
-            error_log('Meeting location added to email: ' . $meeting_location);
-        } else {
-            error_log('Meeting location not found for Post ID: ' . $post_id);
-        }
-
-        return $email_body;
-    }
-}
-
-// mpa_email_body フィルターに add_meeting_location_to_email を登録
-add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
-
-// デバッグ用の init フック
-add_action('init', function() {
-    error_log('Debugging is working!'); // テスト用メッセージ
-});
+    return $email_body;
+}, 10, 3);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
