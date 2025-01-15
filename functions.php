@@ -833,7 +833,7 @@ add_action('mpa_booking_created', function ($booking_data) {
     $appointment_id = isset($booking_data['id']) ? $booking_data['id'] : null;
 
     if ($appointment_id) {
-        // 予約メタデータを取得
+        // 予約メタデータから post_id を取得
         $post_id = get_post_meta($appointment_id, 'post_id', true);
 
         if (!empty($post_id)) {
@@ -846,10 +846,12 @@ add_action('mpa_booking_created', function ($booking_data) {
     }
 }, 10, 1);
 
-// メール本文に post_id を基にした情報を追加
+// メール本文に集合場所情報を追加する関数
 if (!function_exists('add_meeting_location_to_email')) {
     function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
         error_log("add_meeting_location_to_email Filter Triggered.");
+
+        // 予約IDが存在するか確認
         if (!$appointment_id) {
             error_log('No Appointment ID provided.');
             return $email_body;
@@ -862,11 +864,11 @@ if (!function_exists('add_meeting_location_to_email')) {
             return $email_body;
         }
 
-        // meeting_location を取得
+        // post_id を基に集合場所情報を取得
         $meeting_location = get_post_meta($post_id, 'meeting_location', true);
         if ($meeting_location) {
             $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
-            error_log('Meeting location added: ' . $meeting_location);
+            error_log('Meeting location added to email: ' . $meeting_location);
         } else {
             error_log('Meeting location not found for Post ID: ' . $post_id);
         }
@@ -882,6 +884,7 @@ add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 add_action('init', function() {
     error_log('Debugging is working!'); // テスト用メッセージ
 });
+
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
