@@ -876,6 +876,14 @@ function add_meeting_location_to_email($email_body, $appointment_data, $appointm
     return $email_body;
 }
 
+add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
+    error_log("mpa_email_body Filter Triggered.");
+    error_log("Appointment ID: $appointment_id");
+    error_log(print_r($appointment_data, true));
+    return $email_body;
+}, 10, 3);
+
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
