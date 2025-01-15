@@ -827,6 +827,23 @@ add_action('plugins_loaded', function() {
     }
 });
 
+// Undefined variable $img_bg の修正
+if (!isset($img_bg)) {
+    $img_bg = ''; // デフォルト値を設定
+}
+
+// Undefined array key "vwsmp_admin_check_enable" の修正
+$options = get_option('vw_social_media_options', []);
+$vwsmp_admin_check_enable = isset($options['vwsmp_admin_check_enable']) ? $options['vwsmp_admin_check_enable'] : false;
+
+// mb_convert_encoding の非推奨問題を修正
+$converted_string = htmlspecialchars($input_string, ENT_QUOTES, 'UTF-8');
+
+// 動的プロパティの作成を回避
+class PS_Auto_Sitemap {
+    public $wp_version; // プロパティを事前に定義
+}
+
 // mpa_booking_created フックでデータを取得して post_id を判別
 add_action('mpa_booking_created', function ($booking_data) {
     error_log('mpa_booking_created Hook Triggered.');
