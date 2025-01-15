@@ -824,38 +824,57 @@ add_action('init', function() {
     }
 }, 20);
 
-// カスタムフィールドをメールに追加
-add_filter('mpa_email_body', 'add_meeting_location_to_email', 5, 3);
+// mpa_booking_created フックでデータを取得して post_id を判別
+add_action('mpa_booking_created', function ($booking_data) {
+    error_log('mpa_booking_created Hook Triggered.');
+    error_log('Booking Data: ' . print_r($booking_data, true));
+
+    // 予約IDを取得
+    $appointment_id = isset($booking_data['id']) ? $booking_data['id'] : null;
+
+    if ($appointment_id) {
+        // 予約メタデータを取得
+        $appointment_meta = get_post_meta($appointment_id);
+
+        // post_id を確認
+        if (isset($appointment_meta['post_id'])) {
+            $post_id = $appointment_meta['post_id'][0]; // post_id が保存されている場合
+            error_log('Post ID Found: ' . $post_id);
+        } else {
+            error_log('Post ID is missing in appointment meta.');
+        }
+    } else {
+        error_log('Appointment ID is missing.');
+    }
+}, 10, 1);
+
+// メール本文に post_id を基にした情報を追加
+add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
     error_log('mpa_email_body Filter Triggered.');
-    error_log('Appointment Data: ' . print_r($appointment_data, true));
 
-    // post_id を取得
-    $post_id = isset($appointment_data['post_id']) ? $appointment_data['post_id'] : null;
+    // 予約メタデータを取得
+    $appointment_meta = get_post_meta($appointment_id);
 
-    if (!$post_id) {
-        error_log('Post ID is missing.');
-        return $email_body;
-    }
+    // post_id を確認
+    $post_id = isset($appointment_meta['post_id']) ? $appointment_meta['post_id'][0] : null;
 
-    // meeting_location を取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    if ($post_id) {
+        // meeting_location を取得
+        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
 
-    if (!empty($meeting_location)) {
-        $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
-        error_log('Meeting location added: ' . $meeting_location);
+        if (!empty($meeting_location)) {
+            $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
+            error_log('Meeting location added: ' . $meeting_location);
+        } else {
+            error_log('Meeting location is empty for post ID: ' . $post_id);
+        }
     } else {
-        error_log('Meeting location is empty for post ID: ' . $post_id);
+        error_log('Post ID is missing in appointment meta for Appointment ID: ' . $appointment_id);
     }
 
     return $email_body;
 }
-
-// デバッグログ用
-add_action('mpa_booking_created', function($booking_data) {
-    error_log('mpa_booking_created Hook Triggered.');
-    error_log('Booking Data: ' . print_r($booking_data, true));
-}, 10, 1);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
