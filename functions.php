@@ -817,52 +817,52 @@ function vw_tourism_pro_excerpt_more($more) {
     return '...'; // 省略記号として「...」を表示
 }
 
+// Motopress Appointment の翻訳を初期化で読み込む
 add_action('init', function() {
     load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 });
 
-// カスタムフィールドをメールに追加
+// カスタムフィールド 'meeting_location' をメールに追加
 add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
+    // デバッグ: フィルターが実行されていることを確認
+    error_log('mpa_email_body Filter Triggered.');
+    error_log('Appointment Data: ' . print_r($appointment_data, true));
+
     // 予約された投稿（パッケージ）のIDを取得
-    $post_id = $appointment_data['post_id']; // post_idは`Appointment Booking`で渡されるデータの一部として利用可能
-    
-    // meeting_locationを取得
+    $post_id = !empty($appointment_data['post_id']) ? $appointment_data['post_id'] : null;
+
+    // post_id が正しく渡されていない場合はログを出力して終了
+    if (!$post_id) {
+        error_log('Post ID is missing in appointment data.');
+        return $email_body;
+    }
+
+    // カスタムフィールド 'meeting_location' を取得
     $meeting_location = get_post_meta($post_id, 'meeting_location', true);
 
-    // meeting_locationが空でない場合、メール本文に追加
+    // meeting_location が空でない場合のみメール本文に追加
     if (!empty($meeting_location)) {
         $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
+        error_log('Meeting location added: ' . $meeting_location);
+    } else {
+        error_log('Meeting location is empty for post ID: ' . $post_id);
     }
 
     return $email_body;
 }
 
-add_action('mpa_booking_created', function($booking_data) {
-    error_log(print_r($booking_data, true));
-}, 10, 1);
-
-add_filter('mpa_email_body', function($email_body) {
-    error_log("Email Body:\n" . $email_body);
-    return $email_body;
-}, 10, 1);
-
-add_action('mpa_booking_created', function($booking_data) {
-    error_log('Booking Data: ' . print_r($booking_data, true));
-}, 10, 1);
-
-// デバッグログを追加
+// 予約が作成された際のデバッグログ
 add_action('mpa_booking_created', function($booking_data) {
     error_log('mpa_booking_created Hook Triggered.');
     error_log('Booking Data: ' . print_r($booking_data, true));
 }, 10, 1);
 
+// メール本文のデバッグ用ログ
 add_filter('mpa_email_body', function($email_body) {
-    error_log('mpa_email_body Filter Triggered.');
     error_log("Email Body Before Modification:\n" . $email_body);
     return $email_body;
 }, 10, 1);
-
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
