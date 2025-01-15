@@ -818,14 +818,14 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // 翻訳を適切なタイミングで読み込む
-add_action('init', function() {
+add_action('plugins_loaded', function() {
     if (function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
         error_log('Translation loaded for motopress-appointment.');
     } else {
         error_log('load_plugin_textdomain function does not exist.');
     }
-}, 20);
+});
 
 // mpa_booking_created フックでデータを取得して post_id を判別
 add_action('mpa_booking_created', function ($booking_data) {
@@ -900,7 +900,6 @@ add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 add_action('init', function() {
     error_log('Debugging is working!'); // テスト用メッセージ
 });
-
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
