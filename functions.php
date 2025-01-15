@@ -818,20 +818,56 @@ function vw_tourism_pro_excerpt_more($more) {
 }
 
 // カスタムフィールドに集合場所を追加して、予約メールに表示する
-add_filter('appointment_booking_email_content', 'add_meeting_location_to_email_content', 10, 2);
+add_action('mpa_before_send_email', function ($email, $booking, $args) {
+    global $wpdb;
 
-function add_meeting_location_to_email_content($content, $appointment) {
-    $post_id = $appointment->post_id; // 予約関連投稿ID
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    // 予約 ID を取得
+    $booking_id = $booking->getId();
 
-    if (!empty($meeting_location)) {
-        $content .= "\n\n集合場所: " . esc_html($meeting_location);
-    } else {
-        $content .= "\n\n集合場所: 設定されていません。";
+    // 投稿 ID を取得
+    $post_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+            $booking_id
+        )
+    );
+
+    // 投稿 ID が取得できた場合
+    if ($post_id) {
+        // メール本文の取得と加工
+        $emailContent = $email->render();
+
+        // ショートコードを動的に展開
+        $emailContent = str_replace(
+            '[meeting_location post_id={{appointment.post_id}}]',
+            do_shortcode('[meeting_location post_id="' . $post_id . '"]'),
+            $emailContent
+        );
+
+        // メール内容の更新
+        $email->setContent($emailContent);
+    }
+}, 10, 3);
+
+add_shortcode('meeting_location', function ($atts) {
+    // ショートコードの引数を取得
+    $atts = shortcode_atts(
+        [
+            'post_id' => 0,
+        ],
+        $atts,
+        'meeting_location'
+    );
+
+    // 投稿 ID が指定されていない場合
+    if (empty($atts['post_id'])) {
+        return '集合場所情報が見つかりません';
     }
 
-    return $content;
-}
+    // カスタムフィールド "meeting_location" の値を取得
+    $meeting_location = get_post_meta($atts['post_id'], 'meeting_location', true);
+    return $meeting_location ?: '集合場所情報が見つかりません';
+});
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
