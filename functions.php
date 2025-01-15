@@ -834,6 +834,16 @@ function add_meeting_location_to_email($email_body, $appointment_data, $appointm
     return $email_body;
 }
 
+add_action('mpa_booking_created', function($booking_data) {
+    error_log(print_r($booking_data, true));
+}, 10, 1);
+
+add_filter('mpa_email_body', function($email_body) {
+    error_log("Email Body:\n" . $email_body);
+    return $email_body;
+}, 10, 1);
+
+
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
