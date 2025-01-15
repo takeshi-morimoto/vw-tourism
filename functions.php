@@ -837,7 +837,11 @@ $options = get_option('vw_social_media_options', []);
 $vwsmp_admin_check_enable = isset($options['vwsmp_admin_check_enable']) ? $options['vwsmp_admin_check_enable'] : false;
 
 // mb_convert_encoding の非推奨問題を修正
-$converted_string = htmlspecialchars($input_string, ENT_QUOTES, 'UTF-8');
+if (isset($input_string)) {
+    $converted_string = htmlspecialchars($input_string, ENT_QUOTES, 'UTF-8');
+} else {
+    $converted_string = ''; // デフォルト値を設定
+}
 
 // 動的プロパティの作成を回避
 class PS_Auto_Sitemap {
