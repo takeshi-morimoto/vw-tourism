@@ -819,10 +819,8 @@ function vw_tourism_pro_excerpt_more($more) {
 
 // 翻訳を適切なタイミングで読み込む
 add_action('init', function() {
-    if (function_exists('load_plugin_textdomain')) {
-        load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-        error_log('Translation loaded for motopress-appointment.');
-    }
+    load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    error_log('Translation loaded for motopress-appointment.');
 }, 20);
 
 // mpa_booking_created フックでデータを取得して post_id を判別
@@ -833,6 +831,8 @@ add_action('mpa_booking_created', function ($booking_data) {
     $appointment_id = isset($booking_data['id']) ? $booking_data['id'] : null;
 
     if ($appointment_id) {
+        error_log('Appointment ID: ' . $appointment_id);
+
         // 予約メタデータから post_id を取得
         $post_id = get_post_meta($appointment_id, 'post_id', true);
 
@@ -857,12 +857,16 @@ if (!function_exists('add_meeting_location_to_email')) {
             return $email_body;
         }
 
+        error_log('Processing Appointment ID: ' . $appointment_id);
+
         // 予約IDを基に post_id を取得
         $post_id = get_post_meta($appointment_id, 'post_id', true);
         if (!$post_id) {
             error_log('Post ID not found for Appointment ID: ' . $appointment_id);
             return $email_body;
         }
+
+        error_log('Post ID Found for Appointment ID ' . $appointment_id . ': ' . $post_id);
 
         // post_id を基に集合場所情報を取得
         $meeting_location = get_post_meta($post_id, 'meeting_location', true);
