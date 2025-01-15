@@ -835,13 +835,78 @@ add_action('mpa_before_send_email', function ($email, $booking, $args) {
     error_log("Post ID: $post_id");
 
     // 集合場所の取得
-    if ($post_id) {
-        $meeting_location = get_post_meta($post_id, 'meeting_location', true);
-        error_log("Meeting Location: $meeting_location");
-    } else {
-        error_log("Post ID not found for Booking ID: $booking_id");
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    error_log("Meeting Location: $meeting_location");
+
+    // メールの内容を更新
+    if (!empty($meeting_location)) {
+        $emailContent = $email->render();
+        $emailContent = str_replace('{location}', esc_html($meeting_location), $emailContent);
+        $email->setContent($emailContent);
+    }
+}, 10, 3);
+
+add_action('mpa_before_send_email', function ($email, $booking, $args) {
+    global $wpdb;
+
+    // 予約IDを取得
+    $booking_id = $booking->getId();
+
+    // 投稿IDをデータベースから取得
+    $post_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_booking_id' AND meta_value = %d",
+            $booking_id
+        )
+    );
+
+    error_log("Booking ID: $booking_id");
+    error_log("Post ID: $post_id");
+
+    // 集合場所のカスタムフィールドを取得
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+
+    error_log("Meeting Location: $meeting_location");
+}, 10, 3);
+
+add_action('init', function() {
+    load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
+
+add_action('mpa_booking_created', function($booking_id) {
+    // 申込みページのURLを取得
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $booking_page_url = esc_url_raw($_SERVER['HTTP_REFERER']);
+        // 予約データにURLを保存
+        update_post_meta($booking_id, 'booking_page_url', $booking_page_url);
+    }
+
+    // 集合場所（カスタム投稿タイプのメタデータ）を取得して保存
+    $service_id = get_post_meta($booking_id, 'mpa_service_id', true); // サービスIDを取得
+    if ($service_id) {
+        $meeting_location = get_post_meta($service_id, 'meeting_location', true);
+        update_post_meta($booking_id, 'meeting_location', $meeting_location);
     }
 });
+
+add_filter('mpa_email_template', function($content, $booking_id) {
+    // 予約データから情報を取得
+    $booking_page_url = get_post_meta($booking_id, 'booking_page_url', true);
+    $meeting_location = get_post_meta($booking_id, 'meeting_location', true);
+
+    // メール本文に追加情報を含める
+    $custom_content = $content;
+    if ($meeting_location) {
+        $custom_content .= "\n\n【集合場所】\n{$meeting_location}";
+    }
+    if ($booking_page_url) {
+        $custom_content .= "\n\n【申込みページ】\n{$booking_page_url}";
+    }
+
+    return $custom_content;
+}, 10, 2);
+
+
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
