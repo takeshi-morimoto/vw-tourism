@@ -851,6 +851,19 @@ add_action('mpa_booking_created', function($booking_data) {
     error_log('Booking Data: ' . print_r($booking_data, true));
 }, 10, 1);
 
+// デバッグログを追加
+add_action('mpa_booking_created', function($booking_data) {
+    error_log('mpa_booking_created Hook Triggered.');
+    error_log('Booking Data: ' . print_r($booking_data, true));
+}, 10, 1);
+
+add_filter('mpa_email_body', function($email_body) {
+    error_log('mpa_email_body Filter Triggered.');
+    error_log("Email Body Before Modification:\n" . $email_body);
+    return $email_body;
+}, 10, 1);
+
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
