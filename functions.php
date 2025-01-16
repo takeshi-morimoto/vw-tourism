@@ -13,6 +13,25 @@ if ( ! function_exists( 'vw_tourism_pro_setup' ) ) :
  * before the init hook. The init hook is too late for some features, such as indicating
  * support post thumbnails.
  */
+
+add_action('mpa_email_tags', function ($tags) {
+    $tags['meeting_location'] = [
+        'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+        'callback'    => function ($booking) {
+            // サービスの投稿IDを取得
+            $service_id = $booking->getServiceId();
+
+            // ACFの集合場所データを取得
+            $meeting_location = get_field('meeting_location', $service_id);
+
+            // 集合場所がない場合のデフォルトメッセージ
+            return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
+        },
+    ];
+
+    return $tags;
+});
+
 function vw_tourism_pro_setup() {
 	$GLOBALS['content_width'] = apply_filters( 'vw_tourism_pro_content_width', 640 );
 	if ( ! isset( $content_width ) ) $content_width = 640;
@@ -831,20 +850,3 @@ add_action('plugins_loaded', function() {
     }
 });
 
-add_action('mpa_email_tags', function ($tags) {
-    $tags['meeting_location'] = [
-        'description' => __('Meeting Location for the booking', 'motopress-appointment'),
-        'callback'    => function ($booking) {
-            // サービスの投稿IDを取得
-            $service_id = $booking->getServiceId();
-
-            // ACFの集合場所データを取得
-            $meeting_location = get_field('meeting_location', $service_id);
-
-            // 集合場所がない場合のデフォルトメッセージ
-            return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
-        },
-    ];
-
-    return $tags;
-});
