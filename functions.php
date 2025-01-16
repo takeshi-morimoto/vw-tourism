@@ -829,12 +829,13 @@ add_action('plugins_loaded', function() {
 
 add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
     error_log('mpa_email_body filter triggered.');
+    error_log('Appointment ID: ' . $appointment_id);
     error_log('Email Body Before: ' . $email_body);
 
     $service_id = get_post_meta($appointment_id, '_mpa_service', true);
-    $meeting_location = get_post_meta($service_id, 'meeting_location', true);
-
     error_log('Service ID: ' . $service_id);
+
+    $meeting_location = get_post_meta($service_id, 'meeting_location', true);
     error_log('Meeting Location: ' . $meeting_location);
 
     $email_body = str_replace('{meeting_location}', $meeting_location, $email_body);
