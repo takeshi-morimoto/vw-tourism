@@ -823,7 +823,7 @@ add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content'
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
 
 // 翻訳を適切なタイミングで読み込む
-add_action('plugins_loaded', function () {
+add_action('init', function () {
     if (function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain(
             'motopress-appointment',
