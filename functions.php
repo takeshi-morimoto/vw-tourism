@@ -827,33 +827,25 @@ add_action('plugins_loaded', function() {
     }
 });
 
-add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
-    // `_mpa_service` を取得
-    $service_id = get_post_meta($appointment_id, '_mpa_service', true);
+function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
+    // 予約データからサービスの post_id を取得
+    $post_id = get_post_meta($appointment_id, '_mpa_service', true);
+    if (!$post_id) {
+        return $email_body; // サービスIDがない場合はそのまま返す
+    }
 
-    if ($service_id) {
-        // サービス投稿から `_mpa_location` を取得
-        $location_id = get_post_meta($service_id, '_mpa_location', true);
-
-        if ($location_id) {
-            // ロケーション投稿から `meeting_location` を取得
-            $meeting_location = get_post_meta($location_id, 'meeting_location', true);
-
-            if ($meeting_location) {
-                // メール本文に集合場所を追加
-                $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
-            } else {
-                error_log('Meeting location not found for Location ID: ' . $location_id);
-            }
-        } else {
-            error_log('Location ID not found for Service ID: ' . $service_id);
-        }
+    // サービスIDから meeting_location を取得
+    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    if ($meeting_location) {
+        // メール本文に集合場所を追加
+        $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
     } else {
-        error_log('Service ID not found for Appointment ID: ' . $appointment_id);
+        $email_body .= "\n\n集合場所: データが見つかりません。";
     }
 
     return $email_body;
-}, 10, 3);
+}
+add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
