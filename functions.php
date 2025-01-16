@@ -829,21 +829,16 @@ add_action('plugins_loaded', function() {
 
 add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
     error_log('mpa_email_body filter triggered.');
+    error_log('Email Body Before: ' . $email_body);
 
-    // 予約データからサービスIDを取得
     $service_id = get_post_meta($appointment_id, '_mpa_service', true);
-    error_log('Service ID: ' . $service_id);
-
-    // サービスIDから meeting_location を取得
     $meeting_location = get_post_meta($service_id, 'meeting_location', true);
+
+    error_log('Service ID: ' . $service_id);
     error_log('Meeting Location: ' . $meeting_location);
 
-    // プレースホルダー {meeting_location} を置換
-    if ($meeting_location) {
-        $email_body = str_replace('{meeting_location}', esc_html($meeting_location), $email_body);
-    } else {
-        $email_body = str_replace('{meeting_location}', '集合場所が指定されていません', $email_body);
-    }
+    $email_body = str_replace('{meeting_location}', $meeting_location, $email_body);
+    error_log('Email Body After: ' . $email_body);
 
     return $email_body;
 }, 10, 3);
