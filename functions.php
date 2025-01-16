@@ -833,6 +833,8 @@ add_action('plugins_loaded', function() {
 });
 
 add_action('init', function () {
+    error_log('mpa_email_tags フィルタが登録されました。');
+
     add_filter('mpa_email_tags', function ($tags) {
         error_log('mpa_email_tags フィルタが呼び出されました。');
         $tags['meeting_location'] = [
@@ -843,16 +845,6 @@ add_action('init', function () {
                 return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
             },
         ];
-
         return $tags;
     });
 });
-
-add_action('plugins_loaded', function () {
-    if (has_filter('mpa_email_tags')) {
-        error_log('mpa_email_tags フィルタが正常に登録されています。');
-    } else {
-        error_log('mpa_email_tags フィルタが登録されていません。');
-    }
-});
-
