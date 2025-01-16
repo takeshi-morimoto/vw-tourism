@@ -825,8 +825,12 @@ add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_c
 // 翻訳を適切なタイミングで読み込む
 add_action('plugins_loaded', function () {
     if (function_exists('load_plugin_textdomain')) {
-        load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-        error_log('Translation domain motopress-appointment loaded.');
+        load_plugin_textdomain(
+            'motopress-appointment',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages/'
+        );
+        error_log('Translation domain "motopress-appointment" loaded successfully.');
     }
 });
 
@@ -836,19 +840,21 @@ add_action('init', function () {
 
     if ($filter_registered) {
         // フィルタがすでに登録済みの場合は処理を終了
+        error_log('mpa_email_tags フィルタはすでに登録済みです。');
         return;
     }
     $filter_registered = true;
 
     error_log('mpa_email_tags フィルタが登録されました。');
 
+    // mpa_email_tags フィルタを登録
     add_filter('mpa_email_tags', function ($tags) {
         $tags['meeting_location'] = [
             'description' => __('Meeting Location for the booking', 'motopress-appointment'),
             'callback'    => function ($booking) {
                 // Booking オブジェクトの検証
                 if (!is_object($booking) || !method_exists($booking, 'getServiceId')) {
-                    error_log('Invalid booking object.');
+                    error_log('Invalid booking object detected.');
                     return __('Invalid booking object', 'motopress-appointment');
                 }
 
@@ -861,9 +867,13 @@ add_action('init', function () {
 
                 // meeting_location フィールドの取得
                 $meeting_location = get_field('meeting_location', $service_id);
-                error_log('Meeting Location: ' . ($meeting_location ? $meeting_location : 'Not set'));
+                if ($meeting_location) {
+                    error_log('Meeting Location: ' . $meeting_location);
+                } else {
+                    error_log('Meeting Location: Not set');
+                }
 
-                return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
+                return $meeting_location ?: __('No meeting location set', 'motopress-appointment');
             },
         ];
         return $tags;
