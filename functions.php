@@ -828,15 +828,17 @@ add_action('plugins_loaded', function() {
 });
 
 add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
-    // 予約IDからサービスIDを取得
+    // 予約データからサービスIDを取得
     $service_id = get_post_meta($appointment_id, '_mpa_service', true);
 
     // サービスIDから meeting_location を取得
     $meeting_location = get_post_meta($service_id, 'meeting_location', true);
 
-    // meeting_location をメール本文に追加
+    // プレースホルダー {meeting_location} を実際の値に置換
     if ($meeting_location) {
-        $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
+        $email_body = str_replace('{meeting_location}', esc_html($meeting_location), $email_body);
+    } else {
+        $email_body = str_replace('{meeting_location}', '集合場所が指定されていません', $email_body);
     }
 
     return $email_body;
