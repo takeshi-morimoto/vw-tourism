@@ -827,30 +827,20 @@ add_action('plugins_loaded', function() {
     }
 });
 
-function add_meeting_location_to_email($email_body, $appointment_data, $appointment_id) {
-    // 予約データからサービスの post_id を取得
-    $post_id = get_post_meta($appointment_id, '_mpa_service', true);
-    if (!$post_id) {
-        return $email_body; // サービスIDがない場合はそのまま返す
-    }
+add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
+    // 予約IDからサービスIDを取得
+    $service_id = get_post_meta($appointment_id, '_mpa_service', true);
 
     // サービスIDから meeting_location を取得
-    $meeting_location = get_post_meta($post_id, 'meeting_location', true);
+    $meeting_location = get_post_meta($service_id, 'meeting_location', true);
+
+    // meeting_location をメール本文に追加
     if ($meeting_location) {
-        // メール本文に集合場所を追加
         $email_body .= "\n\n集合場所: " . esc_html($meeting_location);
-    } else {
-        $email_body .= "\n\n集合場所: データが見つかりません。";
     }
 
     return $email_body;
-}
-add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
-
-add_action('acf/save_post', function($post_id) {
-    $meeting_location = get_field('meeting_location', $post_id);
-    error_log('ACF Meeting Location: ' . $meeting_location); // ACFの値が保存されているか確認
-});
+}, 10, 3);
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
