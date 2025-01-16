@@ -835,16 +835,19 @@ add_action('plugins_loaded', function() {
 add_action('init', function () {
     error_log('mpa_email_tags フィルタが登録されました。');
 
-    add_filter('mpa_email_tags', function ($tags) {
-        error_log('mpa_email_tags フィルタが呼び出されました。');
-        $tags['meeting_location'] = [
-            'description' => __('Meeting Location for the booking', 'motopress-appointment'),
-            'callback'    => function ($booking) {
-                $service_id = $booking->getServiceId();
-                $meeting_location = get_field('meeting_location', $service_id);
-                return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
-            },
-        ];
-        return $tags;
-    });
+	add_filter('mpa_email_tags', function ($tags) {
+		$tags['meeting_location'] = [
+			'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+			'callback'    => function ($booking) {
+				$service_id = $booking->getServiceId();
+				error_log('Service ID: ' . $service_id);
+
+				$meeting_location = get_field('meeting_location', $service_id);
+				error_log('Meeting Location: ' . ($meeting_location ? $meeting_location : 'Not set'));
+
+				return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
+			},
+		];
+		return $tags;
+	});
 });
