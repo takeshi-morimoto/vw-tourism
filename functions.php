@@ -822,9 +822,9 @@ add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
 
-// 翻訳を適切なタイミングで一度だけ読み込む
+// 翻訳を適切なタイミングでロードする
 add_action('init', function () {
-    static $translation_loaded = false; // 翻訳が既にロードされたかを追跡するフラグ
+    static $translation_loaded = false; // 翻訳が既にロードされたかを確認するフラグ
 
     if (!$translation_loaded && function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain(
@@ -837,38 +837,37 @@ add_action('init', function () {
     }
 });
 
-// 重複登録を防ぐための処理
-add_filter('mpa_email_tags', function ($tags) {
-    error_log('mpa_email_tags フィルタが呼び出されました。');
-    
-    // Meeting Location のタグを追加
-    $tags['meeting_location'] = [
-        'description' => __('Meeting Location for the booking', 'motopress-appointment'),
-        'callback'    => function ($booking) {
-            error_log('mpa_email_tags コールバックが呼び出されました。');
+// 翻訳が確実にロードされてからフィルタを登録
+add_action('init', function () {
+    static $filter_registered = false; // フィルタの重複登録を防ぐ
 
-            // Booking オブジェクトの検証
-            if (!is_object($booking)) {
-                error_log('Invalid booking object: ' . print_r($booking, true));
-                return __('Invalid booking object', 'motopress-appointment');
-            }
+    if (!$filter_registered) {
+        add_filter('mpa_email_tags', function ($tags) {
+            error_log('mpa_email_tags フィルタが呼び出されました。');
+            $tags['meeting_location'] = [
+                'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+                'callback'    => function ($booking) {
+                    error_log('mpa_email_tags コールバックが呼び出されました。');
 
-            if (!method_exists($booking, 'getServiceId')) {
-                error_log('getServiceId メソッドが存在しません。');
-                return __('Service ID method not found', 'motopress-appointment');
-            }
+                    // デバッグ: Bookingオブジェクト確認
+                    if (!is_object($booking) || !method_exists($booking, 'getServiceId')) {
+                        error_log('Invalid booking object detected.');
+                        return __('Invalid booking object', 'motopress-appointment');
+                    }
 
-            // サービスIDの取得
-            $service_id = $booking->getServiceId();
-            error_log('Service ID: ' . ($service_id ?: 'Not found'));
+                    $service_id = $booking->getServiceId();
+                    error_log('Service ID: ' . ($service_id ?: 'Not found'));
 
-            // meeting_location フィールドの取得
-            $meeting_location = get_field('meeting_location', $service_id);
-            error_log('Meeting Location: ' . ($meeting_location ?: 'Not set'));
+                    $meeting_location = get_field('meeting_location', $service_id);
+                    error_log('Meeting Location: ' . ($meeting_location ?: 'Not set'));
 
-            return $meeting_location ?: __('No meeting location set', 'motopress-appointment');
-        },
-    ];
+                    return $meeting_location ?: __('No meeting location set', 'motopress-appointment');
+                },
+            ];
+            return $tags;
+        });
 
-    return $tags;
+        $filter_registered = true; // フィルタ登録済みフラグを設定
+        error_log('mpa_email_tags フィルタが登録されました。');
+    }
 });
