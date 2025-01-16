@@ -823,31 +823,39 @@ add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content'
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
 
 // 翻訳を適切なタイミングで読み込む
-add_action('plugins_loaded', function() {
+add_action('init', function () {
     if (function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-        error_log('Translation loaded for motopress-appointment.');
-    } else {
-        error_log('load_plugin_textdomain function does not exist.');
     }
 });
 
 add_action('init', function () {
     error_log('mpa_email_tags フィルタが登録されました。');
 
-	add_filter('mpa_email_tags', function ($tags) {
-		$tags['meeting_location'] = [
-			'description' => __('Meeting Location for the booking', 'motopress-appointment'),
-			'callback'    => function ($booking) {
-				$service_id = $booking->getServiceId();
-				error_log('Service ID: ' . $service_id);
+    add_filter('mpa_email_tags', function ($tags) {
+        $tags['meeting_location'] = [
+            'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+            'callback'    => function ($booking) {
+                // $booking オブジェクトが正しいか確認
+                if (!$booking || !is_object($booking)) {
+                    error_log('Invalid booking object.');
+                    return __('Invalid booking object', 'motopress-appointment');
+                }
 
-				$meeting_location = get_field('meeting_location', $service_id);
-				error_log('Meeting Location: ' . ($meeting_location ? $meeting_location : 'Not set'));
+                // サービスIDを取得
+                $service_id = $booking->getServiceId();
+                if (!$service_id) {
+                    error_log('Service ID is not set or invalid.');
+                    return __('Service ID not found', 'motopress-appointment');
+                }
 
-				return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
-			},
-		];
-		return $tags;
-	});
+                // meeting_location を取得
+                $meeting_location = get_field('meeting_location', $service_id);
+                error_log('Meeting Location: ' . ($meeting_location ? $meeting_location : 'Not set'));
+
+                return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
+            },
+        ];
+        return $tags;
+    });
 });
