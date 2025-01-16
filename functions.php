@@ -827,22 +827,23 @@ add_action('plugins_loaded', function() {
     }
 });
 
-add_filter('mpa_email_body', function($email_body, $appointment_data, $appointment_id) {
-    error_log('mpa_email_body filter triggered.');
-    error_log('Appointment ID: ' . $appointment_id);
-    error_log('Email Body Before: ' . $email_body);
+add_action('mpa_email_tags', function ($tags) {
+    $tags['meeting_location'] = [
+        'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+        'callback'    => function ($booking) {
+            // サービスの投稿IDを取得
+            $service_id = $booking->getServiceId();
 
-    $service_id = get_post_meta($appointment_id, '_mpa_service', true);
-    error_log('Service ID: ' . $service_id);
+            // ACFの集合場所データを取得
+            $meeting_location = get_field('meeting_location', $service_id);
 
-    $meeting_location = get_post_meta($service_id, 'meeting_location', true);
-    error_log('Meeting Location: ' . $meeting_location);
+            // 集合場所がない場合のデフォルトメッセージ
+            return $meeting_location ? $meeting_location : __('No meeting location set', 'motopress-appointment');
+        },
+    ];
 
-    $email_body = str_replace('{meeting_location}', $meeting_location, $email_body);
-    error_log('Email Body After: ' . $email_body);
-
-    return $email_body;
-}, 10, 3);
+    return $tags;
+});
 
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
