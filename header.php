@@ -28,6 +28,11 @@
     } elseif ($image = get_theme_mod('vw_tourism_pro_headerhomebg_image', '')) {
         $background_setting = "background-image: url('$image');";
     }
+
+    // $img_bg が未定義の場合、デフォルト値を設定
+    if (!isset($img_bg) || empty($img_bg)) {
+        $img_bg = 'default-class'; // デフォルトクラス名を指定（例: 'default-class'）
+    }
     ?>
 
     <?php if (get_theme_mod('vw_tourism_pro_products_spinner_enable', true)) { ?>
