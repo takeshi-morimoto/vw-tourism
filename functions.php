@@ -847,6 +847,11 @@ function add_meeting_location_to_email($email_body, $appointment_data, $appointm
 }
 add_filter('mpa_email_body', 'add_meeting_location_to_email', 10, 3);
 
+add_action('acf/save_post', function($post_id) {
+    $meeting_location = get_field('meeting_location', $post_id);
+    error_log('ACF Meeting Location: ' . $meeting_location); // ACFの値が保存されているか確認
+});
+
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
