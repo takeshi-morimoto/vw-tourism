@@ -851,3 +851,12 @@ add_action('init', function () {
         return $tags;
     });
 });
+
+add_action('plugins_loaded', function () {
+    if (has_filter('mpa_email_tags')) {
+        error_log('mpa_email_tags フィルタが正常に登録されています。');
+    } else {
+        error_log('mpa_email_tags フィルタが登録されていません。');
+    }
+});
+
