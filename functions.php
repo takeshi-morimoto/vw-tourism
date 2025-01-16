@@ -835,47 +835,37 @@ add_action('init', function () {
 });
 
 // 重複登録を防ぐための処理
-add_action('init', function () {
-    static $filter_registered = false;
+add_filter('mpa_email_tags', function ($tags) {
+    error_log('mpa_email_tags フィルタが呼び出されました。');
+    
+    // Meeting Location のタグを追加
+    $tags['meeting_location'] = [
+        'description' => __('Meeting Location for the booking', 'motopress-appointment'),
+        'callback'    => function ($booking) {
+            error_log('mpa_email_tags コールバックが呼び出されました。');
 
-    if ($filter_registered) {
-        // フィルタがすでに登録済みの場合は処理を終了
-        error_log('mpa_email_tags フィルタはすでに登録済みです。');
-        return;
-    }
-    $filter_registered = true;
+            // Booking オブジェクトの検証
+            if (!is_object($booking)) {
+                error_log('Invalid booking object: ' . print_r($booking, true));
+                return __('Invalid booking object', 'motopress-appointment');
+            }
 
-    error_log('mpa_email_tags フィルタが登録されました。');
+            if (!method_exists($booking, 'getServiceId')) {
+                error_log('getServiceId メソッドが存在しません。');
+                return __('Service ID method not found', 'motopress-appointment');
+            }
 
-    // mpa_email_tags フィルタを登録
-    add_filter('mpa_email_tags', function ($tags) {
-        $tags['meeting_location'] = [
-            'description' => __('Meeting Location for the booking', 'motopress-appointment'),
-            'callback'    => function ($booking) {
-                // Booking オブジェクトの検証
-                if (!is_object($booking) || !method_exists($booking, 'getServiceId')) {
-                    error_log('Invalid booking object detected.');
-                    return __('Invalid booking object', 'motopress-appointment');
-                }
+            // サービスIDの取得
+            $service_id = $booking->getServiceId();
+            error_log('Service ID: ' . ($service_id ?: 'Not found'));
 
-                // サービスIDの取得
-                $service_id = $booking->getServiceId();
-                if (!$service_id) {
-                    error_log('Service ID is not set or invalid.');
-                    return __('Service ID not found', 'motopress-appointment');
-                }
+            // meeting_location フィールドの取得
+            $meeting_location = get_field('meeting_location', $service_id);
+            error_log('Meeting Location: ' . ($meeting_location ?: 'Not set'));
 
-                // meeting_location フィールドの取得
-                $meeting_location = get_field('meeting_location', $service_id);
-                if ($meeting_location) {
-                    error_log('Meeting Location: ' . $meeting_location);
-                } else {
-                    error_log('Meeting Location: Not set');
-                }
+            return $meeting_location ?: __('No meeting location set', 'motopress-appointment');
+        },
+    ];
 
-                return $meeting_location ?: __('No meeting location set', 'motopress-appointment');
-            },
-        ];
-        return $tags;
-    });
+    return $tags;
 });
