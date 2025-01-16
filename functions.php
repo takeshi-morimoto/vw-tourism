@@ -871,3 +871,17 @@ add_action('init', function () {
         error_log('mpa_email_tags フィルタが登録されました。');
     }
 });
+
+error_log_once('Some unique log message', 'unique_identifier');
+
+function error_log_once($message, $key) {
+    static $logged_messages = [];
+
+    if (!in_array($key, $logged_messages)) {
+        error_log($message);
+        $logged_messages[] = $key;
+    }
+}
+
+error_log_once('mpa_email_tags フィルタが登録されました。', 'mpa_email_tags_registration');
+
