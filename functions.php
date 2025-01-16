@@ -826,12 +826,16 @@ add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_c
 add_action('plugins_loaded', function () {
     if (function_exists('load_plugin_textdomain')) {
         load_plugin_textdomain('motopress-appointment', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+        error_log('Translation domain motopress-appointment loaded.');
     }
 });
 
+// 重複登録を防ぐための処理
 add_action('init', function () {
     static $filter_registered = false;
+
     if ($filter_registered) {
+        // フィルタがすでに登録済みの場合は処理を終了
         return;
     }
     $filter_registered = true;
@@ -842,17 +846,20 @@ add_action('init', function () {
         $tags['meeting_location'] = [
             'description' => __('Meeting Location for the booking', 'motopress-appointment'),
             'callback'    => function ($booking) {
-                if (!$booking || !is_object($booking)) {
+                // Booking オブジェクトの検証
+                if (!is_object($booking) || !method_exists($booking, 'getServiceId')) {
                     error_log('Invalid booking object.');
                     return __('Invalid booking object', 'motopress-appointment');
                 }
 
+                // サービスIDの取得
                 $service_id = $booking->getServiceId();
                 if (!$service_id) {
                     error_log('Service ID is not set or invalid.');
                     return __('Service ID not found', 'motopress-appointment');
                 }
 
+                // meeting_location フィールドの取得
                 $meeting_location = get_field('meeting_location', $service_id);
                 error_log('Meeting Location: ' . ($meeting_location ? $meeting_location : 'Not set'));
 
