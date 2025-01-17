@@ -65,7 +65,7 @@ get_header();
                   <?php
                   $meeting_location = get_post_meta($post_id, 'meeting_location', true);
                   if (!empty($meeting_location)) {
-                      echo '<div class="pack-meta-text position-relative"><strong>集合場所:</strong> ' . esc_html($meeting_location) . '</div>';
+                      echo '<div class="pack-meta-text position-relative"><strong>Meeting Location:</strong> ' . esc_html($meeting_location) . '</div>';
                   }
                   ?>
                   <div class="pack-meta-text position-relative"><span><?php echo $pkg_from; ?></span> <?php echo $pkg_to != '' ? 'To' : ''; ?> <span><?php echo esc_html($pkg_to); ?></span></div>
