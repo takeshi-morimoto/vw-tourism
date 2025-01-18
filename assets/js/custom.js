@@ -690,18 +690,17 @@ jQuery(window).on('load', function(){
      new WOW().init();
 });
 
-jQuery(function($) {
+jQuery(document).ready(function($) {
   // アコーディオンボタンのクリックイベント
   $('.accordion-button').on('click', function() {
-      // 現在のアコーディオンの内容を取得
-      var content = $(this).next('.accordion-content');
+    var content = $(this).next('.accordion-content'); // 対応するコンテンツを取得
 
-      // 他のアコーディオンを閉じる
-      $('.accordion-content').not(content).slideUp();
-      $('.accordion-button').not(this).removeClass('active');
+    // 他のアコーディオンを閉じる
+    $('.accordion-content').not(content).slideUp();
+    $('.accordion-button').not(this).removeClass('active');
 
-      // 現在のアコーディオンをトグル
-      content.slideToggle();
-      $(this).toggleClass('active');
+    // 現在のアコーディオンを開閉
+    content.slideToggle();
+    $(this).toggleClass('active'); // ボタンの状態を切り替える
   });
 });
