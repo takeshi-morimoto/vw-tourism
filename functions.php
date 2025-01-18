@@ -894,15 +894,18 @@ add_action('add_meta_boxes', function () {
 });
 
 function save_pkg_tour_details_meta_box($post_id) {
-    // nonceチェック
     if (!isset($_POST['pkg-tour-details-values'])) {
         return;
     }
 
-    // JSONデータをデコード
     $pkg_tour_details = json_decode(stripslashes($_POST['pkg-tour-details-values']), true);
 
     if (is_array($pkg_tour_details)) {
+        // 空データを除外
+        $pkg_tour_details = array_filter($pkg_tour_details, function($detail) {
+            return !empty($detail['image']) || !empty($detail['description']);
+        });
+
         update_post_meta($post_id, 'pkg_tour_details', $pkg_tour_details);
     }
 }
