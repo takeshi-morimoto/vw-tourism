@@ -690,17 +690,23 @@ jQuery(window).on('load', function(){
      new WOW().init();
 });
 
+// アコーディオンメニューのスクリプト
 jQuery(document).ready(function($) {
-  // アコーディオンボタンのクリックイベント
   $('.accordion-button').on('click', function() {
     var content = $(this).next('.accordion-content'); // 対応するコンテンツを取得
 
-    // 他のアコーディオンを閉じる
-    $('.accordion-content').not(content).slideUp();
-    $('.accordion-button').not(this).removeClass('active');
+    if (content.is(':visible')) {
+      // コンテンツが表示されている場合は閉じる
+      content.slideUp();
+      $(this).removeClass('active'); // ボタンのアクティブ状態を解除
+    } else {
+      // 他のコンテンツを閉じる
+      $('.accordion-content').slideUp(); // 他の開いているコンテンツを閉じる
+      $('.accordion-button').removeClass('active'); // 他のボタンのアクティブ状態を解除
 
-    // 現在のアコーディオンを開閉
-    content.slideToggle();
-    $(this).toggleClass('active'); // ボタンの状態を切り替える
+      // 現在のコンテンツを開く
+      content.slideDown();
+      $(this).addClass('active'); // ボタンのアクティブ状態を設定
+    }
   });
 });
