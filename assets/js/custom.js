@@ -696,9 +696,9 @@ jQuery(document).ready(function($) {
     var content = $(this).next('.accordion-content'); // 対応するコンテンツを取得
 
     if (content.is(':visible')) {
-      // コンテンツが表示されている場合は閉じる
+      // 表示中の場合は閉じる
       content.slideUp();
-      $(this).removeClass('active'); // ボタンのアクティブ状態を解除
+      $(this).removeClass('active');
     } else {
       // 他のコンテンツを閉じる
       $('.accordion-content').slideUp(); // 他の開いているコンテンツを閉じる
@@ -706,7 +706,7 @@ jQuery(document).ready(function($) {
 
       // 現在のコンテンツを開く
       content.slideDown();
-      $(this).addClass('active'); // ボタンのアクティブ状態を設定
+      $(this).addClass('active');
     }
   });
 });
