@@ -693,20 +693,15 @@ jQuery(window).on('load', function(){
 // アコーディオンメニューのスクリプト
 jQuery(document).ready(function($) {
   $('.accordion-button').on('click', function() {
-    var content = $(this).next('.accordion-content'); // 対応するコンテンツを取得
+    // 親要素内の .accordion-content を取得
+    var content = $(this).closest('.accordion-item').find('.accordion-content');
 
-    if (content.is(':visible')) {
-      // コンテンツが表示されている場合は閉じる
-      content.slideUp();
-      $(this).removeClass('active');
-    } else {
-      // 他のコンテンツを閉じる
-      $('.accordion-content').slideUp();
-      $('.accordion-button').removeClass('active');
+    // 他のコンテンツを閉じる
+    $('.accordion-content').not(content).slideUp();
+    $('.accordion-button').not(this).removeClass('active');
 
-      // 現在のコンテンツを開く
-      content.slideDown();
-      $(this).addClass('active');
-    }
+    // 現在のコンテンツをトグル
+    content.slideToggle();
+    $(this).toggleClass('active');
   });
 });
