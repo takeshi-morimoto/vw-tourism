@@ -689,3 +689,19 @@ jQuery(function(){
 jQuery(window).on('load', function(){
      new WOW().init();
 });
+
+jQuery(function($) {
+  // アコーディオンボタンのクリックイベント
+  $('.accordion-button').on('click', function() {
+      // 現在のアコーディオンの内容を取得
+      var content = $(this).next('.accordion-content');
+
+      // 他のアコーディオンを閉じる
+      $('.accordion-content').not(content).slideUp();
+      $('.accordion-button').not(this).removeClass('active');
+
+      // 現在のアコーディオンをトグル
+      content.slideToggle();
+      $(this).toggleClass('active');
+  });
+});
