@@ -1651,6 +1651,7 @@ display: none
   visibility: visible;
 }
 
+/* アコーディオンのスタイル */
 .accordion-content {
   display: none;
   padding: 10px;
