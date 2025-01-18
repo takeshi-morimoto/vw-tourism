@@ -1650,3 +1650,48 @@ display: none
   opacity: 1;
   visibility: visible;
 }
+
+.accordion-content {
+  display: none;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 5px 0;
+}
+.accordion-toggle {
+  display: block;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  margin: 5px 0;
+}
+.accordion-toggle i {
+  margin-right: 10px;
+}
+
+.accordion-content {
+display: none; /* 初期状態で非表示 */
+padding: 10px;
+border: 1px solid #ddd;
+background-color: #fff;
+}
+
+.accordion-button {
+background-color: #f4f4f4;
+border: none;
+width: 100%;
+text-align: left;
+padding: 10px;
+font-size: 16px;
+cursor: pointer;
+border: 1px solid #ddd;
+}
+
+.accordion-button:focus {
+outline: none;
+}
+
+.accordion-button.active {
+background-color: #ddd; /* アクティブ状態の背景色 */
+}
