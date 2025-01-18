@@ -822,10 +822,88 @@ add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
 
-add_action('admin_notices', function() {
-    global $post;
-    if ($post && get_post_meta($post->ID, 'pkg_tour_details', true)) {
-        $details = get_post_meta($post->ID, 'pkg_tour_details', true);
-        echo '<pre>' . print_r($details, true) . '</pre>';
-    }
+function render_pkg_tour_details_meta_box($post) {
+    // JSONデータを取得
+    $pkg_tour_details = get_post_meta($post->ID, 'pkg_tour_details', true) ?: [['image' => '', 'description' => '']];
+    $encoded_details = htmlspecialchars(json_encode($pkg_tour_details));
+    ?>
+    <div id="package_details_meta_box">
+        <input type="hidden" id="pkg-tour-details-values" name="pkg-tour-details-values" value="<?php echo $encoded_details; ?>">
+        <div class="package-details-main"></div>
+        <button type="button" class="button add-detail-button">Add New Detail</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.package-details-main');
+            const hiddenInput = document.getElementById('pkg-tour-details-values');
+            let details = JSON.parse(hiddenInput.value);
+
+            function renderFields() {
+                container.innerHTML = '';
+                details.forEach((detail, index) => {
+                    const fieldSet = document.createElement('div');
+                    fieldSet.classList.add('package-detail');
+                    fieldSet.innerHTML = `
+                        <label>Image URL:</label>
+                        <input type="text" class="widefat" name="pkg_tour_details[${index}][image]" value="${detail.image}">
+                        <label>Description:</label>
+                        <textarea class="widefat" name="pkg_tour_details[${index}][description]">${detail.description}</textarea>
+                        <button type="button" class="button remove-detail-button" data-index="${index}">Remove</button>
+                        <hr>
+                    `;
+                    container.appendChild(fieldSet);
+                });
+
+                // Remove button event
+                document.querySelectorAll('.remove-detail-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const index = parseInt(this.dataset.index);
+                        details.splice(index, 1);
+                        renderFields();
+                        updateHiddenInput();
+                    });
+                });
+            }
+
+            function updateHiddenInput() {
+                hiddenInput.value = JSON.stringify(details);
+            }
+
+            document.querySelector('.add-detail-button').addEventListener('click', function () {
+                details.push({ image: '', description: '' });
+                renderFields();
+                updateHiddenInput();
+            });
+
+            renderFields();
+        });
+    </script>
+    <?php
+}
+
+add_action('add_meta_boxes', function () {
+    add_meta_box(
+        'pkg_tour_details_meta_box',
+        'Package Details Fields',
+        'render_pkg_tour_details_meta_box',
+        'tcp_package',
+        'normal',
+        'default'
+    );
 });
+
+function save_pkg_tour_details_meta_box($post_id) {
+    // nonceチェック
+    if (!isset($_POST['pkg-tour-details-values'])) {
+        return;
+    }
+
+    // JSONデータをデコード
+    $pkg_tour_details = json_decode(stripslashes($_POST['pkg-tour-details-values']), true);
+
+    if (is_array($pkg_tour_details)) {
+        update_post_meta($post_id, 'pkg_tour_details', $pkg_tour_details);
+    }
+}
+add_action('save_post', 'save_pkg_tour_details_meta_box');
