@@ -696,13 +696,13 @@ jQuery(document).ready(function($) {
     var content = $(this).next('.accordion-content'); // 対応するコンテンツを取得
 
     if (content.is(':visible')) {
-      // 表示中の場合は閉じる
+      // コンテンツが表示されている場合は閉じる
       content.slideUp();
       $(this).removeClass('active');
     } else {
       // 他のコンテンツを閉じる
-      $('.accordion-content').slideUp(); // 他の開いているコンテンツを閉じる
-      $('.accordion-button').removeClass('active'); // 他のボタンのアクティブ状態を解除
+      $('.accordion-content').slideUp();
+      $('.accordion-button').removeClass('active');
 
       // 現在のコンテンツを開く
       content.slideDown();
