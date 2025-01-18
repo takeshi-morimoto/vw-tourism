@@ -825,7 +825,7 @@ add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_c
 function render_pkg_tour_details_meta_box($post) {
     // JSONデータを取得
     $pkg_tour_details = get_post_meta($post->ID, 'pkg_tour_details', true) ?: [['image' => '', 'description' => '']];
-    $encoded_details = htmlspecialchars(json_encode($pkg_tour_details));
+    $encoded_details = esc_attr(json_encode($pkg_tour_details)); // 安全なHTMLエスケープ
     ?>
     <div id="package_details_meta_box">
         <input type="hidden" id="pkg-tour-details-values" name="pkg-tour-details-values" value="<?php echo $encoded_details; ?>">
@@ -839,6 +839,7 @@ function render_pkg_tour_details_meta_box($post) {
             const hiddenInput = document.getElementById('pkg-tour-details-values');
             let details = JSON.parse(hiddenInput.value);
 
+            // フィールドを描画する
             function renderFields() {
                 container.innerHTML = '';
                 details.forEach((detail, index) => {
@@ -846,16 +847,16 @@ function render_pkg_tour_details_meta_box($post) {
                     fieldSet.classList.add('package-detail');
                     fieldSet.innerHTML = `
                         <label>Image URL:</label>
-                        <input type="text" class="widefat" name="pkg_tour_details[${index}][image]" value="${detail.image}">
+                        <input type="text" class="widefat" name="pkg_tour_details[${index}][image]" value="${detail.image ? escHtml(detail.image) : ''}">
                         <label>Description:</label>
-                        <textarea class="widefat" name="pkg_tour_details[${index}][description]">${detail.description}</textarea>
+                        <textarea class="widefat" name="pkg_tour_details[${index}][description]">${detail.description ? escHtml(detail.description) : ''}</textarea>
                         <button type="button" class="button remove-detail-button" data-index="${index}">Remove</button>
                         <hr>
                     `;
                     container.appendChild(fieldSet);
                 });
 
-                // Remove button event
+                // 削除ボタンのイベントを設定
                 document.querySelectorAll('.remove-detail-button').forEach(button => {
                     button.addEventListener('click', function () {
                         const index = parseInt(this.dataset.index);
@@ -866,15 +867,24 @@ function render_pkg_tour_details_meta_box($post) {
                 });
             }
 
+            // Hidden Inputの更新
             function updateHiddenInput() {
                 hiddenInput.value = JSON.stringify(details);
             }
 
+            // 新しいフィールドを追加
             document.querySelector('.add-detail-button').addEventListener('click', function () {
                 details.push({ image: '', description: '' });
                 renderFields();
                 updateHiddenInput();
             });
+
+            // 安全なHTMLエスケープ関数
+            function escHtml(string) {
+                const div = document.createElement('div');
+                div.innerText = string;
+                return div.innerHTML;
+            }
 
             renderFields();
         });
@@ -894,6 +904,7 @@ add_action('add_meta_boxes', function () {
 });
 
 function save_pkg_tour_details_meta_box($post_id) {
+    // nonceチェック
     if (!isset($_POST['pkg-tour-details-values'])) {
         return;
     }
@@ -906,6 +917,7 @@ function save_pkg_tour_details_meta_box($post_id) {
             return !empty($detail['image']) || !empty($detail['description']);
         });
 
+        // メタデータを保存
         update_post_meta($post_id, 'pkg_tour_details', $pkg_tour_details);
     }
 }
