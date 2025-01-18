@@ -821,3 +821,9 @@ function vw_tourism_pro_excerpt_more($more) {
 add_filter('excerpt_length', 'custom_excerpt_length');
 add_action('wp_ajax_get_packages_explore_content','get_packages_explore_content');
 add_action('wp_ajax_nopriv_get_packages_explore_content','get_packages_explore_content');
+
+function enqueue_jquery_script() {
+    // jQueryをWordPressの標準的な方法で登録
+    wp_enqueue_script('jquery');
+}
+add_action('wp_enqueue_scripts', 'enqueue_jquery_script');
