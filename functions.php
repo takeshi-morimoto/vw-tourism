@@ -828,5 +828,6 @@ function enqueue_jquery_script() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_jquery_script');
 
+// WordPressの自動整形を無効
 remove_filter('the_content', 'wpautop');
 remove_filter('the_excerpt', 'wpautop');
