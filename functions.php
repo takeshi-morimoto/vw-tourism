@@ -828,6 +828,15 @@ function enqueue_jquery_script() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_jquery_script');
 
-// WordPressの自動整形を無効
-// remove_filter('the_content', 'wpautop');
-// remove_filter('the_excerpt', 'wpautop');
+function disable_wpautop_for_accordion($content) {
+    // アコーディオン部分だけでは wpautop を適用しない
+    if (strpos($content, 'class="accordion"') !== false) {
+        remove_filter('the_content', 'wpautop');
+        remove_filter('the_excerpt', 'wpautop');
+    } else {
+        add_filter('the_content', 'wpautop');
+        add_filter('the_excerpt', 'wpautop');
+    }
+    return $content;
+}
+add_filter('the_content', 'disable_wpautop_for_accordion', 9);
