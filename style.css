@@ -1685,7 +1685,7 @@ display: none
   margin-bottom: 5px;
 }
 
-/* イメージとテキストを横並びにするスタイル */
+/* デフォルトのスタイル (画像と文章を横並び) */
 .custom-image-text-row {
   display: flex;
   align-items: flex-start;
@@ -1714,4 +1714,24 @@ display: none
   font-weight: bold;
   margin-bottom: 10px;
   color: #112542;
+}
+
+/* スマホ用のスタイル (画像と文章を縦並び) */
+@media (max-width: 767px) {
+  .custom-image-text-row {
+    flex-direction: column; /* 縦並びに変更 */
+    align-items: center; /* 中央揃え */
+    text-align: center; /* テキストを中央揃え */
+  }
+
+  .custom-image-text-row img {
+    width: 100%; /* 画像を幅100%に */
+    height: auto; /* 高さを自動調整 */
+    margin-bottom: 15px; /* 画像と文章の間に余白を追加 */
+  }
+
+  .custom-image-text-row .text {
+    font-size: 16px; /* 文章の文字サイズを少し大きく */
+    line-height: 1.8;
+  }
 }
