@@ -187,34 +187,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     banners.forEach((selector) => {
         const banner = document.querySelector(selector);
-        const images = banner.querySelectorAll("img");
 
+        // バナー要素が存在しない場合の処理
+        if (!banner) {
+            console.warn(`No banner found for selector: ${selector}`);
+            return;
+        }
+
+        const images = banner.querySelectorAll("img");
         let loadedImages = 0;
 
+        // すべての画像が読み込まれたかを確認
         function checkImagesLoaded() {
             if (loadedImages === images.length) {
                 banner.classList.add("loaded");
-                console.log(`All images loaded in ${selector}, class added.`);
+                console.log(`All images loaded in ${selector}, "loaded" class added.`);
             }
         }
 
+        // 画像ごとにイベントリスナーを設定
         images.forEach((img) => {
             if (img.complete) {
+                // すでにロード済みの画像をカウント
                 loadedImages++;
             } else {
+                // 画像がロードされた時の処理
                 img.addEventListener("load", () => {
                     loadedImages++;
                     checkImagesLoaded();
                 });
 
+                // 画像がロードに失敗した時の処理
                 img.addEventListener("error", () => {
-                    console.error("Image failed to load:", img.src);
+                    console.error(`Image failed to load: ${img.src}`);
                     loadedImages++;
                     checkImagesLoaded();
                 });
             }
         });
 
+        // 初回のチェック: 画像がない場合にも対応
         checkImagesLoaded();
     });
 });
