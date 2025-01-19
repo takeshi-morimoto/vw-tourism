@@ -827,3 +827,6 @@ function enqueue_jquery_script() {
     wp_enqueue_script('jquery');
 }
 add_action('wp_enqueue_scripts', 'enqueue_jquery_script');
+
+remove_filter('the_content', 'wpautop');
+remove_filter('the_excerpt', 'wpautop');
