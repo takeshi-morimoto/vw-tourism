@@ -1656,23 +1656,31 @@ display: none
   margin: 0;
   padding: 10px;
   background-color: #f9f9f9;
-  border: none; /* ボーダーを削除 */
+}
+
+.accordion-content ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-position: inside;
+}
+
+.accordion-content li {
+  margin: 0;
+  padding: 5px 0;
 }
 
 .accordion-button {
   margin: 0;
   padding: 10px;
   text-align: left;
-  border: none; /* ボーダーを削除 */
+  border: none;
   background-color: #f4f4f4;
-  cursor: pointer;
 }
 
 .accordion-button.active {
-  background-color: #ddd; /* アクティブ時の背景色 */
+  background-color: #ddd;
 }
 
 .accordion-item {
-  margin-bottom: 5px; /* 必要に応じて余白を調整 */
-  border: none; /* ボーダーを削除 */
+  margin-bottom: 5px;
 }
