@@ -696,10 +696,6 @@ jQuery(document).ready(function($) {
     // 親要素内の .accordion-content を取得
     var content = $(this).closest('.accordion-item').find('.accordion-content');
 
-    // 他のコンテンツを閉じる
-    $('.accordion-content').not(content).slideUp();
-    $('.accordion-button').not(this).removeClass('active');
-
     // 現在のコンテンツをトグル
     content.slideToggle();
     $(this).toggleClass('active');
